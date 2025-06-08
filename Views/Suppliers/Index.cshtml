@@ -1,0 +1,333 @@
+﻿@model IEnumerable<AlphaShop.Models.Supplier>
+@{
+    ViewData["Title"] = "Supplier Management";
+    int count = 1;
+    var pageSize = 10;
+    var totalPages = (int)Math.Ceiling((double)Model.Count() / pageSize);
+    var currentPage = Context.Request.Query.ContainsKey("page") ? int.Parse(Context.Request.Query["page"]) : 1;
+    var paginatedSuppliers = Model.Skip((currentPage - 1) * pageSize).Take(pageSize).ToList();
+}
+
+<div class="container-fluid px-0 px-md-3">
+    <!-- Page Header with Gradient Background -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 py-3 px-4 bg-gradient-primary rounded-3">
+        <div>
+            <h1 class="h3 mb-0 text-Black">
+                <i class="fas fa-tags me-2"></i>@ViewData["Title"]
+            </h1>
+            <nav aria-label="breadcrumb" class="mt-2">
+                <ol class="breadcrumb breadcrumb-light">
+                    <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index" class="text-decoration-none text-black-50"><i class="fas fa-home me-1"></i> Dashboard</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Suppliers</li>
+                </ol>
+            </nav>
+        </div>
+        <div>
+            <div class="d-flex flex-column flex-sm-row gap-2 w-100 w-md-auto">
+                <button id="exportPdf" class="btn btn-outline-secondary d-flex align-items-center justify-content-center gap-2 flex-grow-1 flex-md-grow-0">
+                    <i class="fas fa-file-pdf"></i>
+                    <span class="d-none d-sm-inline">Export PDF</span>
+                </button>
+                <a asp-controller="Suppliers" asp-action="CreateSuppliers" class="btn btn-primary d-flex align-items-center justify-content-center gap-2 flex-grow-1 flex-md-grow-0">
+                    <i class="fas fa-plus"></i>
+                    <span class="d-none d-sm-inline">Add Supplier</span>
+                </a>
+            </div>
+        </div>
+    </div>
+    <!-- Supplier Table Section -->
+    <div class="card border-0 shadow-sm rounded-3 overflow-hidden">
+        <div class="card-header bg-white border-0 py-3">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3">
+                <h6 class="m-0 fw-semibold text-dark">Supplier Directory</h6>
+                <div class="d-flex flex-column flex-sm-row gap-2 w-100 w-md-auto">
+                    <div class="input-group input-group-sm rounded" style="min-width: 200px;">
+                        <input type="text" id="searchInput" class="form-control form-control-sm border-end-0" placeholder="Search suppliers...">
+                        <button class="btn btn-outline-secondary border-start-0" type="button">
+                            <i class="fas fa-search fa-sm"></i>
+                        </button>
+                    </div>
+                    <div class="dropdown">
+                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="filterDropdown" data-bs-toggle="dropdown">
+                            <i class="fas fa-filter me-1"></i>
+                            <span>Filter</span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="filterDropdown">
+                            <li><a class="dropdown-item" href="#" data-status="all">All Suppliers</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#" data-status="active">Active Only</a></li>
+                            <li><a class="dropdown-item" href="#" data-status="inactive">Inactive Only</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table id="supplierTable" class="table table-hover align-middle mb-0">
+                    <thead class="bg-light">
+                        <tr>
+                            <th class="ps-4 py-3 text-uppercase fw-semibold small">ID</th>
+                            <th class="py-3 text-uppercase fw-semibold small">Supplier</th>
+                            <th class="py-3 text-uppercase fw-semibold small d-none d-md-table-cell">Contact</th>
+                            <th class="py-3 text-uppercase fw-semibold small d-none d-lg-table-cell">Location</th>
+                            <th class="py-3 text-uppercase fw-semibold small d-none d-sm-table-cell">Contract Date</th>
+                            <th class="py-3 text-uppercase fw-semibold small">Status</th>
+                            <th class="pe-4 py-3 text-uppercase fw-semibold small text-end">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in paginatedSuppliers)
+                        {
+                            <tr class="border-top" data-status="@item.Status.ToString().ToLower()">
+                                <td class="ps-4 text-muted small">@(count++)</td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="position-relative me-3">
+                                            @if (!string.IsNullOrEmpty(item.ImageSupplier))
+                                            {
+                                                <img src="~/images/Suppliers/@item.ImageSupplier" class="rounded-circle" width="40" height="40" alt="Supplier">
+                                            }
+                                            else
+                                            {
+                                                <div class="rounded-circle bg-opacity-10 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                                    <i class="fas fa-building text-primary"></i>@item.ImageSupplier
+                                                </div>
+                                            }
+                                            @if (item.Status == StatusSupplier.Active)
+                                            {
+                                                <span class="position-absolute bottom-0 end-0 translate-middle p-1 border border-white bg-success rounded-circle">
+                                                    <span class="visually-hidden">Active</span>
+                                                </span>
+                                            }
+                                            else
+                                            {
+                                                <span class="position-absolute bottom-0 end-0 translate-middle p-1 border border-white bg-danger rounded-circle">
+                                                    <span class="visually-hidden">Active</span>
+                                                </span>
+                                            }
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-0 fw-semibold">@item.SupplierName</h6>
+                                            <small class="text-muted d-block d-md-none">@item.ContactPerson</small>
+                                            <small class="text-muted">@item.Email</small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="d-none d-md-table-cell">
+                                    <div class="fw-semibold">@item.ContactPerson</div>
+                                    <small class="text-muted">@item.Phone</small>
+                                </td>
+                                <td class="d-none d-lg-table-cell">
+                                    <div class="text-truncate" style="max-width: 180px;" data-bs-toggle="tooltip" title="@item.Address, @item.Street, @item.City, @item.Country">
+                                        @item.City, @item.Country
+                                    </div>
+                                </td>
+                                <td class="d-none d-sm-table-cell">
+                                    <div class="fw-semibold">@item.ContractDate.ToString("dd MMM yyyy")</div>
+                                    <small class="text-muted">@((DateTime.Now - item.ContractDate).Days) days</small>
+                                </td>
+                                <td>
+                                    <span class="badge rounded-pill @(item.Status == StatusSupplier.Active ? "text-success" : "text-warning")">
+                                        <i class="fas fa-circle me-1" style="font-size: 6px; vertical-align: middle;"></i>
+                                        @item.Status
+                                    </span>
+                                </td>
+                                <td class="pe-4 text-end">
+                                    <div class="btn-group btn-group-sm" role="group">
+                                        <a asp-action="EditSupplier" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary rounded-start" data-bs-toggle="tooltip" title="Edit">
+                                            <i class="far fa-edit"></i>
+                                        </a>
+                                        <a asp-action="DetailsSuppliers" asp-route-id="@item.Id" class="btn btn-sm btn-outline-secondary" data-bs-toggle="tooltip" title="Details">
+                                            <i class="far fa-eye"></i>
+                                        </a>
+                                        <button data-bs-toggle="modal"
+                                                data-bs-target="#deleteModal-@item.Id"
+                                                class="btn btn-sm btn-outline-danger rounded-end" title="Delete">
+                                            <i class="far fa-trash-alt"></i>
+                                        </button>
+                                    </div>
+                                    <!-- Delete Modal -->
+                                    <div class="modal fade" id="deleteModal-@item.Id" tabindex="-1">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header bg-danger text-white">
+                                                    <h5 class="modal-title">Confirm Deletion</h5>
+                                                    <button type="button" class="btn-close btn-close-white"
+                                                            data-bs-dismiss="modal"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p>Are you sure you want to delete brand <strong>@item.SupplierName</strong>?</p>
+                                                    <p class="text-danger small mb-0">
+                                                        <i class="fas fa-exclamation-circle me-1"></i>This action cannot be undone.
+                                                    </p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                            data-bs-dismiss="modal">
+                                                        Cancel
+                                                    </button>
+                                                    <form asp-controller="Suppliers" asp-action="DeleteSuppliers"
+                                                          asp-route-id="@item.Id" method="post">
+                                                        <input type="hidden" name="id" value="@item.Id" />
+                                                        <button type="submit" class="btn btn-danger">
+                                                            <i class="fas fa-trash-alt me-1"></i>Delete
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            @if (Model.Count() == 0)
+            {
+                <div class="text-center py-5">
+                    <img src="~/img/empty-state.svg" alt="No suppliers" style="height: 120px; opacity: 0.6;">
+                    <h5 class="mt-3 text-muted">No suppliers found</h5>
+                    <p class="text-muted small">Add your first supplier to get started</p>
+                    <a asp-action="CreateSuppliers" class="btn btn-primary btn-sm mt-2">
+                        <i class="fas fa-plus me-1"></i> Add Supplier
+                    </a>
+                </div>
+            }
+        </div>
+
+        @if (totalPages > 1)
+        {
+            <div class="card-footer bg-white border-0">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination pagination-sm justify-content-center justify-content-md-end mb-0">
+                        <li class="page-item @(currentPage == 1 ? "disabled" : "")">
+                            <a class="page-link" href="?page=@(currentPage - 1)" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+
+                        @for (var i = 1; i <= totalPages; i++)
+                        {
+                            <li class="page-item @(i == currentPage ? "active" : "")">
+                                <a class="page-link" href="?page=@i">@i</a>
+                            </li>
+                        }
+
+                        <li class="page-item @(currentPage == totalPages ? "disabled" : "")">
+                            <a class="page-link" href="?page=@(currentPage + 1)" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+    <script>
+        // Initialize tooltips
+        $(function () {
+            $('[data-bs-toggle="tooltip"]').tooltip();
+        });
+
+        // Filter functionality
+        $(document).ready(function() {
+            // Search functionality
+            $('#searchInput').on('keyup', function() {
+                const value = $(this).val().toLowerCase();
+                $('#supplierTable tbody tr').filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+
+            // Status filter
+            $('.dropdown-item[data-status]').click(function(e) {
+                e.preventDefault();
+                const status = $(this).data('status');
+
+                if (status === 'all') {
+                    $('#supplierTable tbody tr').show();
+                } else {
+                    $('#supplierTable tbody tr').hide();
+                    $(`#supplierTable tbody tr[data-status="${status}"]`).show();
+                }
+
+                $('#filterDropdown span').text($(this).text());
+            });
+        });
+
+        // PDF Export functionality
+        document.getElementById('exportPdf').addEventListener('click', function() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            // Title
+            doc.setFontSize(18);
+            doc.text('Supplier Report', 14, 20);
+
+            // Date
+            doc.setFontSize(10);
+            doc.text(`Generated: ${new Date().toLocaleDateString()}`, 14, 28);
+
+            // Table
+            const headers = [
+                ['ID', 'Supplier', 'Contact', 'Location', 'Contract Date', 'Status']
+            ];
+
+            const data = [
+                @foreach (var item in Model)
+                {
+                        <text>
+                        [
+                            '#@item.Id',
+                            '@item.SupplierName',
+                            '@item.ContactPerson\n@item.Phone',
+                            '@item.City, @item.Country',
+                            '@item.ContractDate.ToString("dd MMM yyyy")',
+                            '@item.Status'
+                        ],
+                        </text>
+                }
+            ];
+
+            doc.autoTable({
+                head: headers,
+                body: data,
+                startY: 35,
+                styles: {
+                    fontSize: 8,
+                    cellPadding: 2,
+                    valign: 'middle'
+                },
+                headStyles: {
+                    fillColor: [52, 58, 64],
+                    textColor: 255,
+                    fontStyle: 'bold'
+                },
+                alternateRowStyles: {
+                    fillColor: [248, 249, 250]
+                },
+                columnStyles: {
+                    0: { cellWidth: 15 },
+                    1: { cellWidth: 30 },
+                    2: { cellWidth: 30 },
+                    3: { cellWidth: 30 },
+                    4: { cellWidth: 25 },
+                    5: { cellWidth: 20 }
+                },
+                margin: { left: 14 }
+            });
+
+            // Save the PDF
+            doc.save(`Suppliers_${new Date().toISOString().slice(0,10)}.pdf`);
+        });
+    </script>
+}

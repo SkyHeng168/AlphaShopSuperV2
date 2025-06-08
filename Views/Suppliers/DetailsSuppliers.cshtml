@@ -1,0 +1,688 @@
+﻿@model AlphaShop.Models.Supplier
+@{
+    ViewData["Title"] = "Supplier Details";
+}
+
+<div class="container-fluid px-4 py-4">
+    <div class="supplier-card card shadow-sm border-0">
+        <!-- Header Section with Breadcrumb -->
+        <div class="card-header bg-white border-bottom">
+            <div class="d-flex justify-content-between align-items-center">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-0">
+                        <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="#">Suppliers</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">@Model.SupplierName</li>
+                    </ol>
+                </nav>
+                <div>
+                    <a href="#" class="btn btn-sm btn-outline-secondary me-2">
+                        <i class="fas fa-arrow-left me-1"></i> Back
+                    </a>
+                    <a href="#" class="btn btn-sm btn-primary">
+                        <i class="fas fa-pencil-alt me-1"></i> Edit
+                    </a>
+                    <a asp-controller="PurchaseOrder" asp-action="CreatePurchasingOrder" asp-route-id="@Model.Id" class="btn btn-sm btn-secondary">
+                        <i class="fas fa-plus me-1"></i> Create New Order
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="card-body p-0">
+            <!-- Supplier Profile Header -->
+            <div class="supplier-profile-header bg-gradient-primary text-white p-4">
+                <div class="row align-items-center">
+                    <div class="col-auto">
+                        <div class="supplier-avatar">
+                            <img src="~/images/Suppliers/@(Model.ImageSupplier ?? "/images/default-supplier.png")"
+                            alt="@Model.SupplierName Logo"
+                            class="img-thumbnail rounded-circle border-white" />
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <h1 class="h2 mb-1">@Model.SupplierName</h1>
+                                <div class="d-flex align-items-center flex-wrap">
+                                    <span class="badge @(Model.Status == StatusSupplier.Active ? "bg-success" : "bg-secondary") me-2 mb-1">
+                                        @Model.Status
+                                    </span>
+                                    <span class="text-white-80 me-3 mb-1">
+                                        <i class="fas fa-user-tie me-1"></i> @Model.ContactPerson
+                                    </span>
+                                    <span class="text-white-80 me-3 mb-1">
+                                        <i class="fas fa-phone me-1"></i> @Model.Phone
+                                    </span>
+                                    <span class="text-white-80 mb-1">
+                                        <i class="fas fa-envelope me-1"></i> @Model.Email
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="dropdown">
+                                <button class="btn btn-light btn-sm dropdown-toggle" type="button" id="actionsDropdown" data-bs-toggle="dropdown">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-edit me-2"></i>Edit Supplier</a></li>
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-file-contract me-2"></i>View Contract</a></li>
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-history me-2"></i>View History</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-trash-alt me-2"></i>Delete Supplier</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content Tabs -->
+            <div class="p-4">
+                <ul class="nav nav-tabs" id="supplierTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="overview-tab" data-bs-toggle="tab" data-bs-target="#overview" type="button" role="tab">
+                            <i class="fas fa-chart-pie me-1"></i> Overview
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="products-tab" data-bs-toggle="tab" data-bs-target="#products" type="button" role="tab">
+                            <i class="fas fa-boxes me-1"></i> Products (@Model.Products.Count)
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="orders-tab" data-bs-toggle="tab" data-bs-target="#orders" type="button" role="tab">
+                            <i class="fas fa-file-invoice me-1"></i> Orders
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="documents-tab" data-bs-toggle="tab" data-bs-target="#documents" type="button" role="tab">
+                            <i class="fas fa-file-alt me-1"></i> Documents
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="activity-tab" data-bs-toggle="tab" data-bs-target="#activity" type="button" role="tab">
+                            <i class="fas fa-history me-1"></i> Activity Log
+                        </button>
+                    </li>
+                </ul>
+
+                <div class="tab-content pt-3" id="supplierTabsContent">
+                    <!-- Overview Tab -->
+                    <div class="tab-pane fade show active" id="overview" role="tabpanel">
+                        <div class="row">
+                            <!-- Left Column - Supplier Details -->
+                            <div class="col-lg-8">
+                                <!-- Key Metrics -->
+                                <div class="row mb-4">
+                                    <div class="col-md-4">
+                                        <div class="card border-0 shadow-sm h-100">
+                                            <div class="card-body">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <div>
+                                                        <h6 class="text-muted mb-2">Total Products</h6>
+                                                        <h3 class="mb-0">@Model.Products.Count</h3>
+                                                    </div>
+                                                    <div class=" bg-opacity-10 p-3 rounded">
+                                                        <i class="fas fa-box text-primary"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="card border-0 shadow-sm h-100">
+                                            <div class="card-body">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <div>
+                                                        <h6 class="text-muted mb-2">Avg. Rating</h6>
+                                                        <h3 class="mb-0">4.5 <small class="text-muted fs-6">/5</small></h3>
+                                                    </div>
+                                                    <div class=" bg-opacity-10 p-3 rounded">
+                                                        <i class="fas fa-star text-warning"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="card border-0 shadow-sm h-100">
+                                            <div class="card-body">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <div>
+                                                        <h6 class="text-muted mb-2">Last Order</h6>
+                                                        <h3 class="mb-0">@ViewBag.TotalAmount.ToString("C")</h3>
+                                                    </div>
+                                                    <div class=" bg-opacity-10 p-3 rounded">
+                                                        <i class="fas fa-shopping-cart text-success"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Supplier Information -->
+                                <div class="card mb-4 border-0 shadow-sm">
+                                    <div class="card-header bg-white border-bottom">
+                                        <h5 class="mb-0 d-flex align-items-center">
+                                            <i class="fas fa-info-circle text-primary me-2"></i> Supplier Information
+                                        </h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <label class="small text-muted mb-1">Supplier ID</label>
+                                                    <p class="mb-0 fw-medium">@Model.Id</p>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="small text-muted mb-1">Contract Date</label>
+                                                    <p class="mb-0 fw-medium">@Model.ContractDate.ToString("MMMM dd, yyyy")</p>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <label class="small text-muted mb-1">Created</label>
+                                                    <p class="mb-0 fw-medium">@Model.CreatedAt.ToString("MMMM dd, yyyy hh:mm tt")</p>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="small text-muted mb-1">Last Updated</label>
+                                                    <p class="mb-0 fw-medium">@Model.UpdatedAt.ToString("MMMM dd, yyyy hh:mm tt")</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Address Information -->
+                                <div class="card mb-4 border-0 shadow-sm">
+                                    <div class="card-header bg-white border-bottom">
+                                        <h5 class="mb-0 d-flex align-items-center">
+                                            <i class="fas fa-map-marker-alt text-primary me-2"></i> Address Information
+                                        </h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <label class="small text-muted mb-1">Address</label>
+                                                    <p class="mb-0 fw-medium">@Model.Address</p>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="small text-muted mb-1">Street</label>
+                                                    <p class="mb-0 fw-medium">@Model.Street</p>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <label class="small text-muted mb-1">City</label>
+                                                    <p class="mb-0 fw-medium">@Model.City</p>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="small text-muted mb-1">Country</label>
+                                                    <p class="mb-0 fw-medium">@Model.Country</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="mt-3">
+                                            <div id="supplierMap" style="height: 200px; border-radius: 0.25rem;" class="bg-light"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Right Column - Quick Actions and Notes -->
+                            <div class="col-lg-4">
+                                <!-- Quick Actions -->
+                                <div class="card mb-4 border-0 shadow-sm">
+                                    <div class="card-header bg-white border-bottom">
+                                        <h5 class="mb-0 d-flex align-items-center">
+                                            <i class="fas fa-bolt text-primary me-2"></i> Quick Actions
+                                        </h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="d-grid gap-2">
+                                            <button class="btn btn-outline-primary btn-sm text-start">
+                                                <i class="fas fa-file-invoice me-2"></i> Create Purchase Order
+                                            </button>
+                                            <button class="btn btn-outline-primary btn-sm text-start">
+                                                <i class="fas fa-envelope me-2"></i> Send Message
+                                            </button>
+                                            <button class="btn btn-outline-primary btn-sm text-start">
+                                                <i class="fas fa-calendar-plus me-2"></i> Schedule Meeting
+                                            </button>
+                                            <button class="btn btn-outline-primary btn-sm text-start">
+                                                <i class="fas fa-file-export me-2"></i> Export Supplier Data
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Recent Notes -->
+                                <div class="card border-0 shadow-sm">
+                                    <div class="card-header bg-white border-bottom">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <h5 class="mb-0 d-flex align-items-center">
+                                                <i class="fas fa-sticky-note text-primary me-2"></i> Notes
+                                            </h5>
+                                            <button class="btn btn-sm btn-outline-primary">
+                                                <i class="fas fa-plus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="supplier-notes">
+                                            <div class="note-item mb-3">
+                                                <div class="d-flex justify-content-between mb-1">
+                                                    <span class="small fw-medium">Contract Renewal</span>
+                                                    <span class="small text-muted">2 days ago</span>
+                                                </div>
+                                                <p class="small mb-2">Need to discuss contract renewal terms before the end of the month.</p>
+                                                <div class="d-flex">
+                                                    <span class="badge bg-info bg-opacity-10 text-info small me-2">Follow-up</span>
+                                                    <span class="badge bg-light text-muted small">John D.</span>
+                                                </div>
+                                            </div>
+                                            <div class="note-item mb-3">
+                                                <div class="d-flex justify-content-between mb-1">
+                                                    <span class="small fw-medium">Quality Issue</span>
+                                                    <span class="small text-muted">1 week ago</span>
+                                                </div>
+                                                <p class="small mb-2">Reported quality issues with batch #4578. Supplier promised replacement.</p>
+                                                <div class="d-flex">
+                                                    <span class="badge bg-warning bg-opacity-10 text-warning small me-2">Issue</span>
+                                                    <span class="badge bg-light text-muted small">Sarah M.</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="text-center mt-2">
+                                            <a href="#" class="small text-primary">View all notes (5)</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Products Tab -->
+                    <div class="tab-pane fade" id="products" role="tabpanel">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <div>
+                                <h5 class="mb-0">Supplier Products</h5>
+                                <p class="small text-muted mb-0">Showing @Model.Products.Count products</p>
+                            </div>
+                            <div>
+                                <a href="#" class="btn btn-sm btn-primary me-2">
+                                    <i class="fas fa-plus me-1"></i> Add Product
+                                </a>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown">
+                                        <i class="fas fa-sliders-h"></i>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end">
+                                        <li><a class="dropdown-item" href="#">Export to Excel</a></li>
+                                        <li><a class="dropdown-item" href="#">Export to PDF</a></li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li><a class="dropdown-item" href="#">Print List</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        @if (Model.Products.Any())
+                        {
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th scope="col" style="width: 50px;">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="selectAll">
+                                                </div>
+                                            </th>
+                                            <th scope="col">Product</th>
+                                            <th scope="col" class="text-center">Category</th>
+                                            <th scope="col" class="text-end">Price</th>
+                                            <th scope="col" class="text-center">Status</th>
+                                            <th scope="col" class="text-end">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var product in Model.Products)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox">
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        <img src="~/images/Products/@(product.ProductImage ?? "default-product.png")" 
+                                                        alt="@product.ProductName" 
+                                                        class="rounded me-3" 
+                                                        style="width: 40px; height: 40px; object-fit: cover;">
+                                                        <div>
+                                                            <div class="fw-medium">@product.ProductName</div>
+                                                            <small class="text-muted">SKU: @product.SKU</small>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td class="text-center">
+                                                    <span class="badge bg-opacity-10 text-info">
+                                                        @(product.Category?.Name ?? "Uncategorized")
+                                                    </span>
+                                                </td>
+                                                <td class="text-end fw-semibold">
+                                                    @product.Price
+                                                </td>
+                                                <td class="text-center">
+                                                    <span class="badge @(product.IsActive.GetValueOrDefault() ? "bg-success" : "bg-secondary")">
+                                                        @(product.IsActive.GetValueOrDefault() ? "Active" : "Inactive")
+                                                    </span>
+                                                </td>
+                                                <td class="text-end">
+                                                    <div class="dropdown">
+                                                        <button class="btn btn-sm btn-light dropdown-toggle" type="button" 
+                                                        data-bs-toggle="dropdown">
+                                                            <i class="fas fa-ellipsis-h"></i>
+                                                        </button>
+                                                        <ul class="dropdown-menu dropdown-menu-end">
+                                                            <li>
+                                                                <a class="dropdown-item" href="#">
+                                                                    <i class="fas fa-eye me-2"></i>View
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a class="dropdown-item" href="#">
+                                                                    <i class="fas fa-edit me-2"></i>Edit
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a class="dropdown-item" href="#">
+                                                                    <i class="fas fa-chart-line me-2"></i>Stats
+                                                                </a>
+                                                            </li>
+                                                            <li><hr class="dropdown-divider"></li>
+                                                            <li>
+                                                                <a class="dropdown-item text-danger" href="#">
+                                                                    <i class="fas fa-trash-alt me-2"></i>Delete
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <div class="text-muted small">
+                                    Showing <span class="fw-semibold">1</span> to <span class="fw-semibold">10</span> of <span class="fw-semibold">@Model.Products.Count</span> products
+                                </div>
+                                <nav aria-label="Product pagination">
+                                    <ul class="pagination pagination-sm mb-0">
+                                        <li class="page-item disabled">
+                                            <a class="page-link" href="#" tabindex="-1">Previous</a>
+                                        </li>
+                                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                        <li class="page-item">
+                                            <a class="page-link" href="#">Next</a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="text-center py-5">
+                                <div class="mb-3">
+                                    <i class="fas fa-box-open fa-3x text-muted"></i>
+                                </div>
+                                <h4 class="h5 text-muted">No products found</h4>
+                                <p class="text-muted">This supplier doesn't have any products yet.</p>
+                                <a href="#" class="btn btn-sm btn-primary">
+                                    <i class="fas fa-plus me-1"></i> Add First Product
+                                </a>
+                            </div>
+                        }
+                    </div>
+
+                    <div class="tab-pane fade" id="orders" role="tabpanel">
+                        <ul class="nav nav-tabs mb-4" id="ordersStatusTabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="draft-tab" data-bs-toggle="tab" data-bs-target="#draft-orders" type="button" role="tab">Draft</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="complete-tab" data-bs-toggle="tab" data-bs-target="#complete-orders" type="button" role="tab">Complete</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="cancel-tab" data-bs-toggle="tab" data-bs-target="#canceled-orders" type="button" role="tab">Canceled</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="all-tab" data-bs-toggle="tab" data-bs-target="#all-orders" type="button" role="tab">All Orders</button>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content">
+                            <div class="tab-pane fade" id="all-orders" role="tabpanel">
+                                @await Html.PartialAsync("_OrdersTablePartial", Model.PurchaseOrders)
+                            </div>
+                            <div class="tab-pane fade show active" id="draft-orders" role="tabpanel">
+                                @await Html.PartialAsync("_OrdersTablePartial", Model.PurchaseOrders.Where(o => o.OrderStatus == Status.Draft))
+                            </div>
+                            <div class="tab-pane fade" id="complete-orders" role="tabpanel">
+                                @await Html.PartialAsync("_OrdersTablePartial", Model.PurchaseOrders.Where(o => o.OrderStatus == Status.Received))
+                            </div>
+                            <div class="tab-pane fade" id="canceled-orders" role="tabpanel">
+                                @await Html.PartialAsync("_OrdersTablePartial", Model.PurchaseOrders.Where(o => o.OrderStatus == Status.Cancelled))
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Documents Tab -->
+                    <div class="tab-pane fade" id="documents" role="tabpanel">
+                        <div class="text-center py-5">
+                            <div class="mb-3">
+                                <i class="fas fa-file-alt fa-3x text-muted"></i>
+                            </div>
+                            <h4 class="h5 text-muted">No documents found</h4>
+                            <p class="text-muted">This supplier doesn't have any documents yet.</p>
+                            <a href="#" class="btn btn-sm btn-primary">
+                                <i class="fas fa-upload me-1"></i> Upload Document
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Activity Log Tab -->
+                    <div class="tab-pane fade" id="activity" role="tabpanel">
+                        <div class="text-center py-5">
+                            <div class="mb-3">
+                                <i class="fas fa-history fa-3x text-muted"></i>
+                            </div>
+                            <h4 class="h5 text-muted">No activity found</h4>
+                            <p class="text-muted">There's no activity logged for this supplier yet.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for Adding Note -->
+<div class="modal fade" id="addNoteModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Note</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label class="form-label">Title</label>
+                        <input type="text" class="form-control" placeholder="Note title">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Note</label>
+                        <textarea class="form-control" rows="4" placeholder="Enter your note here..."></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Tags</label>
+                        <select class="form-select">
+                            <option selected>Select tag</option>
+                            <option value="follow-up">Follow-up</option>
+                            <option value="issue">Issue</option>
+                            <option value="important">Important</option>
+                            <option value="meeting">Meeting</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary">Save Note</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .supplier-card {
+        border-radius: 0.5rem;
+        overflow: hidden;
+    }
+
+    .supplier-profile-header {
+        background: linear-gradient(135deg, #3a7bd5 0%, #00d2ff 100%);
+        padding: 2rem;
+    }
+
+    .supplier-avatar {
+        width: 120px;
+        height: 120px;
+    }
+
+    .supplier-avatar img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border: 4px solid rgba(255,255,255,0.3);
+    }
+
+    .text-white-80 {
+        color: rgba(255,255,255,0.8);
+    }
+
+    .nav-tabs .nav-link {
+        color: #495057;
+        font-weight: 500;
+        border: none;
+        padding: 0.75rem 1.25rem;
+    }
+
+    .nav-tabs .nav-link.active {
+        color: #3a7bd5;
+        border-bottom: 3px solid #3a7bd5;
+        background-color: transparent;
+    }
+
+    .nav-tabs .nav-link:hover:not(.active) {
+        border-bottom: 3px solid #dee2e6;
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: rgba(58, 123, 213, 0.05);
+    }
+
+    .table th {
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        letter-spacing: 0.5px;
+        color: #6c757d;
+    }
+
+    .badge {
+        font-weight: 500;
+        padding: 0.35em 0.65em;
+        font-size: 0.75rem;
+    }
+
+    .note-item {
+        padding: 0.75rem;
+        border-radius: 0.25rem;
+        background-color: #f8f9fa;
+        border-left: 3px solid #3a7bd5;
+    }
+
+    .progress {
+        background-color: #e9ecef;
+    }
+
+    @* Responsive adjustments *@
+    @@media (max-width: 768px) {
+        .supplier-avatar {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 1rem;
+        }
+        
+        .supplier-profile-header .col-auto {
+            margin-bottom: 1rem;
+        }
+    }
+</style>
+@functions {
+    string GetStatusBadgeClass(Status status)
+    {
+        return status switch
+        {
+            Status.Draft => "bg-warning text-dark",
+            Status.Approved => "bg-info",
+            Status.Received => "bg-success",
+            Status.Cancelled => "bg-danger",
+            Status.Shipped => "bg-primary",
+            _ => "bg-secondary"
+        };
+    }
+}
+@section Scripts {
+    <script>
+        // Initialize map (example with Leaflet)
+        document.addEventListener('DOMContentLoaded', function() {
+            // This is just a placeholder - you would integrate with a real map API
+            const mapElement = document.getElementById('supplierMap');
+            if (mapElement) {
+                mapElement.innerHTML = '<div class="d-flex justify-content-center align-items-center h-100 text-muted">' +
+                    '<i class="fas fa-map-marked-alt fa-2x me-2"></i>' +
+                    '<span>Supplier Location Map</span>' +
+                    '</div>';
+            }
+            
+            // Tab persistence
+            const supplierTabs = document.getElementById('supplierTabs');
+            if (supplierTabs) {
+                supplierTabs.addEventListener('click', function(e) {
+                    if (e.target.classList.contains('nav-link')) {
+                        localStorage.setItem('lastSupplierTab', e.target.getAttribute('id'));
+                    }
+                });
+                
+                const lastTab = localStorage.getItem('lastSupplierTab');
+                if (lastTab) {
+                    const tab = document.querySelector(`#${lastTab}`);
+                    if (tab) {
+                        new bootstrap.Tab(tab).show();
+                    }
+                }
+            }
+        });
+    </script>
+}

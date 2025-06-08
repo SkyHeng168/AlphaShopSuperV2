@@ -1,0 +1,13 @@
+﻿@model AlphaShop.Models.PurchaseOrder
+@{
+    ViewData["Title"] = "CreatePurchasingOrder";
+}
+
+<h1>Create Purchasing Order</h1>
+<p>Order Number: @Model.OrderNumber</p>
+<p>Supplier ID: @Model.SupplierId</p>
+<p>@Model.OrderDate</p>
+<p>Order Status: @Model.OrderStatus</p>
+<p>@Model.ExpectedDate</p>
+<p>@Model.TotalAmount</p>
+<p>@Model.Note</p>

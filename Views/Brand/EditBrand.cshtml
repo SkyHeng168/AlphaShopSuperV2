@@ -1,0 +1,188 @@
+﻿@model AlphaShop.Models.BrandDto
+@{
+    ViewData["Title"] = "EditBrand";
+    var LogoUrl = ViewData["LogoUrl"] as string;
+}
+
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <h1 class="display-6 fw-semibold text-primary">Edit Brand</h1>
+                <a asp-action="Index" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left me-2"></i>Back to List
+                </a>
+            </div>
+            <hr class="mt-2 mb-4" style="border-top: 2px solid #e9ecef;">
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-edit me-2"></i>Edit Brand
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form asp-controller="Brand" asp-action="EditBrand" method="post" enctype="multipart/form-data">
+                        <div class="row">
+                            <!-- Brand Name -->
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Name" class="form-label">Brand Name *</label>
+                                <input asp-for="Name" type="text" class="form-control" required>
+                                <span asp-validation-for="Name" class="text-danger small"></span>
+                            </div>
+
+                            <!-- Country -->
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Country" class="form-label">Country</label>
+                                <select asp-for="Country" class="form-select">
+                                    <option value="">Select Country</option>
+                                    <option value="United States">United States</option>
+                                    <option value="United Kingdom">United Kingdom</option>
+                                    <option value="Germany">Germany</option>
+                                    <option value="France">France</option>
+                                    <option value="Japan">Japan</option>
+                                    <option value="China">China</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Description -->
+                        <div class="mb-3">
+                            <label asp-for="Description" class="form-label">Description</label>
+                            <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+                        </div>
+
+                        <div class="row">
+                            <!-- Website URL -->
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="WebsiteUrl" class="form-label">Website URL</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">https://</span>
+                                    <input asp-for="WebsiteUrl" type="url" class="form-control" placeholder="www.example.com">
+                                </div>
+                            </div>
+
+                            <!-- Social Media URL -->
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="SocialMediaUrl" class="form-label">Social Media URL</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fab fa-instagram"></i>
+                                    </span>
+                                    <input asp-for="SocialMediaUrl" type="url" class="form-control" placeholder="instagram.com/yourbrand">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Logo Upload -->
+                        <div class="mb-4">
+                            <div class="current-icon mb-3">
+                                @if (!string.IsNullOrEmpty(LogoUrl) && LogoUrl != "Default.jpg")
+                                {
+                                    <img src="@Url.Content("~/images/Branding/" + LogoUrl)" alt="Current Icon" class="img-thumbnail" style="max-width: 100px; max-height: 100px;" />
+                                }
+                                else
+                                {
+                                    <div class="text-muted">No icon uploaded</div>
+                                }
+                            </div>
+                            <label asp-for="LogoUrl" class="form-label">Brand Logo</label>
+                            <input asp-for="LogoUrl" type="file" class="form-control" accept="image/*">
+                            <div class="form-text">Recommended size: 300x300 pixels. Max file size: 2MB.</div>
+                        </div>
+
+                        <!-- Status -->
+                        <div class="mb-4">
+                            <label class="form-label">Status</label>
+                            <div class="form-check form-switch">
+                                <input asp-for="IsActive" class="form-check-input" type="checkbox" checked>
+                                <label asp-for="IsActive" class="form-check-label">Active</label>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <a asp-controller="Brand" asp-action="Index" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left me-2"></i>Cancel
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-2"></i>Save Brand
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .card {
+        border: none;
+        border-radius: 10px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+    }
+
+    .card-header {
+        border-radius: 10px 10px 0 0 !important;
+        padding: 15px 20px;
+    }
+
+    .card-body {
+        padding: 25px;
+    }
+
+    .form-label {
+        font-weight: 500;
+        color: #495057;
+        margin-bottom: 8px;
+    }
+
+    .form-control, .form-select {
+        border: 1px solid #ced4da;
+        border-radius: 6px;
+        padding: 10px 15px;
+    }
+
+        .form-control:focus, .form-select:focus {
+            border-color: #86b7fe;
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+        }
+
+    .input-group-text {
+        background-color: #f8f9fa;
+    }
+
+    .form-check-input:checked {
+        background-color: #0d6efd;
+        border-color: #0d6efd;
+    }
+
+    .form-switch .form-check-input {
+        width: 3em;
+        height: 1.5em;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        border-radius: 6px;
+        font-weight: 500;
+    }
+
+    .btn-primary {
+        background-color: #0d6efd;
+        border-color: #0d6efd;
+    }
+
+        .btn-primary:hover {
+            background-color: #0b5ed7;
+            border-color: #0a58ca;
+        }
+</style>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,429 @@
+﻿@model IEnumerable<AlphaShop.Models.Category>
+@{
+    ViewData["Title"] = "Category Management";
+}
+
+<div class="container-fluid px-4">
+    <!-- Page Header -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h3 mb-0 text-gray-800">
+                <i class="fas fa-tags me-2"></i>Category Management
+            </h1>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb bg-transparent p-0">
+                    <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index" class="text-decoration-none"><i class="fas fa-home"></i> Dashboard</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Categories</li>
+                </ol>
+            </nav>
+        </div>
+        <div>
+            <a asp-controller="Category" asp-action="CreateCategory" class="btn btn-primary">
+                <i class="fas fa-plus-circle me-2"></i> Add New Category
+            </a>
+        </div>
+    </div>
+
+    <!-- Main Card -->
+    <div class="card border-0">
+        <div class="card-header bg-transparent py-3 d-flex flex-row align-items-center justify-content-between border-bottom">
+            <h6 class="m-0 font-weight-semibold">
+                <i class="fas fa-list-ul me-2"></i>Category List
+            </h6>
+        </div>
+
+        <div class="card-body pt-2">
+            
+            <!-- Modern Table Design -->
+            <div class="table-container">
+                <table class="modern-table" id="categoryTable">
+                    <thead>
+                        <tr>
+                            <th width="5%">ID</th>
+                            <th>Category</th>
+                            <th>Description</th>
+                            <th>Parent</th>
+                            <th width="15%">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.Any())
+                        {
+                            @foreach (var category in Model)
+                            {
+                                <tr>
+                                    <td class="text-muted">#</td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            @if (!string.IsNullOrEmpty(category.IconUrl))
+                                            {
+                                                <div class="avatar me-3">
+                                                    <img src="~/images/icon/@category.IconUrl" alt="Category icon">
+                                                </div>
+                                            }
+                                            <div>
+                                                <div class="fw-medium">@category.Name</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="table-description">
+                                            @(string.IsNullOrEmpty(category.Description) ? "-" : category.Description)
+                                        </div>
+                                    </td>
+                                    <td>
+                                        @if (category.ParentCategory != null)
+                                        {
+                                            <span class="badge">@category.ParentCategory.Name</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">None</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <div class="table-actions">
+                                            <a asp-controller="Category" asp-action="EditeCategory" asp-route-id="@category.Id" class="btn-action edit" title="Edit">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <button data-bs-toggle="modal"
+                                                    data-bs-target="#deleteModal-@category.Id" class="btn-action delete" title="Delete">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </button>
+                                        </div>
+                                        <!-- Delete Modal -->
+                                        <div class="modal fade" id="deleteModal-@category.Id" tabindex="-1">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header bg-danger text-white">
+                                                        <h5 class="modal-title">Confirm Deletion</h5>
+                                                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p>Are you sure you want to delete customer <strong>@category.Name</strong>?</p>
+                                                        <p class="text-danger small mb-0">
+                                                            <i class="fas fa-exclamation-circle me-1"></i>This action cannot be undone.
+                                                        </p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                        <form asp-controller="Category" asp-action="DeleteCategory" asp-route-id="@category.Id" method="post">
+                                                            <input type="hidden" name="id" value="@category.Id" />
+                                                            <button type="submit" class="btn btn-danger">
+                                                                <i class="fas fa-trash-alt me-1"></i>Delete
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="5" class="text-center py-5">
+                                    <div class="empty-state">
+                                        <i class="fas fa-tags"></i>
+                                        <h5>No categories found</h5>
+                                        <p>Click the "Add New Category" button to create one</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Table Footer -->
+        <div class="table-footer">
+            <div class="footer-info">
+                Showing <span id="showingCount">@Model.Count()</span> of <span id="totalCount">@Model.Count()</span> entries
+            </div>
+            <div class="footer-updated">
+                <i class="fas fa-clock"></i> Updated: @DateTime.Now.ToString("MMMM dd, yyyy hh:mm tt")
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        /* Modern Table Styles */
+        .table-container {
+            overflow-x: auto;
+            border-radius: 8px;
+            background: white;
+        }
+
+        .modern-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            font-size: 0.9rem;
+        }
+
+        .modern-table thead {
+            background-color: #f8f9fa;
+        }
+
+        .modern-table th {
+            padding: 1rem 1.25rem;
+            text-align: left;
+            font-weight: 500;
+            color: #495057;
+            border-bottom: 1px solid #e9ecef;
+            position: sticky;
+            top: 0;
+            background-color: #f8f9fa;
+            z-index: 10;
+        }
+
+        .modern-table td {
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid #f1f3f5;
+            vertical-align: middle;
+            transition: all 0.2s ease;
+        }
+
+        .modern-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .modern-table tbody tr:hover td {
+            background-color: #f8fafc;
+        }
+
+        /* Avatar */
+        .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f1f3f5;
+        }
+
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Badge */
+        .badge {
+            display: inline-block;
+            padding: 0.35em 0.65em;
+            font-size: 0.75em;
+            font-weight: 500;
+            line-height: 1;
+            color: #495057;
+            background-color: #f1f3f5;
+            border-radius: 50px;
+            white-space: nowrap;
+        }
+
+        /* Table Description */
+        .table-description {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 300px;
+            color: #6c757d;
+        }
+
+        /* Table Actions */
+        .table-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-action {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            background: transparent;
+            color: #6c757d;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .btn-action:hover {
+            transform: scale(1.1);
+        }
+
+        .btn-action.view:hover {
+            color: #0d6efd;
+            background-color: rgba(13, 110, 253, 0.1);
+        }
+
+        .btn-action.edit:hover {
+            color: #fd7e14;
+            background-color: rgba(253, 126, 20, 0.1);
+        }
+
+        .btn-action.delete:hover {
+            color: #dc3545;
+            background-color: rgba(220, 53, 69, 0.1);
+        }
+
+        /* Search Box */
+        .search-box {
+            position: relative;
+            width: 100%;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #adb5bd;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.5rem 1rem 0.5rem 2.5rem;
+            border: 1px solid #e9ecef;
+            border-radius: 50px;
+            transition: all 0.2s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #86b7fe;
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.1);
+        }
+
+        .search-clear {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: transparent;
+            border: none;
+            color: #adb5bd;
+            cursor: pointer;
+        }
+
+        /* Ghost Buttons */
+        .btn-ghost {
+            background: transparent;
+            border: 1px solid #e9ecef;
+            color: #6c757d;
+            transition: all 0.2s ease;
+        }
+
+        .btn-ghost:hover {
+            background-color: #f8f9fa;
+            color: #495057;
+        }
+
+        /* Empty State */
+        .empty-state {
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            color: #e9ecef;
+            margin-bottom: 1rem;
+        }
+
+        .empty-state h5 {
+            color: #6c757d;
+            margin-bottom: 0.5rem;
+        }
+
+        .empty-state p {
+            color: #adb5bd;
+            margin-bottom: 0;
+        }
+
+        /* Table Footer */
+        .table-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            background-color: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+            border-radius: 0 0 8px 8px;
+            font-size: 0.85rem;
+            color: #6c757d;
+        }
+
+        .footer-updated i {
+            margin-right: 0.5rem;
+        }
+
+        /* Card Styles */
+        .card {
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            background: white;
+        }
+
+        .card-header {
+            background: transparent;
+            border-bottom: 1px solid #e9ecef;
+        }
+    </style>
+}
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Initialize DataTable
+            var table = $('#categoryTable').DataTable({
+                responsive: true,
+                dom: '<"top"f>rt<"bottom"lip><"clear">',
+                language: {
+                    search: "",
+                    searchPlaceholder: "Search categories...",
+                    lengthMenu: "Show _MENU_ entries",
+                    info: "Showing _START_ to _END_ of _TOTAL_ entries",
+                    infoEmpty: "Showing 0 to 0 of 0 entries",
+                    infoFiltered: "(filtered from _MAX_ total entries)",
+                    paginate: {
+                        first: "First",
+                        last: "Last",
+                        next: "<i class='fas fa-chevron-right'></i>",
+                        previous: "<i class='fas fa-chevron-left'></i>"
+                    }
+                }
+            });
+
+            // Search functionality
+            $('#categorySearch').keyup(function() {
+                table.search($(this).val()).draw();
+                updateCounts();
+            });
+
+            // Reset search
+            $('#resetSearch').click(function() {
+                $('#categorySearch').val('');
+                table.search('').draw();
+                updateCounts();
+            });
+
+            // Initialize tooltips
+            $('[title]').tooltip({
+                trigger: 'hover',
+                placement: 'top'
+            });
+        });
+    </script>
+}

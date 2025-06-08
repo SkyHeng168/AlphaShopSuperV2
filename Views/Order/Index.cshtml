@@ -1,0 +1,317 @@
+﻿@model IEnumerable<AlphaShop.Models.Order>
+@{
+    ViewData["Title"] = "Order Management";
+    int count = 1;
+}
+
+<div class="container-fluid px-4">
+    <!-- Header Section -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h3 mb-0 text-gray-800">
+                <i class="fas fa-shopping-cart me-2"></i>Order Management
+            </h1>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Dashboard</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Orders</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="d-flex gap-2">
+            <a asp-controller="Order" asp-action="ReportOrder" class="btn btn-danger d-flex align-items-center">
+                <i class="fas fa-file-pdf me-2"></i>PDF Report
+            </a>
+            <a asp-controller="Order" asp-action="CreateOrder" class="btn btn-primary d-flex align-items-center">
+                <i class="fas fa-plus-circle me-2"></i>Create Order
+            </a>
+        </div>
+    </div>
+
+    <!-- Order Table -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3 d-flex justify-content-between align-items-center bg-primary text-white">
+            <h6 class="m-0 font-weight-bold"><i class="fas fa-list me-2"></i>Order List</h6>
+            <div class="dropdown">
+                <button class="btn btn-sm btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fas fa-cog me-1"></i> Options
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                    <li><a class="dropdown-item export-excel" href="#"><i class="fas fa-file-excel me-2 text-success"></i>Export to Excel</a></li>
+                    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#filterModal"><i class="fas fa-filter me-2 text-info"></i>Filter Orders</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover table-striped" id="orderTable" width="100%" cellspacing="0">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Date</th>
+                            <th>Customer</th>
+                            <th class="text-end">Amount</th>
+                            <th>Status</th>
+                            <th>Created</th>
+                            <th>Updated</th>
+                            <th class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var order in Model)
+                        {
+                            <tr>
+                                <td>@(count++)</td>
+                                <td>@order.OrderDate.ToString("dd MMM yyyy")</td>
+                                <td>@order.Customer?.FirstName @order.Customer?.LastName</td>
+                                <td class="text-end">@order.TotalAmount.ToString("C")</td>
+                                <td>
+                                    @if (!string.IsNullOrEmpty(order.TrackingNumber))
+                                    {
+                                        <span class="badge bg-success"><i class="fas fa-check-circle me-1"></i>Shipped</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-warning text-dark"><i class="fas fa-clock me-1"></i>Processing</span>
+                                    }
+                                </td>
+                                <td>@order.CreatedAt.ToString("g")</td>
+                                <td>@order.UpdatedAt.ToString("g")</td>
+                                <td class="text-center">
+                                    <div class="btn-group btn-group-sm" role="group">
+                                        <a asp-controller="Order" asp-action="DetailOrder" asp-route-id="@order.Id" class="btn btn-info" title="View Details">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        <a asp-controller="Order" asp-action="UpdateOrder" asp-route-id="@order.Id" class="btn btn-warning" title="Edit Order">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <button data-bs-toggle="modal"
+                                                data-bs-target="#deleteModal-@order.Id" class="btn btn-danger" title="Delete">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                        <!-- Delete Modal -->
+                                        <div class="modal fade" id="deleteModal-@order.Id" tabindex="-1">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header bg-danger text-white">
+                                                        <h5 class="modal-title">Confirm Deletion</h5>
+                                                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p>Are you sure you want to delete Order from <strong>@order.Customer?.FirstName @order.Customer?.LastName</strong>?</p>
+                                                        <p class="text-danger small mb-0">
+                                                            <i class="fas fa-exclamation-circle me-1"></i>This action cannot be undone.
+                                                        </p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                        <form asp-controller="Order" asp-action="DeleteOrder" asp-route-id="@order.Id" method="post">
+                                                            <input type="hidden" name="id" value="@order.Id" />
+                                                            <button type="submit" class="btn btn-danger">
+                                                                <i class="fas fa-trash-alt me-1"></i>Delete
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr class="table-active">
+                            <td colspan="3" class="text-end fw-bold">Total:</td>
+                            <td class="text-end fw-bold">@Model.Sum(o => o.TotalAmount).ToString("C")</td>
+                            <td colspan="4"></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Filter Modal -->
+<div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="filterModalLabel"><i class="fas fa-filter me-2"></i>Filter Orders</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="filterForm">
+                    <div class="mb-3">
+                        <label for="dateRange" class="form-label">Date Range</label>
+                        <select class="form-select" id="dateRange">
+                            <option value="all" selected>All Dates</option>
+                            <option value="today">Today</option>
+                            <option value="week">This Week</option>
+                            <option value="month">This Month</option>
+                            <option value="year">This Year</option>
+                            <option value="custom">Custom Range</option>
+                        </select>
+                    </div>
+                    <div class="row mb-3 d-none" id="customDateRange">
+                        <div class="col-md-6">
+                            <label for="startDate" class="form-label">Start Date</label>
+                            <input type="date" class="form-control" id="startDate">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="endDate" class="form-label">End Date</label>
+                            <input type="date" class="form-control" id="endDate">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="orderStatus" class="form-label">Order Status</label>
+                        <select class="form-select" id="orderStatus">
+                            <option value="all" selected>All Statuses</option>
+                            <option value="shipped">Shipped</option>
+                            <option value="processing">Processing</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="applyFilter">Apply Filters</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .table-hover tbody tr:hover {
+            background-color: rgba(13, 110, 253, 0.1);
+        }
+
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: rgba(0, 0, 0, 0.02);
+        }
+
+        .badge {
+            font-size: 0.85em;
+            padding: 0.35em 0.65em;
+        }
+
+        .btn-group .btn {
+            padding: 0.25rem 0.5rem;
+        }
+
+        #orderTable th {
+            white-space: nowrap;
+        }
+    </style>
+}
+
+@section Scripts {
+    <script src="https://cdn.datatables.net/buttons/2.3.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.print.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            var table = $('#orderTable').DataTable({
+                responsive: true,
+                dom: '<"top"<"d-flex justify-content-between align-items-center"lfB>>rt<"bottom"ip>',
+                buttons: [
+                    {
+                        extend: 'excel',
+                        text: '<i class="fas fa-file-excel me-2"></i>Excel',
+                        className: 'btn btn-success btn-sm',
+                        title: 'Orders_Export',
+                        exportOptions: {
+                            columns: [0, 1, 2, 3, 4, 5, 6]
+                        }
+                    },
+                    {
+                        extend: 'print',
+                        text: '<i class="fas fa-print me-2"></i>Print',
+                        className: 'btn btn-info btn-sm',
+                        title: 'Order List',
+                        exportOptions: {
+                            columns: [0, 1, 2, 3, 4, 5, 6]
+                        },
+                        customize: function (win) {
+                            $(win.document.body).find('table').addClass('display').css('font-size', '12px');
+                            $(win.document.body).find('h1').text('Order List');
+                        }
+                    }
+                ],
+                columnDefs: [
+                    { orderable: false, targets: [7] }, // Disable sorting for actions column
+                    { className: "text-center", targets: [7] }
+                ],
+                language: {
+                    search: "_INPUT_",
+                    searchPlaceholder: "Search orders...",
+                    lengthMenu: "Show _MENU_ orders per page",
+                    info: "Showing _START_ to _END_ of _TOTAL_ orders",
+                    infoEmpty: "No orders found",
+                    infoFiltered: "(filtered from _MAX_ total orders)",
+                    paginate: {
+                        first: "First",
+                        last: "Last",
+                        next: "Next",
+                        previous: "Previous"
+                    }
+                },
+                // Pagination configuration
+                paging: true,
+                pageLength: 10, // Default number of rows per page
+                lengthMenu: [[5, 10, 15, 20, 25, 50, -1], [5, 10, 15, 20, 25, 50, "All"]],
+                drawCallback: function(settings) {
+                    // Update the "Showing X to Y of Z entries" info
+                    var api = this.api();
+                    var pageInfo = api.page.info();
+
+                    if (pageInfo.pages <= 1) {
+                        $('.dataTables_paginate').hide();
+                    } else {
+                        $('.dataTables_paginate').show();
+                    }
+                }
+            });
+
+            // Show/hide custom date range inputs
+            $('#dateRange').change(function() {
+                if ($(this).val() === 'custom') {
+                    $('#customDateRange').removeClass('d-none');
+                } else {
+                    $('#customDateRange').addClass('d-none');
+                }
+            });
+
+            // Trigger Excel export from dropdown
+            $('.export-excel').click(function(e) {
+                e.preventDefault();
+                table.button('.buttons-excel').trigger();
+            });
+
+            // Apply filters
+            $('#applyFilter').click(function() {
+                var status = $('#orderStatus').val();
+                var dateRange = $('#dateRange').val();
+
+                // Filter by status
+                if (status === 'all') {
+                    table.columns(4).search('').draw();
+                } else {
+                    table.columns(4).search(status === 'shipped' ? 'Shipped' : 'Processing').draw();
+                }
+
+                $('#filterModal').modal('hide');
+            });
+
+            // Initialize pagination controls based on initial data
+            var initialDataCount = @Model.Count();
+            if (initialDataCount <= 10) {
+                $('.dataTables_paginate').hide();
+            }
+        });
+    </script>
+}

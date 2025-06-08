@@ -1,0 +1,257 @@
+is_global = true
+build_property.TargetFramework = net9.0
+build_property.TargetFramework = net9.0
+build_property.TargetPlatformMinVersion = 
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = AlphaShop
+build_property.RootNamespace = AlphaShop
+build_property.ProjectDir = D:\Programing\CSharpPrograming\Framework\ASPNET\Renew\AlphaShop\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.RazorLangVersion = 9.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = D:\Programing\CSharpPrograming\Framework\ASPNET\Renew\AlphaShop
+build_property._RazorSourceGeneratorDebug = 
+build_property.EffectiveAnalysisLevelStyle = 9.0
+build_property.EnableCodeStyleSeverity = 
+
+[D:/Programing/CSharpPrograming/Framework/ASPNET/Renew/AlphaShop/Views/Brand/CreateBrand.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQnJhbmRcQ3JlYXRlQnJhbmQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Programing/CSharpPrograming/Framework/ASPNET/Renew/AlphaShop/Views/Brand/DetailBrand.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQnJhbmRcRGV0YWlsQnJhbmQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Programing/CSharpPrograming/Framework/ASPNET/Renew/AlphaShop/Views/Brand/EditBrand.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQnJhbmRcRWRpdEJyYW5kLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Programing/CSharpPrograming/Framework/ASPNET/Renew/AlphaShop/Views/Brand/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQnJhbmRcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Programing/CSharpPrograming/Framework/ASPNET/Renew/AlphaShop/Views/Category/CreateCategory.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2F0ZWdvcnlcQ3JlYXRlQ2F0ZWdvcnkuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Programing/CSharpPrograming/Framework/ASPNET/Renew/AlphaShop/Views/Category/EditeCategory.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2F0ZWdvcnlcRWRpdGVDYXRlZ29yeS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Programing/CSharpPrograming/Framework/ASPNET/Renew/AlphaShop/Views/Category/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2F0ZWdvcnlcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Programing/CSharpPrograming/Framework/ASPNET/Renew/AlphaShop/Views/Customers/CreateCustomer.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ3VzdG9tZXJzXENyZWF0ZUN1c3RvbWVyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Programing/CSharpPrograming/Framework/ASPNET/Renew/AlphaShop/Views/Customers/DetailCustomer.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ3VzdG9tZXJzXERldGFpbEN1c3RvbWVyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Programing/CSharpPrograming/Framework/ASPNET/Renew/AlphaShop/Views/Customers/EditCustomer.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ3VzdG9tZXJzXEVkaXRDdXN0b21lci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Programing/CSharpPrograming/Framework/ASPNET/Renew/AlphaShop/Views/Customers/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ3VzdG9tZXJzXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Programing/CSharpPrograming/Framework/ASPNET/Renew/AlphaShop/Views/Home/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Programing/CSharpPrograming/Framework/ASPNET/Renew/AlphaShop/Views/Home/Privacy.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Programing/CSharpPrograming/Framework/ASPNET/Renew/AlphaShop/Views/InventoryLog/CreateInventory.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW52ZW50b3J5TG9nXENyZWF0ZUludmVudG9yeS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Programing/CSharpPrograming/Framework/ASPNET/Renew/AlphaShop/Views/InventoryLog/DetailsInventory.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW52ZW50b3J5TG9nXERldGFpbHNJbnZlbnRvcnkuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Programing/CSharpPrograming/Framework/ASPNET/Renew/AlphaShop/Views/InventoryLog/EditingInventory.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW52ZW50b3J5TG9nXEVkaXRpbmdJbnZlbnRvcnkuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Programing/CSharpPrograming/Framework/ASPNET/Renew/AlphaShop/Views/InventoryLog/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW52ZW50b3J5TG9nXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Programing/CSharpPrograming/Framework/ASPNET/Renew/AlphaShop/Views/OrderItemSuppliers/CreateOrderItemSuppliers.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3JkZXJJdGVtU3VwcGxpZXJzXENyZWF0ZU9yZGVySXRlbVN1cHBsaWVycy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Programing/CSharpPrograming/Framework/ASPNET/Renew/AlphaShop/Views/OrderItemSuppliers/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3JkZXJJdGVtU3VwcGxpZXJzXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Programing/CSharpPrograming/Framework/ASPNET/Renew/AlphaShop/Views/OrderItem/CreateOrderItem.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3JkZXJJdGVtXENyZWF0ZU9yZGVySXRlbS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Programing/CSharpPrograming/Framework/ASPNET/Renew/AlphaShop/Views/OrderItem/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3JkZXJJdGVtXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Programing/CSharpPrograming/Framework/ASPNET/Renew/AlphaShop/Views/Order/CreateOrder.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3JkZXJcQ3JlYXRlT3JkZXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Programing/CSharpPrograming/Framework/ASPNET/Renew/AlphaShop/Views/Order/DetailOrder.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3JkZXJcRGV0YWlsT3JkZXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Programing/CSharpPrograming/Framework/ASPNET/Renew/AlphaShop/Views/Order/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3JkZXJcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Programing/CSharpPrograming/Framework/ASPNET/Renew/AlphaShop/Views/Order/UpdateOrder.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3JkZXJcVXBkYXRlT3JkZXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Programing/CSharpPrograming/Framework/ASPNET/Renew/AlphaShop/Views/ProductTag/createProductTag.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdFRhZ1xjcmVhdGVQcm9kdWN0VGFnLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Programing/CSharpPrograming/Framework/ASPNET/Renew/AlphaShop/Views/ProductTag/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdFRhZ1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Programing/CSharpPrograming/Framework/ASPNET/Renew/AlphaShop/Views/ProductVariant/CreateProductVariant.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdFZhcmlhbnRcQ3JlYXRlUHJvZHVjdFZhcmlhbnQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Programing/CSharpPrograming/Framework/ASPNET/Renew/AlphaShop/Views/ProductVariant/EditProductVariant.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdFZhcmlhbnRcRWRpdFByb2R1Y3RWYXJpYW50LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Programing/CSharpPrograming/Framework/ASPNET/Renew/AlphaShop/Views/ProductVariant/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdFZhcmlhbnRcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Programing/CSharpPrograming/Framework/ASPNET/Renew/AlphaShop/Views/Product/CreateProduct.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdFxDcmVhdGVQcm9kdWN0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Programing/CSharpPrograming/Framework/ASPNET/Renew/AlphaShop/Views/Product/EditProduct.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdFxFZGl0UHJvZHVjdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Programing/CSharpPrograming/Framework/ASPNET/Renew/AlphaShop/Views/Product/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdFxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Programing/CSharpPrograming/Framework/ASPNET/Renew/AlphaShop/Views/Product/ViewProduct.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdFxWaWV3UHJvZHVjdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Programing/CSharpPrograming/Framework/ASPNET/Renew/AlphaShop/Views/PurchaseOrder/CreatePurchasingOrder.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHVyY2hhc2VPcmRlclxDcmVhdGVQdXJjaGFzaW5nT3JkZXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Programing/CSharpPrograming/Framework/ASPNET/Renew/AlphaShop/Views/PurchaseOrder/DetailsOrder.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHVyY2hhc2VPcmRlclxEZXRhaWxzT3JkZXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Programing/CSharpPrograming/Framework/ASPNET/Renew/AlphaShop/Views/PurchaseOrder/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHVyY2hhc2VPcmRlclxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Programing/CSharpPrograming/Framework/ASPNET/Renew/AlphaShop/Views/Shared/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Programing/CSharpPrograming/Framework/ASPNET/Renew/AlphaShop/Views/Shared/_OrdersTablePartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9PcmRlcnNUYWJsZVBhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Programing/CSharpPrograming/Framework/ASPNET/Renew/AlphaShop/Views/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Programing/CSharpPrograming/Framework/ASPNET/Renew/AlphaShop/Views/StockTrancition/CreateStcokTransaction.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3RvY2tUcmFuY2l0aW9uXENyZWF0ZVN0Y29rVHJhbnNhY3Rpb24uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Programing/CSharpPrograming/Framework/ASPNET/Renew/AlphaShop/Views/StockTrancition/EditsStockTransacition.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3RvY2tUcmFuY2l0aW9uXEVkaXRzU3RvY2tUcmFuc2FjaXRpb24uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Programing/CSharpPrograming/Framework/ASPNET/Renew/AlphaShop/Views/StockTrancition/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3RvY2tUcmFuY2l0aW9uXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Programing/CSharpPrograming/Framework/ASPNET/Renew/AlphaShop/Views/Suppliers/CreateSuppliers.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3VwcGxpZXJzXENyZWF0ZVN1cHBsaWVycy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Programing/CSharpPrograming/Framework/ASPNET/Renew/AlphaShop/Views/Suppliers/DetailsSuppliers.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3VwcGxpZXJzXERldGFpbHNTdXBwbGllcnMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Programing/CSharpPrograming/Framework/ASPNET/Renew/AlphaShop/Views/Suppliers/EditSupplier.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3VwcGxpZXJzXEVkaXRTdXBwbGllci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Programing/CSharpPrograming/Framework/ASPNET/Renew/AlphaShop/Views/Suppliers/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3VwcGxpZXJzXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Programing/CSharpPrograming/Framework/ASPNET/Renew/AlphaShop/Views/Tag/createTag.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGFnXGNyZWF0ZVRhZy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Programing/CSharpPrograming/Framework/ASPNET/Renew/AlphaShop/Views/Tag/EditTag.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGFnXEVkaXRUYWcuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Programing/CSharpPrograming/Framework/ASPNET/Renew/AlphaShop/Views/Tag/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGFnXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Programing/CSharpPrograming/Framework/ASPNET/Renew/AlphaShop/Views/WareHouse/CreateWareHouse.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcV2FyZUhvdXNlXENyZWF0ZVdhcmVIb3VzZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Programing/CSharpPrograming/Framework/ASPNET/Renew/AlphaShop/Views/WareHouse/DetailWareHouse.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcV2FyZUhvdXNlXERldGFpbFdhcmVIb3VzZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Programing/CSharpPrograming/Framework/ASPNET/Renew/AlphaShop/Views/WareHouse/EditWareHouse.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcV2FyZUhvdXNlXEVkaXRXYXJlSG91c2UuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Programing/CSharpPrograming/Framework/ASPNET/Renew/AlphaShop/Views/WareHouse/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcV2FyZUhvdXNlXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Programing/CSharpPrograming/Framework/ASPNET/Renew/AlphaShop/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Programing/CSharpPrograming/Framework/ASPNET/Renew/AlphaShop/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Programing/CSharpPrograming/Framework/ASPNET/Renew/AlphaShop/Views/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = b-k0coouhb5s

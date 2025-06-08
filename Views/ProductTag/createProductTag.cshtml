@@ -1,0 +1,105 @@
+﻿@model AlphaShop.Models.ProductTag
+@{
+    ViewData["Title"] = "Create Product Tag";
+}
+
+<div class="container mt-5">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h2 class="mb-0">Create Product Tag</h2>
+        </div>
+        <div class="card-body">
+            <form asp-action="createProductTag" class="needs-validation" novalidate>
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                <div class="row">
+                    <!-- Product Selection -->
+                    <div class="col-md-6 mb-3">
+                        <div class="form-floating">
+                            <select asp-for="ProductId" class="form-select"
+                                    asp-items="@(ViewBag.Products as IEnumerable<SelectListItem>)"
+                                    required>
+                                <option value="">-- Select Product --</option>
+                            </select>
+                            <label asp-for="ProductId">Product</label>
+                            <span asp-validation-for="ProductId" class="text-danger small"></span>
+                            <div class="invalid-feedback">
+                                Please select a product
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tag Selection -->
+                    <div class="col-md-6 mb-3">
+                        <div class="form-floating">
+                            <select asp-for="TagId" class="form-select"
+                                    asp-items="@(ViewBag.Tags as IEnumerable<SelectListItem>)"
+                                    required>
+                                <option value="">-- Select Tag --</option>
+                            </select>
+                            <label asp-for="TagId">Tag</label>
+                            <span asp-validation-for="TagId" class="text-danger small"></span>
+                            <div class="invalid-feedback">
+                                Please select a tag
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between mt-4">
+                    <a asp-action="Index" class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-left"></i> Back to List
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-save"></i> Create
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .card {
+            border-radius: 0.5rem;
+            border: none;
+        }
+
+        .form-floating > label {
+            color: #6c757d;
+        }
+
+        .form-select:focus, .form-select:valid {
+            border-color: #86b7fe;
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+        }
+
+        .btn-primary {
+            background-color: #0d6efd;
+            border-color: #0d6efd;
+        }
+    </style>
+}
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        // Enhanced client-side validation
+        (function () {
+            'use strict'
+            const forms = document.querySelectorAll('.needs-validation')
+            Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+                    form.classList.add('was-validated')
+                }, false)
+            })
+        })()
+    </script>
+}

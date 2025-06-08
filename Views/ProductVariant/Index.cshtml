@@ -1,0 +1,341 @@
+﻿@model IEnumerable<AlphaShop.Models.ProductVariant>
+@{
+    ViewData["Title"] = "Product Variants";
+    int count = 1;
+}
+
+<div class="container-fluid px-4">
+    <!-- Page Header -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h3 mb-0 text-gray-800">
+                <i class="fas fa-list-ul me-2"></i>Product Variants
+            </h1>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb bg-transparent p-0">
+                    <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index" class="text-decoration-none">Dashboard</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Product Variants</li>
+                </ol>
+            </nav>
+        </div>
+        <div>
+            <a asp-controller="ProductVariant" asp-action="CreateProductVariant" class="btn btn-primary">
+                <i class="fas fa-plus me-2"></i>Add Variant
+            </a>
+        </div>
+    </div>
+
+    <!-- Main Card -->
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-white py-3 d-flex flex-row align-items-center justify-content-between border-bottom">
+            <h6 class="m-0 font-weight-semibold">
+                <i class="fas fa-table me-2"></i>Product Variants List
+            </h6>
+        </div>
+
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0" id="variantTable">
+                    <thead class="bg-light">
+                        <tr>
+                            <th width="5%">ID</th>
+                            <th>Attribute</th>
+                            <th>Value</th>
+                            <th>SKU</th>
+                            <th>Price Modifier</th>
+                            <th>Product</th>
+                            <th width="12%" class="text-end">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.Any())
+                        {
+                            @foreach (var variant in Model)
+                            {
+                                <tr>
+                                    <td>@(count++)</td>
+                                    <td>
+                                        <span class="fw-medium">@variant.attributeName</span>
+                                    </td>
+                                    <td>
+                                        @if (!string.IsNullOrEmpty(variant.attributeValue))
+                                        {
+                                            <span class="badge bg-opacity-10 text-primary">@variant.attributeValue</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">N/A</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <code>@variant.sku_suffix</code>
+                                    </td>
+                                    <td>
+                                        @if (variant.price_modifier.HasValue)
+                                        {
+                                            <span class="@(variant.price_modifier >= 0 ? "text-success" : "text-danger")">
+                                                @(variant.price_modifier >= 0 ? "+" : "")@variant.price_modifier.Value.ToString("C")
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">N/A</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (variant.Product != null)
+                                        {
+                                            <span class="d-inline-block text-truncate" style="max-width: 150px;"
+                                                  title="@variant.Product.ProductName">
+                                                @variant.Product.ProductName
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">Not assigned</span>
+                                        }
+                                    </td>
+                                    <td class="text-end">
+                                        <div class="d-flex justify-content-end gap-2">
+                                            <a asp-controller="ProductVariant" asp-action="EditProductVariant" asp-route-id="@variant.Id"
+                                               class="btn btn-sm btn-outline-primary" title="Edit">
+                                                <i class="fas fa-pencil-alt"></i>
+                                            </a>
+                                            <button class="btn btn-sm btn-outline-danger"
+                                                    data-bs-toggle="modal" data-bs-target="#deleteModal-@variant.Id" title="Delete">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </button>
+                                        </div>
+
+                                        <!-- Delete Modal -->
+                                        <div class="modal fade" id="deleteModal-@variant.Id" tabindex="-1">
+                                            <div class="modal-dialog modal-dialog-centered">
+                                                <div class="modal-content">
+                                                    <div class="modal-header bg-danger text-white">
+                                                        <h5 class="modal-title">Confirm Deletion</h5>
+                                                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p>Are you sure you want to delete variant <strong>@variant.attributeName</strong>?</p>
+                                                        <p class="text-danger small mb-0">
+                                                            <i class="fas fa-exclamation-circle me-1"></i>This action cannot be undone.
+                                                        </p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                        <form asp-controller="ProductVariant" asp-action="DeleteProductVariant" asp-route-id="@variant.Id" method="post">
+                                                            <button type="submit" class="btn btn-danger">
+                                                                <i class="fas fa-trash-alt me-1"></i>Delete
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="7" class="text-center py-5">
+                                    <div class="empty-state">
+                                        <i class="fas fa-tags fa-3x text-muted mb-3"></i>
+                                        <h5>No Product Variants Found</h5>
+                                        <p class="text-muted">Click the "Add Variant" button to create your first product variant</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Table Footer -->
+        <div class="card-footer bg-white d-flex justify-content-between align-items-center">
+            <div class="text-muted small">
+                Showing <span id="showingCount">@Model.Count()</span> of <span id="totalCount">@Model.Count()</span> entries
+            </div>
+            <div class="text-muted small">
+                <i class="fas fa-sync-alt me-1"></i> Updated @DateTime.Now.ToString("MMM dd, yyyy hh:mm tt")
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        /* Modern Card Styles */
+        .card {
+            border: none;
+            border-radius: 0.5rem;
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        }
+
+        .card-header {
+            background-color: #f8f9fa;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            padding: 1rem 1.25rem;
+        }
+
+        /* Table Styles */
+        .table {
+            margin-bottom: 0;
+        }
+
+            .table thead th {
+                border-bottom-width: 1px;
+                font-weight: 600;
+                text-transform: uppercase;
+                font-size: 0.75rem;
+                letter-spacing: 0.5px;
+                color: #6c757d;
+                padding: 0.75rem 1.25rem;
+            }
+
+            .table tbody td {
+                padding: 1rem 1.25rem;
+                vertical-align: middle;
+                border-top: 1px solid #f1f3f5;
+            }
+
+            .table tbody tr:last-child td {
+                border-bottom: 1px solid #f1f3f5;
+            }
+
+        .table-hover tbody tr:hover {
+            background-color: rgba(0, 0, 0, 0.015);
+        }
+
+        /* Badge Styles */
+        .badge {
+            padding: 0.35em 0.65em;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        /* Empty State */
+        .empty-state {
+            padding: 2rem;
+            text-align: center;
+        }
+
+            .empty-state i {
+                opacity: 0.5;
+            }
+
+            .empty-state h5 {
+                font-weight: 600;
+                margin-top: 1rem;
+            }
+
+            .empty-state p {
+                color: #6c757d;
+            }
+
+        /* Action Buttons */
+        .btn-circle {
+            width: 36px;
+            height: 36px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* DataTables Custom Styles */
+        .dataTables_wrapper .dataTables_paginate .paginate_button {
+            padding: 0.3em 0.8em;
+            border-radius: 0.25rem;
+            border: 1px solid transparent;
+        }
+
+            .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+                background: #0d6efd;
+                color: white !important;
+                border: 1px solid #0d6efd;
+            }
+
+            .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+                background: #e9ecef;
+                border: 1px solid #dee2e6;
+            }
+
+        .dataTables_wrapper .dataTables_filter input {
+            border-radius: 50px;
+            padding-left: 2.5rem;
+            border: 1px solid #e9ecef;
+            margin-bottom: 1rem;
+        }
+
+        .dataTables_wrapper .dataTables_filter {
+            position: relative;
+        }
+
+            .dataTables_wrapper .dataTables_filter:before {
+                content: "\f002";
+                font-family: "Font Awesome 5 Free";
+                font-weight: 900;
+                position: absolute;
+                left: 12px;
+                top: 10px;
+                color: #adb5bd;
+            }
+
+        /* Responsive adjustments */
+        @@media (max-width: 768px) {
+            .card-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+        }
+    </style>
+}
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Initialize DataTable with 10 items per page
+            var table = $('#variantTable').DataTable({
+                responsive: true,
+                pageLength: 10,
+                lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                dom: '<"top"f>rt<"bottom"lip><"clear">',
+                language: {
+                    search: "",
+                    searchPlaceholder: "Search variants...",
+                    lengthMenu: "Show _MENU_ entries",
+                    info: "Showing _START_ to _END_ of _TOTAL_ entries",
+                    infoEmpty: "Showing 0 to 0 of 0 entries",
+                    infoFiltered: "(filtered from _MAX_ total entries)",
+                    paginate: {
+                        first: "First",
+                        last: "Last",
+                        next: "<i class='fas fa-chevron-right'></i>",
+                        previous: "<i class='fas fa-chevron-left'></i>"
+                    }
+                },
+                initComplete: function() {
+                    updateCounts();
+                },
+                drawCallback: function() {
+                    updateCounts();
+                }
+            });
+
+            function updateCounts() {
+                var info = table.page.info();
+                $('#showingCount').text(info.recordsDisplay === 0 ? 0 : info.start + 1);
+                $('#totalCount').text(info.end);
+            }
+
+            // Initialize tooltips
+            $('[title]').tooltip({
+                trigger: 'hover',
+                placement: 'top'
+            });
+        });
+    </script>
+}

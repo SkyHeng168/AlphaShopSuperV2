@@ -1,0 +1,353 @@
+﻿@model IEnumerable<AlphaShop.Models.StockTransaction>
+@{
+    ViewData["Title"] = "Stock Transactions";
+    int count = 1;
+}
+
+<div class="container-fluid px-0 px-md-3">
+    <!-- Page Header with Gradient Background -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 py-3 px-4 bg-gradient-primary rounded-3">
+        <div>
+            <h1 class="h3 mb-0 text-white">
+                <i class="fas fa-exchange-alt me-2"></i>@ViewData["Title"]
+            </h1>
+            <nav aria-label="breadcrumb" class="mt-2">
+                <ol class="breadcrumb breadcrumb-light">
+                    <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index" class="text-decoration-none text-white-50"><i class="fas fa-home me-1"></i> Dashboard</a></li>
+                    <li class="breadcrumb-item active text-white" aria-current="page">Stock Transactions</li>
+                </ol>
+            </nav>
+        </div>
+        <div>
+            <div class="d-flex flex-column flex-sm-row gap-2 w-100 w-md-auto">
+                <button id="exportPdf" class="btn btn-light d-flex align-items-center justify-content-center gap-2 flex-grow-1 flex-md-grow-0">
+                    <i class="fas fa-file-pdf"></i>
+                    <span class="d-none d-sm-inline">Export PDF</span>
+                </button>
+                <a asp-controller="StockTrancition" asp-action="CreateStcokTransaction" class="btn btn-success d-flex align-items-center justify-content-center gap-2 flex-grow-1 flex-md-grow-0">
+                    <i class="fas fa-plus"></i>
+                    <span class="d-none d-sm-inline">New Transaction</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Transaction Cards Summary -->
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card border-start border-primary border-3 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-uppercase text-muted mb-0">Total Transactions</h6>
+                            <h3 class="mb-0">@Model.Count()</h3>
+                        </div>
+                        <div class="icon icon-shape bg-primary text-white rounded-circle">
+                            <i class="fas fa-list"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-start border-success border-3 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-uppercase text-muted mb-0">Active</h6>
+                            <h3 class="mb-0">@Model.Count(t => t.IsActive)</h3>
+                        </div>
+                        <div class="icon icon-shape bg-success text-white rounded-circle">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-start border-info border-3 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-uppercase text-muted mb-0">This Month</h6>
+                            <h3 class="mb-0">@Model.Count(t => t.StockTransactionDate.Month == DateTime.Now.Month)</h3>
+                        </div>
+                        <div class="icon icon-shape bg-info text-white rounded-circle">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Card -->
+    <div class="card shadow-sm">
+        <div class="card-header bg-white py-3 d-flex flex-column flex-md-row justify-content-between align-items-center">
+            <h5 class="mb-0">Transaction</h5>
+            <div class="d-flex mt-2 mt-md-0">
+                <div class="input-group input-group-sm me-2" style="width: 200px;">
+                    <span class="input-group-text bg-transparent"><i class="fas fa-calendar-alt"></i></span>
+                    <input type="text" class="form-control date-range-picker" placeholder="Date range">
+                </div>
+                <div class="input-group input-group-sm" style="width: 180px;">
+                    <input type="text" class="form-control" placeholder="Search..." id="searchInput">
+                    <button class="btn btn-outline-secondary" type="button"><i class="fas fa-search"></i></button>
+                </div>
+            </div>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive @(Model.Count() > 3 ? "scrollable-table" : "")">
+                <table class="table table-hover table-striped mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="ps-4">ID</th>
+                            <th>Transaction Type</th>
+                            <th>Direction</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th class="text-end pe-4">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.Any())
+                        {
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td class="ps-4">@(count++)</td>
+                                    <td>@item.TypeName</td>
+                                    <td>
+                                        <span class="badge @(item.Direction == StockDirection.In ? "bg-success" : "bg-warning")">
+                                            @item.Direction
+                                        </span>
+                                    </td>
+                                    <td>@item.StockTransactionDate.ToString("dd MMM yyyy HH:mm")</td>
+                                    <td>
+                                        <span class="badge @(item.IsActive ? "bg-success" : "bg-secondary")">
+                                            @(item.IsActive ? "Active" : "Inactive")
+                                        </span>
+                                    </td>
+                                    <td class="text-end pe-4">
+                                        <div class="btn-group btn-group-sm" role="group">
+                                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-primary">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                            <a asp-action="EditsStockTransacition" asp-route-id="@item.Id" class="btn btn-outline-secondary">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <button data-bs-toggle="modal"
+                                                    data-bs-target="#deleteModal-@item.Id"
+                                                    class="btn btn-outline-danger" title="Delete">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </button>
+                                        </div>
+                                        <!-- Delete Modal -->
+                                        <div class="modal fade" id="deleteModal-@item.Id" tabindex="-1">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header bg-danger text-white">
+                                                        <h5 class="modal-title">Confirm Deletion</h5>
+                                                        <button type="button" class="btn-close btn-close-white"
+                                                                data-bs-dismiss="modal"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p>Are you sure you want to delete StockTransacition <strong>@item.TypeName</strong>?</p>
+                                                        <p class="text-danger small mb-0">
+                                                            <i class="fas fa-exclamation-circle me-1"></i>This action cannot be undone.
+                                                        </p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary"
+                                                                data-bs-dismiss="modal">
+                                                            Cancel
+                                                        </button>
+                                                        <form asp-controller="StockTrancition" asp-action="DeleteStockTransacition"
+                                                              asp-route-id="@item.Id" method="post">
+                                                            <input type="hidden" name="id" value="@item.Id" />
+                                                            <button type="submit" class="btn btn-danger">
+                                                                <i class="fas fa-trash-alt me-1"></i>Delete
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="7" class="text-center py-5">
+                                    <div class="empty-state">
+                                        <i class="fas fa-exchange-alt me-2"></i>
+                                        <h5>No Stock Transacition found</h5>
+                                        <p>Click the "Stock Transacition" button to create one</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card-footer bg-white py-3">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-center">
+                <div class="mb-2 mb-md-0">
+                    Showing <strong>1</strong> to <strong>@Model.Count()</strong> of <strong>@Model.Count()</strong> entries
+                </div>
+                <nav>
+                    <ul class="pagination mb-0">
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                        </li>
+                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">Next</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css">
+    <style>
+        .bg-gradient-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+        }
+
+        .icon-shape {
+            width: 3rem;
+            height: 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .table th {
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.5px;
+        }
+
+        .badge {
+            font-weight: 500;
+            padding: 0.35em 0.65em;
+        }
+
+        .scrollable-table {
+            max-height: 400px; /* Adjust this value as needed */
+            overflow-y: auto;
+            display: block;
+        }
+
+        /* Ensure the table header stays fixed while scrolling */
+        .table-responsive {
+            position: relative;
+        }
+
+        .table thead {
+            position: sticky;
+            top: 0;
+            background-color: #f8f9fa; /* Match your table header color */
+            z-index: 10;
+        }
+    </style>
+}
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+     <script src="https://cdn.jsdelivr.net/npm/moment/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Initialize date range picker
+            $('.date-range-picker').daterangepicker({
+                opens: 'left',
+                locale: {
+                    format: 'DD MMM YYYY'
+                }
+            });
+
+            // Search functionality
+            $('#searchInput').on('keyup', function() {
+                const value = $(this).val().toLowerCase();
+                $('table tbody tr').filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+
+            $(document).ready(function() {
+            // Initialize date range picker
+            $('.date-range-picker').daterangepicker({
+                opens: 'left',
+                locale: {
+                    format: 'DD MMM YYYY'
+                }
+            });
+
+            // Search functionality
+            $('#searchInput').on('keyup', function() {
+                const value = $(this).val().toLowerCase();
+                $('table tbody tr').filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+
+            // Export PDF button
+            $('#exportPdf').click(function() {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+
+                // Add title
+                doc.setFontSize(18);
+                doc.text('Stock Transactions Report', 14, 15);
+
+                // Add date
+                doc.setFontSize(10);
+                doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 14, 22);
+
+                // Add table
+                doc.autoTable({
+                    startY: 30,
+                    head: [['#', 'Type', 'Direction', 'Date', 'Status']],
+                    body: [
+                    @foreach (var item in Model)
+                    {
+                        <text>
+                                            [
+                                                '@(count++)',
+                                                '@item.TypeName',
+                                                '@item.Direction',
+                                                '@item.StockTransactionDate.ToString("dd MMM yyyy HH:mm")',
+                                                '@(item.IsActive ? "Active" : "Inactive")'
+                                            ],
+                        </text>
+                    }
+                    ],
+                    theme: 'grid',
+                    headStyles: {
+                        fillColor: [102, 126, 234],
+                        textColor: 255,
+                        fontStyle: 'bold'
+                    },
+                    alternateRowStyles: {
+                        fillColor: [245, 245, 245]
+                    },
+                    margin: { top: 30 }
+                });
+
+                // Save the PDF
+                doc.save('StockTransactions_@DateTime.Now.ToString("yyyyMMdd")');
+            });
+        });
+        });
+    </script>
+}

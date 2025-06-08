@@ -1,0 +1,156 @@
+﻿@model AlphaShop.Models.Order
+@{
+    ViewData["Title"] = "Update Order";
+}
+
+<div class="container-fluid px-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h3 mb-0 text-gray-800">
+                <i class="fas fa-plus-circle me-2"></i>Update Order
+            </h1>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a asp-action="Index">Orders</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Update</li>
+                </ol>
+            </nav>
+        </div>
+        <a asp-action="Index" class="btn btn-secondary">
+            <i class="fas fa-arrow-left me-2"></i>Back to List
+        </a>
+    </div>
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3 bg-primary text-white">
+            <h6 class="m-0 font-weight-bold">
+                <i class="fas fa-shopping-cart me-2"></i>Order Information
+            </h6>
+        </div>
+        <div class="card-body">
+            <form asp-controller="Order" asp-action="UpdateOrder" method="post" class="needs-validation" novalidate>
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group mb-4">
+                            <label asp-for="CustomerId" class="form-label fw-bold">
+                                <i class="fas fa-user me-2"></i>Select Customer
+                            </label>
+                            <select asp-for="CustomerId" class="form-select form-control-lg" asp-items="ViewBag.CustomerId" required>
+                                <option value="">-- Select Customer --</option>
+                            </select>
+                            <span asp-validation-for="CustomerId" class="text-danger small"></span>
+                            <div class="invalid-feedback">
+                                Please select a customer
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group mb-4">
+                            <label class="form-label fw-bold">
+                                <i class="fas fa-calendar-alt me-2"></i>Order Date
+                            </label>
+                            <input type="text" class="form-control form-control-lg" value="@DateTime.Now.ToString("dd MMMM yyyy")" disabled>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between mt-5">
+                    <button type="reset" class="btn btn-outline-secondary">
+                        <i class="fas fa-undo me-2"></i>Reset
+                    </button>
+                    <button type="submit" class="btn btn-primary px-4">
+                        <i class="fas fa-save me-2"></i>Update Order
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .card {
+            border-radius: 0.5rem;
+            border: none;
+        }
+
+        .card-header {
+            border-radius: 0.5rem 0.5rem 0 0 !important;
+        }
+
+        .form-control-lg {
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+        }
+
+        .form-label {
+            color: #4e73df;
+            margin-bottom: 0.5rem;
+        }
+
+        .btn-primary {
+            background-color: #4e73df;
+            border-color: #4e73df;
+            transition: all 0.3s;
+        }
+
+            .btn-primary:hover {
+                background-color: #2e59d9;
+                transform: translateY(-1px);
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            }
+
+        .breadcrumb {
+            background-color: transparent;
+            padding: 0;
+        }
+
+        .invalid-feedback {
+            display: none;
+            font-size: 0.85rem;
+        }
+
+        .was-validated .form-control:invalid ~ .invalid-feedback,
+        .was-validated .form-control:invalid ~ .text-danger,
+        .form-control.is-invalid ~ .invalid-feedback,
+        .form-control.is-invalid ~ .text-danger {
+            display: block;
+        }
+    </style>
+}
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        // Enhanced form validation
+        (function () {
+            'use strict'
+            var forms = document.querySelectorAll('.needs-validation')
+
+            Array.prototype.slice.call(forms)
+                .forEach(function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (!form.checkValidity()) {
+                            event.preventDefault()
+                            event.stopPropagation()
+                        }
+
+                        form.classList.add('was-validated')
+                    }, false)
+                })
+        })()
+
+        // Initialize select2 if you want enhanced select boxes
+        $(document).ready(function() {
+            $('#customerId').select2({
+                placeholder: "Select a customer",
+                allowClear: true
+            });
+        });
+    </script>
+}

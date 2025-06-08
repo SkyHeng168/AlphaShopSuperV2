@@ -1,0 +1,307 @@
+﻿@model AlphaShop.Models.InventoryLog
+@{
+    ViewData["Title"] = "Transaction Details";
+}
+
+<div class="container py-4">
+    <div class="profile-container">
+        <div class="profile-header bg-white rounded-top">
+            <div class="d-flex justify-content-between align-items-center p-4">
+                <div>
+                    <h2 class="profile-title mb-1">Transaction #@Model.Id</h2>
+                    <p class="text-muted mb-0">
+                        <i class="far fa-calendar-alt mr-2"></i>
+                        Created @Model.Log_Date.ToString("MMMM dd, yyyy")
+                    </p>
+                </div>
+                <div class="profile-actions">
+                    <a asp-action="Index" class="btn btn-outline-secondary btn-sm mr-2">
+                        <i class="fas fa-chevron-left mr-2"></i>Back
+                    </a>
+                    <a asp-action="EditingInventory" asp-route-id="@Model.Id" class="btn btn-primary btn-sm">
+                        <i class="fas fa-pencil-alt mr-2"></i>Edit
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="profile-body bg-white p-4">
+            <div class="row">
+                <!-- Left Column - Product Info -->
+                <div class="col-lg-4">
+                    <div class="profile-card mb-4">
+                        <div class="profile-card-header">
+                            <h5><i class="fas fa-box-open mr-2"></i>Product Information</h5>
+                        </div>
+                        <div class="profile-card-body">
+                            @if (Model.Product != null)
+                            {
+                                <div class="text-center mb-3">
+                                    <img src="~/images/Products/@Model.Product.ProductImage" 
+                                         class="profile-product-img img-fluid rounded" alt="Product image">
+                                </div>
+                                <h4 class="profile-item-title text-center">@Model.Product.ProductName</h4>
+                                <div class="profile-info-item">
+                                    <span class="info-label">SKU:</span>
+                                    <span class="info-value">@Model.Product.SKU</span>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="alert alert-warning">
+                                    <i class="fas fa-exclamation-triangle mr-2"></i>
+                                    Product not found in database
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="profile-card">
+                        <div class="profile-card-header">
+                            <h5><i class="fas fa-info-circle mr-2"></i>Quick Details</h5>
+                        </div>
+                        <div class="profile-card-body">
+                            <div class="profile-info-item">
+                                <span class="info-label">Status:</span>
+                                <span class="badge badge-success">Completed</span>
+                            </div>
+                            <div class="profile-info-item">
+                                <span class="info-label">Type:</span>
+                                <span class="info-value">
+                                    @if (Model.StockTransacition != null)
+                                    {
+                                        @Model.StockTransacition.TypeName
+                                    }
+                                    else
+                                    {
+                                        <span class="text-danger small">Not specified</span>
+                                    }
+                                </span>
+                            </div>
+                            <div class="profile-info-item">
+                                <span class="info-label">Direction:</span>
+                                <span class="info-value">
+                                    <span class="@(Model.Qunatity > 0 ? "text-success" : "text-danger")">
+                                        @(Model.Qunatity > 0 ? "Inbound" : "Outbound")
+                                    </span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column - Transaction Details -->
+                <div class="col-lg-8">
+                    <div class="profile-card mb-4">
+                        <div class="profile-card-header">
+                            <h5><i class="fas fa-exchange-alt mr-2"></i>Transaction Details</h5>
+                        </div>
+                        <div class="profile-card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="profile-info-item">
+                                        <span class="info-label">Quantity Changed:</span>
+                                        <span class="info-value @(Model.Qunatity > 0 ? "text-success" : "text-danger")">
+                                            @(Model.Qunatity > 0 ? "+" : "")@Model.Qunatity
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="profile-info-item">
+                                        <span class="info-label">Date Processed:</span>
+                                        <span class="info-value">@Model.Log_Date.ToString("MMMM dd, yyyy h:mm tt")</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="profile-info-item">
+                                <span class="info-label">Last Updated:</span>
+                                <span class="info-value">@DateTime.Now.ToString("MMMM dd, yyyy h:mm tt")</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="profile-card mb-4">
+                        <div class="profile-card-header">
+                            <h5><i class="fas fa-chart-line mr-2"></i>Impact Analysis</h5>
+                        </div>
+                        <div class="profile-card-body">
+                            <div class="row text-center">
+                                <div class="col-md-4">
+                                    <div class="metric-card">
+                                        <span class="metric-value @(Model.Qunatity > 0 ? "text-success" : "text-danger")">
+                                            @(Model.Qunatity > 0 ? "+" : "")@Model.Qunatity
+                                        </span>
+                                        <span class="metric-label">Units Changed</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="metric-card">
+                                        <span class="metric-value">$1,250</span>
+                                        <span class="metric-label">Estimated Value</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="metric-card">
+                                        <span class="metric-value">3.8%</span>
+                                        <span class="metric-label">Inventory Change</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="profile-card">
+                        <div class="profile-card-header">
+                            <h5><i class="far fa-comment-dots mr-2"></i>Notes</h5>
+                        </div>
+                        <div class="profile-card-body">
+                            @if (!string.IsNullOrEmpty(Model.Note))
+                            {
+                                <div class="notes-content">
+                                    <p>@Model.Note</p>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="empty-state">
+                                    <i class="far fa-comment-alt text-muted mb-3" style="font-size: 2rem;"></i>
+                                    <p class="text-muted">No notes available for this transaction</p>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="profile-footer bg-white rounded-bottom p-3">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="timestamps">
+                    <small class="text-muted">
+                        Last updated: @DateTime.Now.ToString("MMM dd, yyyy h:mm tt")
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .profile-container {
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05);
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
+
+        .profile-header {
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .profile-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .profile-card {
+            background-color: #fff;
+            border: 1px solid #e9ecef;
+            border-radius: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .profile-card-header {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #e9ecef;
+            background-color: #f8f9fa;
+        }
+
+            .profile-card-header h5 {
+                font-size: 1rem;
+                font-weight: 600;
+                margin: 0;
+                color: #495057;
+            }
+
+        .profile-card-body {
+            padding: 1.5rem;
+        }
+
+        .profile-product-img {
+            max-width: 180px;
+            max-height: 180px;
+            object-fit: contain;
+            border: 1px solid #dee2e6;
+            padding: 0.5rem;
+            background: #fff;
+        }
+
+        .profile-item-title {
+            font-size: 1.25rem;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+            color: #2c3e50;
+        }
+
+        .profile-info-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #f1f3f5;
+        }
+
+            .profile-info-item:last-child {
+                border-bottom: none;
+            }
+
+        .info-label {
+            font-weight: 500;
+            color: #6c757d;
+        }
+
+        .info-value {
+            font-weight: 500;
+            color: #495057;
+        }
+
+        .metric-card {
+            padding: 1rem;
+        }
+
+        .metric-value {
+            font-size: 1.5rem;
+            font-weight: 600;
+            display: block;
+            color: #2c3e50;
+        }
+
+        .metric-label {
+            font-size: 0.875rem;
+            color: #6c757d;
+        }
+
+        .notes-content {
+            background-color: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 0.25rem;
+            border-left: 3px solid #4e73df;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: #6c757d;
+        }
+
+        .profile-footer {
+            border-top: 1px solid #e9ecef;
+        }
+
+        .badge {
+            font-weight: 500;
+            padding: 0.35em 0.65em;
+        }
+    </style>
+}

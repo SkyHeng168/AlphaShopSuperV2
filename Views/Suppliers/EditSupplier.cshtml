@@ -1,0 +1,370 @@
+﻿@model AlphaShop.Models.SupplierDto
+@{
+    ViewData["Title"] = "Edit Supplier";
+    var imagePath = ViewData["ImageSupplier"] != null ? ViewData["ImageSupplier"].ToString() : "";
+}
+
+<div class="container py-3">
+    <div class="card shadow-sm">
+        <div class="card-header bg-gradient-primary text-white py-3">
+            <div class="row align-items-center">
+                <div class="col-md-6 mb-2 mb-md-0">
+                    <h2 class="mb-0 d-flex align-items-center">
+                        <i class="fas fa-truck-loading me-3 fs-3"></i>
+                        <span class="fw-semibold">Edit Supplier</span>
+                    </h2>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <a asp-controller="Suppliers" asp-action="Index"
+                       class="btn btn-light btn-hover-scale text-primary fw-medium d-inline-flex align-items-center gap-2 px-4 py-2">
+                        <i class="fas fa-arrow-left"></i>
+                        <span class="d-none d-sm-inline">Back to Suppliers</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <form method="post" asp-controller="Suppliers" asp-action="EditSupplier" enctype="multipart/form-data" class="needs-validation" novalidate>
+                <input type="hidden" name="Id" value="@ViewData["Id"]" />
+
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="card mb-4 border-0 shadow-sm">
+                            <div class="card-body">
+                                <h4 class="section-title mb-3">
+                                    <i class="fas fa-info-circle me-2"></i>Supplier Information
+                                </h4>
+
+                                <div class="mb-3">
+                                    <label for="SupplierName" class="form-label fw-medium">Supplier Name*</label>
+                                    <input type="text" id="SupplierName" name="SupplierName" class="form-control" value="@Model.SupplierName" required>
+                                    <div class="invalid-feedback">Please provide a supplier name.</div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="ImageSupplier" class="form-label fw-medium">Supplier Logo/Image</label>
+                                    <div class="image-upload-container">
+                                        <div class="image-preview mb-3" id="imagePreview">
+                                            @if (!string.IsNullOrEmpty(imagePath))
+                                            {
+                                                <img src="@imagePath" alt="Image Preview" class="image-preview__image" style="display: block;">
+                                                <span class="image-preview__default-text" style="display: none;">No image selected</span>
+                                            }
+                                            else
+                                            {
+                                                <img src="" alt="Image Preview" class="image-preview__image" style="display: none;">
+                                                <span class="image-preview__default-text">No image selected</span>
+                                            }
+                                        </div>
+                                        <input type="file" id="ImageSupplier" name="ImageSupplier" accept="image/*" class="form-control" onchange="previewImage()">
+                                        <small class="text-muted">Recommended size: 300x300 pixels (Max 2MB)</small>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="Email" class="form-label fw-medium">Email*</label>
+                                    <input type="email" id="Email" name="Email" class="form-control" value="@Model.Email" required>
+                                    <div class="invalid-feedback">Please provide a valid email.</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="Phone" class="form-label fw-medium">Phone*</label>
+                                            <input type="tel" id="Phone" name="Phone" class="form-control" value="@Model.Phone" required>
+                                            <div class="invalid-feedback">Please provide a phone number.</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="ContactPerson" class="form-label fw-medium">Contact Person*</label>
+                                            <input type="text" id="ContactPerson" name="ContactPerson" class="form-control" value="@Model.ContactPerson" required>
+                                            <div class="invalid-feedback">Please provide a contact person.</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="card mb-4 border-0 shadow-sm">
+                            <div class="card-body">
+                                <h4 class="section-title mb-3">
+                                    <i class="fas fa-map-marker-alt me-2"></i>Address Information
+                                </h4>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="Address" class="form-label fw-medium">Address*</label>
+                                            <input type="text" id="Address" name="Address" class="form-control" value="@Model.Address" required>
+                                            <div class="invalid-feedback">Please provide an address.</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="Street" class="form-label fw-medium">Street*</label>
+                                            <input type="text" id="Street" name="Street" class="form-control" value="@Model.Street" required>
+                                            <div class="invalid-feedback">Please provide a street.</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="City" class="form-label fw-medium">City*</label>
+                                            <input type="text" id="City" name="City" class="form-control" value="@Model.City" required>
+                                            <div class="invalid-feedback">Please provide a city.</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="Country" class="form-label fw-medium">Country*</label>
+                                            <input type="text" id="Country" name="Country" class="form-control" value="@Model.Country" required>
+                                            <div class="invalid-feedback">Please provide a country.</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-body">
+                                <h4 class="section-title mb-3">
+                                    <i class="fas fa-file-contract me-2"></i>Contract Information
+                                </h4>
+
+                                <div class="mb-3">
+                                    <label for="ContractDate" class="form-label fw-medium">Contract Date*</label>
+                                    <input type="date" id="ContractDate" name="ContractDate" class="form-control" value="@Model.ContractDate.ToString("yyyy-MM-dd")" required>
+                                    <div class="invalid-feedback">Please select a contract date.</div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="Status" class="form-label fw-medium">Status*</label>
+                                    <select id="Status" name="Status" class="form-select" required>
+                                        <option value="Active" selected="@(Model.Status.ToString() == "Active")">Active</option>
+                                        <option value="Inactive" selected="@(Model.Status.ToString() == "Inactive")">Inactive</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-end gap-2 mt-4">
+                    <button type="button" id="updateSupplierBtn" class="btn btn-primary px-4">
+                        <i class="fas fa-save me-2"></i>Update Supplier
+                    </button>
+                    <button type="reset" class="btn btn-outline-secondary px-4" onclick="resetImagePreview()">
+                        <i class="fas fa-undo me-2"></i>Reset
+                    </button>
+                </div>
+
+                <!-- Confirmation Modal -->
+                <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header bg-primary text-white">
+                                <h5 class="modal-title" id="confirmationModalLabel">Confirm Update</h5>
+                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="d-flex align-items-center mb-3">
+                                    <i class="fas fa-exclamation-circle fs-4 text-primary me-3"></i>
+                                    <p class="mb-0">Are you sure you want to update this supplier information?</p>
+                                </div>
+                                <div class="alert alert-warning p-2 mb-0">
+                                    <small><i class="fas fa-info-circle me-2"></i>Please review all changes before submitting.</small>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                                    <i class="fas fa-times me-2"></i>Cancel
+                                </button>
+                                <button type="submit" id="confirmUpdateBtn" class="btn btn-primary">
+                                    <i class="fas fa-check me-2"></i>Confirm Update
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    .section-title {
+        color: #2c3e50;
+        font-size: 1.1rem;
+        border-bottom: 2px solid #f8f9fa;
+        padding-bottom: 0.5rem;
+    }
+
+    .card {
+        border-radius: 0.75rem;
+        border: none;
+    }
+
+    .card-header {
+        border-radius: 0.75rem 0.75rem 0 0 !important;
+        padding: 1.25rem 1.5rem;
+        background: linear-gradient(135deg, #3f87a6, #ebf8e1);
+    }
+
+    .form-control, .form-select {
+        border-radius: 0.5rem;
+        padding: 0.5rem 0.75rem;
+        border: 1px solid #ced4da;
+    }
+
+        .form-control:focus, .form-select:focus {
+            border-color: #86b7fe;
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15);
+        }
+
+    .btn {
+        border-radius: 0.5rem;
+        font-weight: 500;
+        transition: all 0.2s;
+    }
+
+    .invalid-feedback {
+        font-size: 0.85rem;
+    }
+
+    .image-upload-container {
+        margin-bottom: 1rem;
+    }
+
+    .image-preview {
+        width: 150px;
+        height: 150px;
+        border: 2px dashed #ddd;
+        border-radius: 0.5rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        background-color: #f8f9fa;
+        margin-bottom: 0.5rem;
+        position: relative;
+    }
+
+        .image-preview:hover {
+            border-color: #86b7fe;
+        }
+
+        .image-preview .image-preview__image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .image-preview .image-preview__default-text {
+            color: #6c757d;
+            font-size: 0.85rem;
+            text-align: center;
+            padding: 0 10px;
+        }
+
+    .bg-gradient-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    .modal-header {
+        border-radius: 0.5rem 0.5rem 0 0;
+    }
+
+    .modal-content {
+        border-radius: 0.75rem;
+        border: none;
+        box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.15);
+    }
+
+    .modal-footer {
+        border-top: 1px solid #e9ecef;
+    }
+</style>
+
+@section Scripts {
+    <script>
+        // Form validation
+        (function () {
+            'use strict'
+            var forms = document.querySelectorAll('.needs-validation')
+            Array.prototype.slice.call(forms)
+                .forEach(function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (!form.checkValidity()) {
+                            event.preventDefault()
+                            event.stopPropagation()
+                        }
+                        form.classList.add('was-validated')
+                    }, false)
+                })
+        })()
+
+        // Image preview functionality
+        function previewImage() {
+            const fileInput = document.getElementById('ImageSupplier');
+            const previewContainer = document.getElementById('imagePreview');
+            const previewImage = previewContainer.querySelector('.image-preview__image');
+            const previewDefaultText = previewContainer.querySelector('.image-preview__default-text');
+
+            const file = fileInput.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+                previewDefaultText.style.display = "none";
+                previewImage.style.display = "block";
+
+                reader.addEventListener("load", function() {
+                    previewImage.setAttribute("src", this.result);
+                });
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Reset image preview on form reset
+        function resetImagePreview() {
+            const previewContainer = document.getElementById('imagePreview');
+            const previewImage = previewContainer.querySelector('.image-preview__image');
+            const previewDefaultText = previewContainer.querySelector('.image-preview__default-text');
+            const originalImage = "@imagePath";
+
+            if (originalImage) {
+                previewDefaultText.style.display = "none";
+                previewImage.style.display = "block";
+                previewImage.setAttribute("src", originalImage);
+            } else {
+                previewDefaultText.style.display = "block";
+                previewImage.style.display = "none";
+                previewImage.setAttribute("src", "");
+            }
+            document.getElementById('ImageSupplier').value = '';
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.querySelector('form.needs-validation');
+            const updateBtn = document.getElementById('updateSupplierBtn');
+            const confirmationModal = new bootstrap.Modal(document.getElementById('confirmationModal'));
+
+            // When Update button is clicked
+            updateBtn.addEventListener('click', function() {
+                // Validate form first
+                form.classList.add('was-validated');
+
+                if (form.checkValidity()) {
+                    // Only show modal if form is valid
+                    confirmationModal.show();
+                }
+            });
+
+            // Optional: Add loading state when form is submitting
+            form.addEventListener('submit', function() {
+                updateBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Updating...';
+                updateBtn.disabled = true;
+            });
+        });
+    </script>
+}

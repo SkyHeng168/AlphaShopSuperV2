@@ -1,0 +1,79 @@
+﻿@model IEnumerable<AlphaShop.Models.PurchaseOrder>
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h4 class="mb-0">@ViewData["Title"]</h4>
+</div>
+
+@if (Model.Any())
+{
+    <div class="table-responsive">
+        <table class="table table-hover table-striped">
+            <thead class="table-light">
+                <tr>
+                    <th>Order #</th>
+                    <th>Date</th>
+                    <th>Expected Date</th>
+                    <th class="text-end">Amount</th>
+                    <th>Status</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var order in Model)
+                {
+                    <tr>
+                        <td>
+                            <a asp-controller="PurchaseOrder" asp-action="Details" asp-route-id="@order.Id" class="text-primary">
+                                @order.OrderNumber
+                            </a>
+                        </td>
+                        <td>@order.OrderDate.ToString("d MMM yyyy")</td>
+                        <td>@order.ExpectedDate.ToString("d MMM yyyy")</td>
+                        <td class="text-end">@order.TotalAmount.ToString("C")</td>
+                        <td>
+                            <span class="badge @GetStatusBadgeClass(order.OrderStatus)">
+                                @order.OrderStatus
+                            </span>
+                        </td>
+                        <td class="text-end">
+                            <div class="btn-group btn-group-sm">
+                                @if (order.OrderStatus == Status.Draft)
+                                {
+                                    <a asp-controller="PurchaseOrder" asp-action="Edit" asp-route-id="@order.Id" class="btn btn-outline-secondary">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                }
+                                <a asp-controller="PurchaseOrder" asp-action="DetailsOrder" asp-route-id="@order.Id" class="btn btn-outline-primary">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <div class="text-center py-5">
+        <div class="mb-3">
+            <i class="fas fa-file-invoice fa-3x text-muted"></i>
+        </div>
+        <h4 class="h5 text-muted">No orders found</h4>
+        <p class="text-muted">@ViewData["EmptyMessage"]</p>
+    </div>
+}
+@functions {
+    public string GetStatusBadgeClass(Status status)
+    {
+        return status switch
+        {
+            Status.Draft => "bg-secondary",
+            Status.Approved => "bg-warning text-dark",
+            Status.Received => "bg-success",
+            Status.Cancelled => "bg-danger",
+            _ => "bg-primary"
+        };
+    }
+}

@@ -1,0 +1,199 @@
+﻿@model AlphaShop.Models.OrderItemDto
+@{
+    ViewData["Title"] = "Create Order Item";
+}
+
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Create Order Item</h4>
+                </div>
+                <div class="card-body">
+                    <form asp-action="CreateOrderItem" method="post" class="needs-validation" novalidate>
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                        <!-- Customer Type Selection -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Customer Type</label>
+                            <div class="btn-group w-100" role="group">
+                                <input type="radio" class="btn-check" name="customerType" id="registeredCustomer" value="registered" checked>
+                                <label class="btn btn-outline-primary" for="registeredCustomer">
+                                    <i class="fas fa-user me-2"></i>Registered Customer
+                                </label>
+
+                                <input type="radio" class="btn-check" name="customerType" id="guestCustomer" value="guest">
+                                <label class="btn btn-outline-primary" for="guestCustomer">
+                                    <i class="fas fa-user-clock me-2"></i>Guest
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Order Selection (shown for registered customers) -->
+                        <div class="mb-3" id="orderSelection">
+                            <label asp-for="OrderId" class="form-label fw-bold">Order</label>
+                            <select asp-for="OrderId" class="form-select form-select-lg" asp-items="ViewBag.Orders">
+                                <option value="" disabled selected>-- Select Order --</option>
+                            </select>
+                            <span asp-validation-for="OrderId" class="text-danger small"></span>
+                            <div class="invalid-feedback">
+                                Please select an order.
+                            </div>
+                        </div>
+
+                        <!-- Product Selection -->
+                        <div class="mb-3">
+                            <label asp-for="ProductId" class="form-label fw-bold">Product</label>
+                            <select asp-for="ProductId" class="form-select form-select-lg" asp-items="ViewBag.Products" id="productSelect" required>
+                                <option value="" disabled selected>-- Select Product --</option>
+                            </select>
+                            <span asp-validation-for="ProductId" class="text-danger small"></span>
+                            <div class="invalid-feedback">
+                                Please select a product.
+                            </div>
+                        </div>
+
+                        <!-- Variant Selection -->
+                        <div class="mb-3">
+                            <label asp-for="PriceVariantId" class="form-label fw-bold">Variant</label>
+                            <select asp-for="PriceVariantId" asp-items="ViewBag.ProductVariants" class="form-select form-select-lg" id="variantSelect">
+                                <option value="">-- Select Variant --</option>
+                            </select>
+                            <span asp-validation-for="PriceVariantId" class="text-danger small"></span>
+                            <div class="invalid-feedback">
+                                Please select a variant.
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <!-- Quantity -->
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Quantity" class="form-label fw-bold">Quantity</label>
+                                <input asp-for="Quantity" class="form-control form-control-lg" min="1" required />
+                                <span asp-validation-for="Quantity" class="text-danger small"></span>
+                                <div class="invalid-feedback">
+                                    Please enter a valid quantity (minimum 1).
+                                </div>
+                            </div>
+
+                            <!-- Discount -->
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Discount" class="form-label fw-bold">Discount (%)</label>
+                                <div class="input-group">
+                                    <input asp-for="Discount" class="form-control form-control-lg" step="0.01" min="0" max="100" />
+                                    <span class="input-group-text">%</span>
+                                </div>
+                                <span asp-validation-for="Discount" class="text-danger small"></span>
+                                <div class="invalid-feedback">
+                                    Discount must be between 0 and 100.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                            <button type="submit" class="btn btn-primary btn-lg px-4 me-md-2">
+                                <i class="fas fa-save me-2"></i>Create
+                            </button>
+                            <a asp-action="Index" class="btn btn-outline-secondary btn-lg px-4">
+                                <i class="fas fa-times me-2"></i>Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .card {
+            border-radius: 0.5rem;
+            border: none;
+        }
+
+        .card-header {
+            border-radius: 0.5rem 0.5rem 0 0 !important;
+            padding: 1.25rem 1.5rem;
+        }
+
+        .form-label {
+            margin-bottom: 0.5rem;
+            color: #495057;
+        }
+
+        .form-control, .form-select {
+            border: 1px solid #ced4da;
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: #86b7fe;
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+        }
+
+        .btn-primary {
+            background-color: #0d6efd;
+            border-color: #0d6efd;
+        }
+
+        .btn-lg {
+            padding: 0.5rem 1.5rem;
+            font-size: 1.1rem;
+        }
+
+        .btn-group .btn {
+            flex: 1;
+        }
+
+        .invalid-feedback {
+            font-size: 0.85rem;
+        }
+
+        .was-validated .form-control:invalid,
+        .was-validated .form-select:invalid {
+            border-color: #dc3545;
+        }
+
+        .was-validated .form-control:invalid:focus,
+        .was-validated .form-select:invalid:focus {
+            box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25);
+        }
+    </style>
+}
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Enable Bootstrap validation
+            (function() {
+                'use strict'
+                var forms = document.querySelectorAll('.needs-validation')
+                Array.prototype.slice.call(forms)
+                    .forEach(function(form) {
+                        form.addEventListener('submit', function(event) {
+                            if (!form.checkValidity()) {
+                                event.preventDefault()
+                                event.stopPropagation()
+                            }
+                            form.classList.add('was-validated')
+                        }, false)
+                    })
+            })();
+
+            // Handle customer type selection
+            $('input[name="customerType"]').change(function() {
+                if ($(this).val() === 'guest') {
+                    $('#orderSelection').addClass('d-none');
+                    $('#guestInfo').removeClass('d-none');
+                    $('#OrderId').removeAttr('required');
+                } else {
+                    $('#orderSelection').removeClass('d-none');
+                    $('#guestInfo').addClass('d-none');
+                    $('#OrderId').attr('required', 'required');
+                }
+            });
+        });
+    </script>
+}

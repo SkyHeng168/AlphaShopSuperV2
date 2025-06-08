@@ -1,0 +1,171 @@
+﻿@model AlphaShop.Models.InventoryLogDto
+@{
+    ViewData["Title"] = "Create Inventory Log";
+}
+
+<div class="container py-3">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+                <div class="card-header bg-gradient-primary py-3">
+                    <div class="d-flex align-items-center">
+                        <div class="bg-white bg-opacity-10 p-2 rounded-circle me-3">
+                            <i class="fas fa-clipboard-list text-white fs-4"></i>
+                        </div>
+                        <h3 class="text-white mb-0">@ViewData["Title"]</h3>
+                    </div>
+                </div>
+                <div class="card-body p-4 p-md-5">
+                    <form asp-action="CreateInventory" method="post" class="needs-validation" novalidate>
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger rounded-3 mb-4"></div>
+
+                        <!-- Product Selection -->
+                        <div class="mb-4">
+                            <label asp-for="ProductId" class="form-label fw-semibold text-muted">Product</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light"><i class="fas fa-box-open text-primary"></i></span>
+                                <select asp-for="ProductId" class="form-select form-select-lg rounded-end" required
+                                        asp-items="@(ViewBag.Products as IEnumerable<SelectListItem>)">
+                                    <option value="">-- Select Product --</option>
+                                </select>
+                            </div>
+                            <span asp-validation-for="ProductId" class="text-danger small"></span>
+                        </div>
+
+                        <!-- Transaction Type -->
+                        <div class="mb-4">
+                            <label asp-for="StockTransacitionId" class="form-label fw-semibold text-muted">Transaction Type</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light"><i class="fas fa-exchange-alt text-primary"></i></span>
+                                <select asp-for="StockTransacitionId" class="form-select form-select-lg rounded-end" required
+                                        asp-items="@(ViewBag.StockTransactions as IEnumerable<SelectListItem>)">
+                                    <option value="">-- Select Transaction Type --</option>
+                                </select>
+                            </div>
+                            <span asp-validation-for="StockTransacitionId" class="text-danger small"></span>
+                        </div> 
+                        <div class="mb-4">
+                            <label asp-for="PurchaseOrderId" class="form-label fw-semibold text-muted">Transaction Type</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light"><i class="fas fa-exchange-alt text-primary"></i></span>
+                                <select asp-for="PurchaseOrderId" class="form-select form-select-lg rounded-end" required
+                                        asp-items="@(ViewBag.PurchaseOrders as IEnumerable<SelectListItem>)">
+                                    <option value="">-- Select PurchaseOrders --</option>
+                                </select>
+                            </div>
+                            <span asp-validation-for="PurchaseOrderId" class="text-danger small"></span>
+                        </div>
+
+                        <!-- Quantity Input -->
+                        <div class="mb-4">
+                            <label asp-for="Qunatity" class="form-label fw-semibold text-muted">Quantity</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light"><i class="fas fa-hashtag text-primary"></i></span>
+                                <input asp-for="Qunatity" class="form-control form-control-lg" type="number" min="1" required />
+                            </div>
+                            <span asp-validation-for="Qunatity" class="text-danger small"></span>
+                        </div>
+
+                        <!-- Date Input -->
+                        <div class="mb-4">
+                            <label asp-for="Log_Date" class="form-label fw-semibold text-muted">Date</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light"><i class="far fa-calendar-alt text-primary"></i></span>
+                                <input asp-for="Log_Date" class="form-control form-control-lg" type="datetime-local" required
+                                       value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" />
+                            </div>
+                            <span asp-validation-for="Log_Date" class="text-danger small"></span>
+                        </div>
+
+                        <!-- Note Textarea -->
+                        <div class="mb-4">
+                            <label asp-for="Note" class="form-label fw-semibold text-muted">Notes</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light align-items-start pt-2"><i class="far fa-sticky-note text-primary"></i></span>
+                                <textarea asp-for="Note" class="form-control form-control-lg" rows="3" style="min-height: 100px;"></textarea>
+                            </div>
+                            <span asp-validation-for="Note" class="text-danger small"></span>
+                        </div>
+
+                        <!-- Form Buttons -->
+                        <div class="d-flex justify-content-between mt-5 pt-3 border-top">
+                            <a asp-action="Index" class="btn btn-outline-secondary rounded-pill px-4 py-2">
+                                <i class="fas fa-arrow-left me-2"></i> Back to List
+                            </a>
+                            <button type="submit" class="btn btn-primary rounded-pill px-4 py-2 shadow-sm">
+                                <i class="fas fa-plus-circle me-2"></i> Create Log
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .bg-gradient-primary {
+            background: linear-gradient(135deg, #4e73df 0%, #224abe 100%);
+        }
+
+        .form-control-lg, .form-select-lg {
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+        }
+
+        .input-group-text {
+            transition: all 0.3s;
+        }
+
+        .form-control:focus, .form-select:focus {
+            box-shadow: 0 0 0 0.25rem rgba(78, 115, 223, 0.25);
+            border-color: #4e73df;
+        }
+
+        .input-group:focus-within .input-group-text {
+            background-color: #e9ecef;
+            color: #4e73df;
+        }
+
+        .rounded-4 {
+            border-radius: 0.8rem !important;
+        }
+
+        .btn-outline-secondary:hover {
+            background-color: #f8f9fa;
+        }
+
+        .btn-primary {
+            background-color: #4e73df;
+            border-color: #4e73df;
+        }
+
+            .btn-primary:hover {
+                background-color: #2e59d9;
+                border-color: #2e59d9;
+            }
+    </style>
+}
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        // Enhanced validation feedback
+        (function () {
+            'use strict'
+            const forms = document.querySelectorAll('.needs-validation')
+            Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+                    form.classList.add('was-validated')
+                }, false)
+            })
+        })()
+    </script>
+}

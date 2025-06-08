@@ -1,0 +1,92 @@
+﻿@model AlphaShop.Models.ProductVariantDto
+@{
+    ViewData["Title"] = "Create Product Variant";
+}
+
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <h1 class="display-6 fw-semibold text-primary">Create New Product Variant</h1>
+                <a asp-controller="ProductVariant" asp-action="Index" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left me-2"></i>Back to List
+                </a>
+            </div>
+            <hr class="mt-2 mb-4" style="border-top: 2px solid #e9ecef;">
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-primary text-white py-3">
+                    <h5 class="mb-0">Product Variant Information</h5>
+                </div>
+                <div class="card-body p-4">
+                    <form asp-controller="ProductVariant" asp-action="CreateProductVariant" method="post" class="needs-validation" novalidate>
+                        @Html.AntiForgeryToken()
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger mb-4"></div>
+
+                        <div class="mb-4">
+                            <label asp-for="attributeName" class="form-label fw-semibold">Attribute Name<span class="text-danger">*</span></label>
+                            <input asp-for="attributeName" class="form-control form-control-lg" placeholder="Enter attribute name" required />
+                            <span asp-validation-for="attributeName" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="attributeValue" class="form-label fw-semibold">Attribute Value</label>
+                            <input asp-for="attributeValue" class="form-control" placeholder="Enter attribute value" />
+                            <span asp-validation-for="attributeValue" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="ProductId" class="form-label fw-semibold">Product<span class="text-danger">*</span></label>
+                            <select asp-for="ProductId" class="form-select" asp-items="ViewBag.Products" required>
+                                <option value="">-- Select Product --</option>
+                            </select>
+                            <span asp-validation-for="ProductId" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="price_modifier" class="form-label fw-semibold">Price Modifier<span class="text-danger">*</span></label>
+                            <input asp-for="price_modifier" type="number" step="0.01" class="form-control form-control-lg" placeholder="Enter price modifier" required />
+                            <span asp-validation-for="price_modifier" class="text-danger small"></span>
+                        </div>
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4 pt-3 border-top">
+                            <button type="reset" class="btn btn-outline-secondary me-md-2">
+                                <i class="fas fa-undo me-2"></i>Reset
+                            </button>
+                            <button type="submit" class="btn btn-primary px-4">
+                                <i class="fas fa-save me-2"></i>Create Product Variant
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        // Enable Bootstrap 5 form validation
+        (function () {
+            'use strict'
+            const forms = document.querySelectorAll('.needs-validation')
+
+            Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+                    form.classList.add('was-validated')
+                }, false)
+            })
+        })()
+    </script>
+}

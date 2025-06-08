@@ -1,0 +1,125 @@
+﻿@model AlphaShop.Models.WareHouse
+@{
+    ViewData["title"] = "WareHouse Create";
+}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Create New Warehouse</h4>
+                </div>
+                <div class="card-body">
+                    <form asp-controller="WareHouse" asp-action="CreateWareHouse" method="post">
+                        @Html.AntiForgeryToken()
+
+                        <div class="mb-4">
+                            <label asp-for="WareHouseName" class="form-label fw-bold">Warehouse Name</label>
+                            <input asp-for="WareHouseName" class="form-control form-control-lg" placeholder="Enter warehouse name" />
+                            <span asp-validation-for="WareHouseName" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="WareHouseCode" class="form-label fw-bold">Warehouse Code</label>
+                            <input asp-for="WareHouseCode" class="form-control form-control-lg" placeholder="Enter unique code" />
+                            <span asp-validation-for="WareHouseCode" class="text-danger small"></span>
+                            <div class="form-text">Unique identifier for the warehouse.</div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="WareHouseLocation" class="form-label fw-bold">Location</label>
+                            <input asp-for="WareHouseLocation" class="form-control form-control-lg" placeholder="Enter warehouse location" />
+                            <span asp-validation-for="WareHouseLocation" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="WareHousePhone" class="form-label fw-bold">Contact Phone</label>
+                            <input asp-for="WareHousePhone" class="form-control form-control-lg" placeholder="Enter contact number" />
+                            <span asp-validation-for="WareHousePhone" class="text-danger small"></span>
+                        </div>
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                            <a asp-action="Index" class="btn btn-outline-secondary me-md-2 px-4">
+                                <i class="fas fa-arrow-left me-2"></i>Cancel
+                            </a>
+                            <button type="submit" class="btn btn-primary px-4">
+                                <i class="fas fa-save me-2"></i>Create Warehouse
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .card {
+            border: none;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: 1.5rem;
+        }
+
+        .form-control, .form-control-lg {
+            border-radius: 8px;
+            padding: 12px 15px;
+            border: 1px solid #ced4da;
+            transition: all 0.3s;
+        }
+
+            .form-control:focus {
+                border-color: #86b7fe;
+                box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+            }
+
+        .btn {
+            border-radius: 8px;
+            padding: 10px 20px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background-color: #0d6efd;
+            border-color: #0d6efd;
+        }
+
+            .btn-primary:hover {
+                background-color: #0b5ed7;
+                border-color: #0a58ca;
+            }
+
+        .form-label {
+            margin-bottom: 8px;
+        }
+    </style>
+}
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script>
+        // Auto-generate warehouse code if empty when name is entered
+        document.getElementById("WareHouseName").addEventListener("blur", function() {
+            const name = this.value;
+            const codeInput = document.getElementById("WareHouseCode");
+            if (!codeInput.value && name) {
+                // Generate a simple code from the name (first 3 letters + random numbers)
+                const prefix = name.substring(0, 3).toUpperCase();
+                const randomNum = Math.floor(100 + Math.random() * 900);
+                codeInput.value = prefix + randomNum;
+            }
+        });
+    </script>
+}

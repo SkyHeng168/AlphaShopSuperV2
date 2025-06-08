@@ -1,0 +1,314 @@
+﻿@model IEnumerable<AlphaShop.Models.Tag>
+@{
+    ViewData["Title"] = "Tag Management";
+}
+
+<div class="container-fluid px-4">
+    <!-- Page Header with Gradient Background -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 py-3 px-4 bg-gradient-primary rounded-3">
+        <div>
+            <h1 class="h3 mb-0 text-white">
+                <i class="fas fa-tags me-2"></i>@ViewData["Title"]
+            </h1>
+            <nav aria-label="breadcrumb" class="mt-2">
+                <ol class="breadcrumb breadcrumb-light">
+                    <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index" class="text-decoration-none text-white-50"><i class="fas fa-home me-1"></i> Dashboard</a></li>
+                    <li class="breadcrumb-item active text-white" aria-current="page">Tags</li>
+                </ol>
+            </nav>
+        </div>
+        <div>
+            <a asp-controller="Tag" asp-action="CreateTag" class="btn btn-light btn-sm rounded-pill shadow-sm">
+                <i class="fas fa-plus-circle me-2"></i> Create New Tag
+            </a>
+        </div>
+    </div>
+
+    <!-- Main Card -->
+    <div class="card shadow-lg border-0 rounded-lg overflow-hidden">
+        <!-- Card Header with Search -->
+        <div class="card-header bg-white py-3 d-flex flex-column flex-md-row justify-content-between align-items-center">
+            <h5 class="m-0 font-weight-bold text-primary">
+                <i class="fas fa-list me-2"></i>Tag List
+            </h5>
+            <div class="mt-2 mt-md-0">
+                <div class="input-group search-group">
+                    <span class="input-group-text bg-transparent border-end-0">
+                        <i class="fas fa-search text-muted"></i>
+                    </span>
+                    <input type="text" id="tagSearch" class="form-control border-start-0 ps-0" placeholder="Search tags...">
+                    <button class="btn btn-primary" type="button" id="searchButton">
+                        Search
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card Body -->
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0" id="tagsTable">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Tag Name</th>
+                            <th>URL Slug</th>
+                            <th class="text-center">Products</th>
+                            <th class="text-end pe-4">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var tag in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <span class="badge bg-opacity-10 text-primary rounded-pill me-2">
+                                            <i class="fas fa-tag fa-sm"></i>
+                                        </span>
+                                        @tag.Name
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="badge bg-opacity-10 text-secondary">@tag.Slug</span>
+                                </td>
+                                <td class="text-center">
+                                    <span class="badge rounded-pill text-black">@tag.ProductTags.Count</span>
+                                </td>
+                                <td class="text-end pe-4">
+                                    <div class="btn-group btn-group-sm shadow-sm" role="group">
+                                        <a asp-controller="Tag" asp-action="EditTag" asp-route-id="@tag.Id"
+                                           class="btn btn-outline-primary rounded-start-3"
+                                           data-bs-toggle="tooltip" data-bs-placement="top" title="Edit">
+                                            <i class="fas fa-pencil-alt"></i>
+                                        </a>
+                                        <button type="button" class="btn btn-outline-info"
+                                                data-bs-toggle="modal" data-bs-target="#detailsModal"
+                                                data-id="@tag.Id" data-name="@tag.Name"
+                                                data-slug="@tag.Slug" data-count="@tag.ProductTags.Count"
+                                                data-bs-toggle="tooltip" data-bs-placement="top" title="View Details">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button data-bs-toggle="modal"
+                                                data-bs-target="#deleteModal-@tag.Id" class="btn btn-outline-danger" title="Delete">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </div>
+                                    <!-- Delete Modal -->
+                                    <div class="modal fade" id="deleteModal-@tag.Id" tabindex="-1">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header bg-danger text-white">
+                                                    <h5 class="modal-title">Confirm Deletion</h5>
+                                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p>Are you sure you want to delete customer <strong>@tag.Name</strong>?</p>
+                                                    <p class="text-danger small mb-0">
+                                                        <i class="fas fa-exclamation-circle me-1"></i>This action cannot be undone.
+                                                    </p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                    <form asp-controller="Tag" asp-action="DeleteTag" asp-route-id="@tag.Id" method="post">
+                                                        <input type="hidden" name="id" value="@tag.Id" />
+                                                        <button type="submit" class="btn btn-danger">
+                                                            <i class="fas fa-trash-alt me-1"></i>Delete
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Enhanced Details Modal -->
+<div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="detailsModalLabel">
+                    <i class="fas fa-info-circle me-2"></i>Tag Details
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="d-flex align-items-center mb-4">
+                    <div class="flex-shrink-0">
+                        <div class="avatar avatar-lg bg-primary bg-opacity-10 text-white rounded-circle">
+                            <i class="fas fa-tag fa-lg"></i>
+                        </div>
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                        <h5 class="mb-1" id="modalName"></h5>
+                        <p class="text-muted mb-0">Tag ID: <span id="modalId" class="fw-semibold"></span></p>
+                    </div>
+                </div>
+
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="p-3 bg-light rounded">
+                            <h6 class="small text-muted mb-2">URL Slug</h6>
+                            <p class="mb-0 fw-semibold" id="modalSlug"></p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="p-3 bg-light rounded">
+                            <h6 class="small text-muted mb-2">Associated Products</h6>
+                            <p class="mb-0 fw-semibold" id="modalCount"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer border-top-0">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-2"></i>Close
+                </button>
+                <a href="#" class="btn btn-primary edit-btn">
+                    <i class="fas fa-edit me-2"></i>Edit Tag
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        :root {
+            --primary-bg-color: #f8fafc;
+            --card-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.08);
+        }
+
+        body {
+            background-color: var(--primary-bg-color);
+            color: #4a5568;
+        }
+
+        .bg-gradient-primary {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+        }
+
+        .card {
+            border: none;
+            box-shadow: var(--card-shadow);
+            border-radius: 0.75rem;
+            overflow: hidden;
+        }
+
+        .card-header {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            padding: 1.25rem 1.5rem;
+        }
+
+        .table {
+            margin-bottom: 0;
+        }
+
+            .table th {
+                font-weight: 600;
+                text-transform: uppercase;
+                font-size: 0.75rem;
+                letter-spacing: 0.05em;
+                color: #64748b;
+                border-bottom-width: 1px;
+            }
+
+            .table td {
+                vertical-align: middle;
+                padding: 1rem 1.5rem;
+                border-top: 1px solid rgba(0, 0, 0, 0.03);
+            }
+
+        .search-group {
+            border-radius: 2rem;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+            .search-group .form-control {
+                border-left: none;
+                padding-left: 0;
+            }
+
+            .search-group .input-group-text {
+                border-right: none;
+                background-color: transparent;
+            }
+
+        .avatar {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 3rem;
+            height: 3rem;
+        }
+
+        .breadcrumb-light .breadcrumb-item + .breadcrumb-item::before {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .delete-btn:hover {
+            background-color: #dc3545 !important;
+            color: white !important;
+        }
+
+        .modal-content {
+            border-radius: 0.75rem;
+        }
+
+        .btn-group .btn {
+            transition: all 0.2s;
+        }
+
+        .badge {
+            padding: 0.35em 0.65em;
+            font-weight: 500;
+        }
+    </style>
+}
+
+@section Scripts {
+    <script>
+        $(function () {
+            $('[data-bs-toggle="tooltip"]').tooltip();
+        });
+
+        $('#detailsModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            var id = button.data('id');
+
+            $('#modalId').text(id);
+            $('#modalName').text(button.data('name'));
+            $('#modalSlug').text(button.data('slug'));
+            $('#modalCount').text(button.data('count') + ' products');
+
+            $('.edit-btn').attr('href', '/Tag/EditTag/' + id);
+        });
+
+        $(document).ready(function () {
+            var searchTimeout;
+
+            $('#searchButton').click(searchTags);
+
+            $('#tagSearch').keyup(function() {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(searchTags, 300);
+            });
+
+            function searchTags() {
+                var searchText = $('#tagSearch').val().toLowerCase();
+                $('#tagsTable tbody tr').each(function () {
+                    var rowText = $(this).text().toLowerCase();
+                    $(this).toggle(rowText.indexOf(searchText) > -1);
+                });
+            }
+        });
+    </script>
+}

@@ -1,0 +1,310 @@
+﻿@model AlphaShop.Models.CustomerDto
+@{
+    ViewData["Title"] = "Create Customer";
+}
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-9">
+            <div class="card border-0 shadow-lg">
+                <div class="card-header bg-gradient-primary text-white py-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h2 class="h4 mb-0"><i class="fas fa-user-edit me-2"></i> Customer Registration</h2>
+                        <div class="d-flex gap-2">
+                            <a asp-controller="Customers" asp-action="Index" class="btn btn-light btn-sm text-primary d-flex align-items-center">
+                                <i class="fas fa-user-edit me-2"></i>Customer Page
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body p-5">
+                    <form asp-controller="Customers" asp-action="EditCustomer" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+                        <input type="hidden" asp-for="Id" />
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger alert-dismissible fade show">
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            Please fix the errors below
+                        </div>
+
+                        <div class="mb-4">
+                            <h5 class="text-primary mb-3"><i class="fas fa-user-circle me-2"></i> Personal Information</h5>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label asp-for="FirstName" class="form-label">First Name <span class="text-danger">*</span></label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                        <input asp-for="FirstName" class="form-control" placeholder="John" required />
+                                    </div>
+                                    <span asp-validation-for="FirstName" class="text-danger small"></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <label asp-for="LastName" class="form-label">Last Name <span class="text-danger">*</span></label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                        <input asp-for="LastName" class="form-control" placeholder="Doe" required />
+                                    </div>
+                                    <span asp-validation-for="LastName" class="text-danger small"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <h5 class="text-primary mb-3"><i class="fas fa-lock me-2"></i> Account Details</h5>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label asp-for="Password" class="form-label">Password <span class="text-danger">*</span></label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-key"></i></span>
+                                        <input asp-for="Password" class="form-control" type="password" placeholder="••••••••" value="@ViewData[" Password"]" />
+                                        <button class="btn btn-outline-secondary toggle-password" type="button">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </div>
+                                    <span asp-validation-for="Password" class="text-danger small"></span>
+                                    <div class="form-text">Minimum 8 characters with at least 1 number</div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label asp-for="Email" class="form-label">Email Address <span class="text-danger">*</span></label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                                        <input asp-for="Email" class="form-control" type="email" placeholder="john.doe@example.com" required />
+                                    </div>
+                                    <span asp-validation-for="Email" class="text-danger small"></span>
+                                </div>
+                                <div class="col-md-12">
+                                    <label asp-for="Status" class="form-label">Customer Status <span class="text-danger">*</span></label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-user-check"></i></span>
+                                        <select asp-for="Status" class="form-control" asp-items="Html.GetEnumSelectList<CustomerStatus>()">
+                                            <option value="">-- Select Status --</option>
+                                        </select>
+                                    </div>
+                                    <span asp-validation-for="Status" class="text-danger small"></span>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <h5 class="text-primary mb-3"><i class="fas fa-address-card me-2"></i> Additional Information</h5>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label asp-for="DateOfBirth" class="form-label">Date of Birth</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-birthday-cake"></i></span>
+                                        <input asp-for="DateOfBirth" class="form-control" type="date" />
+                                    </div>
+                                    <span asp-validation-for="DateOfBirth" class="text-danger small"></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <label asp-for="Phone" class="form-label">Phone Number</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                                        <input asp-for="Phone" class="form-control" placeholder="+1 (123) 456-7890" />
+                                    </div>
+                                    <span asp-validation-for="Phone" class="text-danger small"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <h5 class="text-primary mb-3"><i class="fas fa-map-marker-alt me-2"></i> Address Information</h5>
+                            <div class="mb-3">
+                                <label asp-for="Address" class="form-label">Street Address</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-home"></i></span>
+                                    <input asp-for="Address" class="form-control" placeholder="123 Main St" />
+                                </div>
+                                <span asp-validation-for="Address" class="text-danger small"></span>
+                            </div>
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <label asp-for="City" class="form-label">City</label>
+                                    <input asp-for="City" class="form-control" placeholder="New York" />
+                                    <span asp-validation-for="City" class="text-danger small"></span>
+                                </div>
+                                <div class="col-md-4">
+                                    <label asp-for="State" class="form-label">State/Province</label>
+                                    <input asp-for="State" class="form-control" placeholder="NY" />
+                                    <span asp-validation-for="State" class="text-danger small"></span>
+                                </div>
+                                <div class="col-md-4">
+                                    <label asp-for="Country" class="form-label">Country</label>
+                                    <input asp-for="Country" class="form-control" placeholder="United States" />
+                                    <span asp-validation-for="Country" class="text-danger small"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <h5 class="text-primary mb-3"><i class="fas fa-camera me-2"></i> Profile Picture</h5>
+                            <div class="d-flex align-items-center">
+                                <div class="me-4">
+                                    <div class="avatar-upload">
+                                        <div class="avatar-edit">
+                                            <input asp-for="ProfilePicture" type="file" id="imageUpload" accept="image/*" />
+                                            <label for="imageUpload"><i class="fas fa-camera"></i></label>
+                                        </div>
+                                        <div class="avatar-preview">
+                                            <div id="imagePreview" style="background-image: url('@(ViewData["ProfilePicture"] != null ? "/images/" + ViewData["ProfilePicture"] : "https://via.placeholder.com/150")');">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <div class="form-text">Upload a clear photo of yourself (JPG or PNG, max 2MB)</div>
+                                    <span asp-validation-for="ProfilePicture" class="text-danger small"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2 mt-5">
+                            <button type="submit" class="btn btn-primary btn-lg py-3">
+                                <i class="fas fa-user-edit me-2"></i>Edit Customer
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .bg-gradient-primary {
+            background: linear-gradient(135deg, #3a7bd5 0%, #00d2ff 100%);
+        }
+
+        .card {
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .form-control, .input-group-text {
+            border-radius: 8px !important;
+        }
+
+            .form-control:focus {
+                box-shadow: 0 0 0 0.25rem rgba(58, 123, 213, 0.25);
+                border-color: #3a7bd5;
+            }
+
+        .avatar-upload {
+            position: relative;
+            max-width: 150px;
+        }
+
+        .avatar-edit {
+            position: absolute;
+            right: 10px;
+            bottom: 10px;
+            z-index: 1;
+        }
+
+            .avatar-edit input {
+                display: none;
+            }
+
+            .avatar-edit label {
+                display: inline-block;
+                width: 40px;
+                height: 40px;
+                margin-bottom: 0;
+                border-radius: 50%;
+                background: #3a7bd5;
+                border: 2px solid white;
+                cursor: pointer;
+                font-weight: normal;
+                color: white;
+                text-align: center;
+                line-height: 36px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            }
+
+        .avatar-preview {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 5px solid #f8f9fa;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+            .avatar-preview > div {
+                width: 100%;
+                height: 100%;
+                border-radius: 50%;
+                background-size: cover;
+                background-repeat: no-repeat;
+                background-position: center;
+            }
+
+        .toggle-password {
+            border-top-right-radius: 8px !important;
+            border-bottom-right-radius: 8px !important;
+        }
+    </style>
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        // Form validation
+        (function () {
+            'use strict'
+            var forms = document.querySelectorAll('.needs-validation')
+            Array.prototype.slice.call(forms)
+                .forEach(function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (!form.checkValidity()) {
+                            event.preventDefault()
+                            event.stopPropagation()
+                        }
+                        form.classList.add('was-validated')
+                    }, false)
+                })
+        })()
+
+        // Toggle password visibility
+        document.querySelectorAll('.toggle-password').forEach(function(button) {
+            button.addEventListener('click', function() {
+                const input = this.parentElement.querySelector('input');
+                const icon = this.querySelector('i');
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    icon.classList.remove('fa-eye');
+                    icon.classList.add('fa-eye-slash');
+                } else {
+                    input.type = 'password';
+                    icon.classList.remove('fa-eye-slash');
+                    icon.classList.add('fa-eye');
+                }
+            });
+        });
+
+        // Profile picture preview
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('imagePreview').style.backgroundImage = 'url(' + e.target.result + ')';
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        document.getElementById('imageUpload').addEventListener('change', function() {
+            readURL(this);
+        });
+
+                document.getElementById("imageUpload").addEventListener("change", function () {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById("imagePreview").style.backgroundImage = `url('${e.target.result}')`;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+}

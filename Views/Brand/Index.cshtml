@@ -1,0 +1,391 @@
+﻿@model IEnumerable<AlphaShop.Models.Brand>
+@{
+    ViewData["Title"] = "Brand";
+}
+
+<div class="container-fluid px-4">
+    <!-- Page Header -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h3 mb-0 text-gray-800">
+                <i class="fas fa-list-ol me-2"></i>Brand Management
+            </h1>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb bg-transparent p-0">
+                    <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index" class="text-decoration-none"><i class="fas fa-home"></i> Dashboard</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Brand</li>
+                </ol>
+            </nav>
+        </div>
+        <div>
+            <a asp-controller="Brand" asp-action="CreateBrand" class="btn btn-primary">
+                <i class="fas fa-plus-circle me-2"></i> Add New Brand
+            </a>
+        </div>
+    </div>
+
+    <!-- Main Card -->
+    <div class="card border-0">
+        <div class="card-header bg-transparent py-3 d-flex flex-row align-items-center justify-content-between border-bottom">
+            <h6 class="m-0 font-weight-semibold">
+                <i class="fas fa-list-ul me-2"></i>Brand List
+            </h6>
+        </div>
+        <div class="brands-container">
+            <div class="table-header">
+                <div class="search-container">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="brandSearch" placeholder="Search brands..." class="form-control">
+                    </div>
+                    <button id="clearSearch" class="btn btn-sm btn-outline-secondary">
+                        <i class="fas fa-times"></i> Clear
+                    </button>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="modern-table" id="brandTable">
+                    <thead>
+                        <tr>
+                            <th width="5%">ID</th>
+                            <th>Brand</th>
+                            <th>Description</th>
+                            <th>Website</th>
+                            <th>Country</th>
+                            <th>Status</th>
+                            <th width="15%">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.Any())
+                        {
+                            @foreach (var brand in Model)
+                            {
+                                <tr data-brand-id="@brand.Id">
+                                    <td class="text-muted">#</td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            @if (!string.IsNullOrEmpty(brand.LogoUrl))
+                                            {
+                                                <div class="avatar me-3">
+                                                    <img src="~/images/Branding/@brand.LogoUrl" alt="@brand.Name logo" class="brand-logo" width="50" height="50">
+                                                </div>
+                                            }
+                                            <div>
+                                                <div class="fw-medium">@brand.Name</div>
+                                                <div class="text-muted small">
+                                                    @if (!string.IsNullOrEmpty(brand.SocialMediaUrl))
+                                                    {
+                                                        <a href="@brand.SocialMediaUrl" target="_blank" class="text-muted">
+                                                            <i class="fab fa-instagram"></i>
+                                                        </a>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="table-description">
+                                            @(string.IsNullOrEmpty(brand.Description) ? "-" : brand.Description)
+                                        </div>
+                                    </td>
+                                    <td>
+                                        @if (!string.IsNullOrEmpty(brand.WebsiteUrl))
+                                        {
+                                            <a href="@brand.WebsiteUrl" target="_blank" class="text-primary">
+                                                <i class="fas fa-external-link-alt me-1"></i> Visit
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">-</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (!string.IsNullOrEmpty(brand.Country))
+                                        {
+                                            <span class="badge bg-light text-dark">@brand.Country</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">-</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (brand.IsActive)
+                                        {
+                                            <span class="badge bg-success">Active</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-secondary">Inactive</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <div class="table-actions">
+                                            <a asp-controller="Brand" asp-action="DetailBrand" asp-route-id="@brand.Id"
+                                               class="btn-action codeview" title="DetailBrand">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                            <a asp-controller="Brand" asp-action="EditBrand" asp-route-id="@brand.Id"
+                                               class="btn-action edit" title="Edit">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <button data-bs-toggle="modal"
+                                                    data-bs-target="#deleteModal-@brand.Id"
+                                                    class="btn-action delete" title="Delete">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </button>
+                                        </div>
+
+                                        <!-- Delete Modal -->
+                                        <div class="modal fade" id="deleteModal-@brand.Id" tabindex="-1">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header bg-danger text-white">
+                                                        <h5 class="modal-title">Confirm Deletion</h5>
+                                                        <button type="button" class="btn-close btn-close-white"
+                                                                data-bs-dismiss="modal"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p>Are you sure you want to delete brand <strong>@brand.Name</strong>?</p>
+                                                        <p class="text-danger small mb-0">
+                                                            <i class="fas fa-exclamation-circle me-1"></i>This action cannot be undone.
+                                                        </p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary"
+                                                                data-bs-dismiss="modal">
+                                                            Cancel
+                                                        </button>
+                                                        <form asp-controller="Brand" asp-action="DeleteBrand"
+                                                              asp-route-id="@brand.Id" method="post">
+                                                            <input type="hidden" name="id" value="@brand.Id" />
+                                                            <button type="submit" class="btn btn-danger">
+                                                                <i class="fas fa-trash-alt me-1"></i>Delete
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="7" class="text-center py-5">
+                                    <div class="empty-state">
+                                        <i class="fas fa-tags"></i>
+                                        <h5>No brands found</h5>
+                                        <p>Click the "Add New Brand" button to create one</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script>
+        // Search functionality
+        document.getElementById('brandSearch').addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            const rows = document.querySelectorAll('#brandTable tbody tr');
+
+            rows.forEach(row => {
+                const brandName = row.querySelector('td:nth-child(2) .fw-medium').textContent.toLowerCase();
+                const brandDesc = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
+                const brandCountry = row.querySelector('td:nth-child(5)').textContent.toLowerCase();
+
+                if (brandName.includes(searchTerm) || brandDesc.includes(searchTerm) || brandCountry.includes(searchTerm)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+
+        // Clear search
+        document.getElementById('clearSearch').addEventListener('click', function() {
+            document.getElementById('brandSearch').value = '';
+            const rows = document.querySelectorAll('#brandTable tbody tr');
+            rows.forEach(row => row.style.display = '');
+        });
+
+        
+    </script>
+}
+
+@section Styles{
+    <style>
+        .brands-container {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .search-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .search-box {
+            position: relative;
+            width: 300px;
+        }
+
+            .search-box i {
+                position: absolute;
+                left: 12px;
+                top: 50%;
+                transform: translateY(-50%);
+                color: #6c757d;
+            }
+
+            .search-box input {
+                padding-left: 40px;
+                border-radius: 30px;
+                border: 1px solid #dee2e6;
+            }
+
+        .modern-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+            .modern-table thead th {
+                background-color: #f8f9fa;
+                color: #495057;
+                font-weight: 600;
+                padding: 12px 15px;
+                border-bottom: 2px solid #dee2e6;
+                position: sticky;
+                top: 0;
+            }
+
+            .modern-table tbody td {
+                padding: 15px;
+                border-bottom: 1px solid #e9ecef;
+                vertical-align: middle;
+            }
+
+            .modern-table tbody tr:hover {
+                background-color: #f8f9fa;
+            }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f1f1f1;
+        }
+
+            .avatar img {
+                max-width: 100%;
+                max-height: 100%;
+                object-fit: cover;
+            }
+
+        .table-description {
+            max-width: 250px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .table-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-action {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            background: transparent;
+            color: #6c757d;
+            transition: all 0.2s;
+        }
+
+            .btn-action:hover {
+                background: rgba(0, 0, 0, 0.05);
+            }
+
+            .btn-action.edit:hover {
+                color: #0d6efd;
+                background: rgba(13, 110, 253, 0.1);
+            }
+
+            .btn-action.download:hover {
+                color: #dc3545;
+                background: rgba(220, 53, 69, 0.1);
+            }
+
+            .btn-action.delete:hover {
+                color: #dc3545;
+                background: rgba(220, 53, 69, 0.1);
+            }
+
+        .empty-state {
+            text-align: center;
+            color: #6c757d;
+        }
+
+            .empty-state i {
+                font-size: 48px;
+                margin-bottom: 15px;
+                color: #dee2e6;
+            }
+
+            .empty-state h5 {
+                margin-bottom: 10px;
+                font-weight: 600;
+            }
+
+        @@media (max-width: 768px) {
+            .table-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-container {
+                margin-bottom: 15px;
+            }
+
+            .search-box {
+                width: 100%;
+            }
+        }
+    </style>
+}

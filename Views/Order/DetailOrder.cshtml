@@ -1,0 +1,230 @@
+﻿@model AlphaShop.Models.Order
+@{
+    ViewData["Title"] = "Order Details";
+}
+
+<div class="container-fluid px-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h3 mb-0 text-gray-800">
+                <i class="fas fa-file-invoice me-2"></i>Order Details
+            </h1>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a asp-action="Index">Orders</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Details #@Model.Id</li>
+                </ol>
+            </nav>
+        </div>
+        <div>
+            <a asp-action="Index" class="btn btn-secondary me-2">
+                <i class="fas fa-arrow-left me-2"></i>Back to List
+            </a>
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">
+                <i class="fas fa-edit me-2"></i>Edit Order
+            </a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 bg-primary text-white">
+                    <h6 class="m-0 font-weight-bold">
+                        <i class="fas fa-info-circle me-2"></i>Order Information
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="border-bottom pb-3 mb-3">
+                                <h5 class="font-weight-bold text-primary">Customer Details</h5>
+                                <p class="mb-1"><strong>Name:</strong> @Model.Customer?.FirstName @Model.Customer?.LastName</p>
+                                <p class="mb-1"><strong>Email:</strong> @Model.Customer?.Email</p>
+                                <p class="mb-1"><strong>Phone:</strong> @Model.Customer?.Phone</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="border-bottom pb-3 mb-3">
+                                <h5 class="font-weight-bold text-primary">Order Summary</h5>
+                                <p class="mb-1"><strong>Order ID:</strong>@Model.Id</p>
+                                <p class="mb-1"><strong>Date:</strong> @Model.OrderDate.ToString("dd MMMM yyyy")</p>
+                                <p class="mb-1">
+                                    <strong>Status:</strong>
+                                    <span class="badge @(string.IsNullOrEmpty(Model.TrackingNumber) ? "bg-warning text-dark" : "bg-success")">
+                                        @(string.IsNullOrEmpty(Model.TrackingNumber) ? "Processing" : "Shipped")
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h5 class="font-weight-bold text-primary mb-3">
+                        <i class="fas fa-boxes me-2"></i>Order Items
+                    </h5>
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Replace with actual order items loop -->
+                                <tr>
+                                    <td>Sample Product</td>
+                                    <td>$19.99</td>
+                                    <td>2</td>
+                                    <td>$39.98</td>
+                                </tr>
+                                <!-- End of sample data -->
+                            </tbody>
+                            <tfoot class="bg-light">
+                                <tr>
+                                    <td colspan="3" class="text-end fw-bold">Subtotal</td>
+                                    <td class="fw-bold">@Model.TotalAmount.ToString("C")</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3" class="text-end fw-bold">Shipping</td>
+                                    <td class="fw-bold">$0.00</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3" class="text-end fw-bold">Total</td>
+                                    <td class="fw-bold">@Model.TotalAmount.ToString("C")</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 bg-primary text-white">
+                    <h6 class="m-0 font-weight-bold">
+                        <i class="fas fa-truck me-2"></i>Shipping Information
+                    </h6>
+                </div>
+                <div class="card-body">
+                    @if (!string.IsNullOrEmpty(Model.TrackingNumber))
+                    {
+                        <div class="alert alert-success">
+                            <h6 class="alert-heading"><i class="fas fa-check-circle me-2"></i>Order Shipped</h6>
+                            <p class="mb-2"><strong>Tracking Number:</strong> @Model.TrackingNumber</p>
+                            <p class="mb-0"><strong>Estimated Delivery:</strong> @DateTime.Now.AddDays(3).ToString("dd MMMM yyyy")</p>
+                        </div>
+                        <div class="progress mb-4">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-warning">
+                            <h6 class="alert-heading"><i class="fas fa-clock me-2"></i>Order Processing</h6>
+                            <p class="mb-0">Your order is being prepared for shipment</p>
+                        </div>
+                    }
+
+                    <h5 class="font-weight-bold text-primary mb-3">Shipping Address</h5>
+                    <address>
+                        <strong>@Model.Customer?.FirstName @Model.Customer?.LastName</strong><br>
+                        @Model.Customer?.Address<br>@Model.Customer?.State<br/>
+                        @Model.Customer?.City, @Model.Customer?.Country<br>
+                        <abbr title="Phone">P:</abbr> @Model.Customer?.Phone
+                    </address>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .card {
+            border-radius: 0.5rem;
+            border: none;
+        }
+
+        .card-header {
+            border-radius: 0.5rem 0.5rem 0 0 !important;
+        }
+
+        .bg-primary {
+            background-color: #4e73df !important;
+        }
+
+        .text-primary {
+            color: #4e73df !important;
+        }
+
+        .badge {
+            font-size: 0.85em;
+            padding: 0.5em 0.8em;
+            font-weight: 500;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 1.5rem;
+            list-style: none;
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-bottom: 1.5rem;
+        }
+
+        .timeline-badge {
+            position: absolute;
+            left: -2.5rem;
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 2rem;
+            color: white;
+            top: 0;
+        }
+
+            .timeline-badge.success {
+                background-color: #1cc88a;
+            }
+
+            .timeline-badge.warning {
+                background-color: #f6c23e;
+            }
+
+            .timeline-badge.secondary {
+                background-color: #858796;
+            }
+
+        .timeline-panel {
+            position: relative;
+            padding: 1rem;
+            background-color: #f8f9fc;
+            border-radius: 0.35rem;
+            margin-bottom: 1rem;
+        }
+
+        .timeline-title {
+            font-weight: 600;
+            color: #4e73df;
+            margin-bottom: 0.25rem;
+        }
+
+        .timeline-body {
+            color: #5a5c69;
+            font-size: 0.9rem;
+        }
+
+        .progress {
+            height: 0.5rem;
+            border-radius: 0.25rem;
+        }
+    </style>
+}
