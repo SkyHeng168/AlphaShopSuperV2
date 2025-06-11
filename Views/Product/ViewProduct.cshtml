@@ -40,12 +40,12 @@
                                  alt="@Model.ProductName"
                                  id="mainProductImage"
                                  style="max-height: 500px; object-fit: contain;">
-                            @if (Model.DisccoutPrice.HasValue && Model.DisccoutPrice < Model.BasePrice)
+                           @*  @if (Model.DisccoutPrice.HasValue && Model.DisccoutPrice < Model.Profits)
                             {
                                 <div class="position-absolute top-0 start-0 bg-danger text-white px-3 py-1 rounded-end">
                                     <span class="fw-bold">@((int)(100 - (Model.DisccoutPrice / Model.BasePrice * 100)))% OFF</span>
                                 </div>
-                            }
+                            } *@
                         </div>
                     }
                     else
@@ -114,7 +114,7 @@
                     </div>
 
                     <!-- Price Section -->
-                    <div class="mb-4">
+                   @*  <div class="mb-4">
                         @if (Model.DisccoutPrice.HasValue && Model.DisccoutPrice < Model.BasePrice)
                         {
                             <div class="d-flex align-items-center">
@@ -126,7 +126,7 @@
                         {
                             <h3 class="h2">@Model.Price.Value.ToString("C")</h3>
                         }
-                    </div>
+                    </div> *@
 
                     <!-- SKU/Weight -->
                     <div class="mb-4">

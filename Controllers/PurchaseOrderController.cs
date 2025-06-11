@@ -21,9 +21,12 @@ namespace AlphaShop.Controllers
             var purchaseOrders = await _context.PurchaseOrder
                 .Include(po => po.Supplier)
                 .Include(po => po.OrderItemSuppliers)
+                    .ThenInclude(oi => oi.Product)
                 .ToListAsync();
+
             return View(purchaseOrders);
         }
+
         public async Task<IActionResult> DetailsOrder(int Id)
         {
             var purchaseOrder = await _context.PurchaseOrder

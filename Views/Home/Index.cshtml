@@ -98,7 +98,7 @@
                 <div class="card card-round">
                     <div class="card-header">
                         <div class="card-head-row">
-                            <div class="card-title">User Statistics</div>
+                            <div class="card-title">Product Inventory Flow</div>
                             <div class="card-tools">
                                 <a href="#" class="btn btn-label-success btn-round btn-sm me-2">
                                     <span class="btn-label">
@@ -117,9 +117,13 @@
                     </div>
                     <div class="card-body">
                         <div class="chart-container" style="min-height: 375px">
-                            <canvas id="statisticsChart"></canvas>
+                            <canvas id="inventoryFlowChart"></canvas>
                         </div>
-                        <div id="myChartLegend"></div>
+                        <div class="mt-3 text-center">
+                            <span class="me-3"><i class="fas fa-square text-primary"></i> Products In</span>
+                            <span class="me-3"><i class="fas fa-square text-warning"></i> Products Out</span>
+                            <span><i class="fas fa-square text-success"></i> Products Sold</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -170,7 +174,7 @@
                 <div class="card card-round">
                     <div class="card-header">
                         <div class="card-head-row card-tools-still-right">
-                            <h4 class="card-title">Users Geolocation</h4>
+                            <h4 class="card-title">Business Overview</h4>
                             <div class="card-tools">
                                 <button class="btn btn-icon btn-link btn-primary btn-xs">
                                     <span class="fa fa-angle-down"></span>
@@ -184,142 +188,78 @@
                             </div>
                         </div>
                         <p class="card-category">
-                            Map of the distribution of users around the world
+                            Key business data at a glance
                         </p>
                     </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-6">
+                                <h5 class="text-center mb-3">Top Products</h5>
                                 <div class="table-responsive table-hover table-sales">
                                     <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Product</th>
+                                                <th class="text-end">Sales</th>
+                                                <th class="text-end">Revenue</th>
+                                            </tr>
+                                        </thead>
                                         <tbody>
                                             <tr>
-                                                <td>
-                                                    <div class="flag">
-                                                        <img src="~/assets/img/flags/id.png" alt="indonesia" />
-                                                    </div>
-                                                </td>
-                                                <td>Indonesia</td>
-                                                <td class="text-end">2.320</td>
-                                                <td class="text-end">42.18%</td>
+                                                <td>Premium Widget</td>
+                                                <td class="text-end">1,250</td>
+                                                <td class="text-end">$25,000</td>
                                             </tr>
                                             <tr>
-                                                <td>
-                                                    <div class="flag">
-                                                        <img src="~/assets/img/flags/us.png" alt="united states" />
-                                                    </div>
-                                                </td>
-                                                <td>USA</td>
-                                                <td class="text-end">240</td>
-                                                <td class="text-end">4.36%</td>
+                                                <td>Basic Widget</td>
+                                                <td class="text-end">3,450</td>
+                                                <td class="text-end">$17,250</td>
                                             </tr>
                                             <tr>
-                                                <td>
-                                                    <div class="flag">
-                                                        <img src="~/assets/img/flags/au.png" alt="australia" />
-                                                    </div>
-                                                </td>
-                                                <td>Australia</td>
-                                                <td class="text-end">119</td>
-                                                <td class="text-end">2.16%</td>
+                                                <td>Deluxe Package</td>
+                                                <td class="text-end">780</td>
+                                                <td class="text-end">$39,000</td>
                                             </tr>
                                             <tr>
-                                                <td>
-                                                    <div class="flag">
-                                                        <img src="~/assets/img/flags/ru.png" alt="russia" />
-                                                    </div>
-                                                </td>
-                                                <td>Russia</td>
-                                                <td class="text-end">1.081</td>
-                                                <td class="text-end">19.65%</td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="flag">
-                                                        <img src="~/assets/img/flags/cn.png" alt="china" />
-                                                    </div>
-                                                </td>
-                                                <td>China</td>
-                                                <td class="text-end">1.100</td>
-                                                <td class="text-end">20%</td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="flag">
-                                                        <img src="~/assets/img/flags/br.png" alt="brazil" />
-                                                    </div>
-                                                </td>
-                                                <td>Brasil</td>
-                                                <td class="text-end">640</td>
-                                                <td class="text-end">11.63%</td>
+                                                <td>Standard Package</td>
+                                                <td class="text-end">1,520</td>
+                                                <td class="text-end">$22,800</td>
                                             </tr>
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
                             <div class="col-md-6">
+                                <h5 class="text-center mb-3">Top Customers</h5>
                                 <div class="table-responsive table-hover table-sales">
                                     <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Customer</th>
+                                                <th class="text-end">Orders</th>
+                                                <th class="text-end">Value</th>
+                                            </tr>
+                                        </thead>
                                         <tbody>
                                             <tr>
-                                                <td>
-                                                    <div class="flag">
-                                                        <img src="~/assets/img/flags/id.png" alt="indonesia" />
-                                                    </div>
-                                                </td>
-                                                <td>Indonesia</td>
-                                                <td class="text-end">2.320</td>
-                                                <td class="text-end">42.18%</td>
+                                                <td>Acme Corp</td>
+                                                <td class="text-end">42</td>
+                                                <td class="text-end">$12,500</td>
                                             </tr>
                                             <tr>
-                                                <td>
-                                                    <div class="flag">
-                                                        <img src="~/assets/img/flags/us.png" alt="united states" />
-                                                    </div>
-                                                </td>
-                                                <td>USA</td>
-                                                <td class="text-end">240</td>
-                                                <td class="text-end">4.36%</td>
+                                                <td>Globex Inc</td>
+                                                <td class="text-end">28</td>
+                                                <td class="text-end">$8,750</td>
                                             </tr>
                                             <tr>
-                                                <td>
-                                                    <div class="flag">
-                                                        <img src="~/assets/img/flags/au.png" alt="australia" />
-                                                    </div>
-                                                </td>
-                                                <td>Australia</td>
-                                                <td class="text-end">119</td>
-                                                <td class="text-end">2.16%</td>
+                                                <td>Contoso Ltd</td>
+                                                <td class="text-end">35</td>
+                                                <td class="text-end">$7,200</td>
                                             </tr>
                                             <tr>
-                                                <td>
-                                                    <div class="flag">
-                                                        <img src="~/assets/img/flags/ru.png" alt="russia" />
-                                                    </div>
-                                                </td>
-                                                <td>Russia</td>
-                                                <td class="text-end">1.081</td>
-                                                <td class="text-end">19.65%</td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="flag">
-                                                        <img src="~/assets/img/flags/cn.png" alt="china" />
-                                                    </div>
-                                                </td>
-                                                <td>China</td>
-                                                <td class="text-end">1.100</td>
-                                                <td class="text-end">20%</td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="flag">
-                                                        <img src="~/assets/img/flags/br.png" alt="brazil" />
-                                                    </div>
-                                                </td>
-                                                <td>Brasil</td>
-                                                <td class="text-end">640</td>
-                                                <td class="text-end">11.63%</td>
+                                                <td>Initech LLC</td>
+                                                <td class="text-end">19</td>
+                                                <td class="text-end">$5,600</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -642,3 +582,156 @@
         </div>
     </div>
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        try {
+            // 1. Safely get the canvas element
+            const canvas = document.getElementById('inventoryFlowChart');
+            if (!canvas) {
+                console.error('Chart canvas element not found');
+                return;
+            }
+            const ctx = canvas.getContext('2d');
+
+            // 2. Safely get and verify the data
+            const stockData = @Html.Raw(Json.Serialize(Model?.StockTransactions ?? []));
+            if (!Array.isArray(stockData)) {
+                console.error('Stock data is not an array:', stockData);
+                return;
+            }
+
+            console.log('Loaded stock data:', stockData); // Debug output
+
+            // 3. Improved data processing with error handling
+            const processStockData = (transactions) => {
+                const monthlyData = {};
+
+                // Convert to array if it isn't one
+                const transactionsArray = Array.isArray(transactions) ? transactions : [];
+
+                transactionsArray.forEach(transaction => {
+                    try {
+                        // Handle date more robustly
+                        const date = transaction.stockTransactionDate
+                            ? new Date(transaction.stockTransactionDate)
+                            : new Date();
+
+                        if (isNaN(date.getTime())) {
+                            console.warn('Invalid date:', transaction.stockTransactionDate);
+                            return;
+                        }
+
+                        const monthYear = `${date.getFullYear()}-${(date.getMonth()+1).toString().padStart(2, '0')}`;
+                        const monthName = date.toLocaleString('default', { month: 'short' });
+                        const displayDate = `${monthName} ${date.getFullYear()}`;
+
+                        const direction = transaction.direction === 0 ? 'In' : 'Out';
+
+                        if (!monthlyData[monthYear]) {
+                            monthlyData[monthYear] = {
+                                display: displayDate,
+                                'In': 0,
+                                'Out': 0
+                            };
+                        }
+
+                        // Handle quantity - check for common field names
+                        let quantity = 0;
+                        if (transaction.inventoryLogs?.length) {
+                            quantity = transaction.inventoryLogs.reduce((sum, log) => {
+                                return sum + (log.quantity || log.qty || log.Quantity || 0);
+                            }, 0);
+                        }
+
+                        monthlyData[monthYear][direction] += quantity;
+                    } catch (e) {
+                        console.error('Error processing transaction:', transaction, e);
+                    }
+                });
+
+                // Sort by year-month keys
+                const sortedMonths = Object.keys(monthlyData).sort();
+
+                return {
+                    labels: sortedMonths.map(key => monthlyData[key].display),
+                    inData: sortedMonths.map(key => monthlyData[key].In),
+                    outData: sortedMonths.map(key => monthlyData[key].Out)
+                };
+            };
+
+            // 4. Process data with fallback for empty data
+            const processedData = stockData.length ? processStockData(stockData) : {
+                labels: [],
+                inData: [],
+                outData: []
+            };
+
+            console.log('Processed chart data:', processedData); // Debug output
+
+            // 5. Create chart only if we have data
+            if (processedData.labels.length === 0) {
+                console.warn('No data available for chart');
+                canvas.insertAdjacentHTML('afterend',
+                    '<div class="alert alert-info">No inventory data available</div>');
+                return;
+            }
+
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: processedData.labels,
+                    datasets: [
+                        {
+                            label: 'Stock In',
+                            data: processedData.inData,
+                            backgroundColor: '#6777ef',
+                            borderColor: '#6777ef',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Stock Out',
+                            data: processedData.outData,
+                            backgroundColor: '#ffa426',
+                            borderColor: '#ffa426',
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            stacked: false,
+                            grid: { display: false }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                drawBorder: false,
+                                color: '#f2f2f2'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.dataset.label}: ${context.raw} items`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+        } catch (error) {
+            console.error('Error initializing chart:', error);
+        }
+    });
+</script>

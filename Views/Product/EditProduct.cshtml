@@ -1,17 +1,17 @@
 ﻿@model AlphaShop.Models.ProductDto
 @{
-    ViewData["Title"] = "Edits Product";
+    ViewData["Title"] = "Edit Product";
 }
 
 <div class="container-fluid py-4">
     <div class="row">
         <div class="col-12">
-            <div class="card shadow-sm border-0 overflow-hidden">
+            <div class="card shadow-sm overflow-hidden">
                 <div class="card-header bg-white border-bottom d-flex justify-content-between align-items-center p-4">
                     <h4 class="mb-0 fw-semibold text-dark">
-                        <i class="fas fa-cube me-2 text-primary"></i>Create New Product
+                        <i class="fas fa-cube me-2 text-primary"></i>Edit Product
                     </h4>
-                    <a asp-controller="Product" asp-action="Index" class="btn btn-sm btn-outline-secondary">
+                    <a asp-controller="Product" asp-action="Index" class="btn btn-sm btn-light">
                         <i class="fas fa-arrow-left me-1"></i> Back to Products
                     </a>
                 </div>
@@ -22,25 +22,20 @@
                             <!-- Left Column -->
                             <div class="col-lg-6">
                                 <!-- Product Information -->
-                                <div class="card mb-4 border-0 shadow-none">
-                                    <div class="card-header bg-light border-bottom px-4 py-3">
+                                <div class="card mb-4">
+                                    <div class="card-header bg-light-subtle border-bottom px-4 py-3">
                                         <h5 class="mb-0 fw-semibold text-dark">Product Information</h5>
                                     </div>
                                     <div class="card-body p-4">
-                                        <!-- Product Name -->
-                                        <div class="mb-4">
+                                        <div class="mb-3">
                                             <label asp-for="ProductName" class="form-label fw-medium">Product Name*</label>
                                             <input asp-for="ProductName" class="form-control" placeholder="Enter product name" required />
                                             <div class="invalid-feedback">Please provide a product name.</div>
                                         </div>
-
-                                        <!-- Description -->
-                                        <div class="mb-4">
+                                        <div class="mb-3">
                                             <label asp-for="ProductDescription" class="form-label fw-medium">Description</label>
                                             <textarea asp-for="ProductDescription" class="form-control" rows="3" placeholder="Detailed product description"></textarea>
                                         </div>
-
-                                        <!-- Brand & Category -->
                                         <div class="row g-3">
                                             <div class="col-md-6">
                                                 <label asp-for="BrandId" class="form-label fw-medium">Brand*</label>
@@ -57,45 +52,44 @@
                                                 <div class="invalid-feedback">Please select a category.</div>
                                             </div>
                                         </div>
-                                        <div class="row g-3">
+                                        <div class="row g-3 mt-3">
                                             <div class="col-md-6">
-                                                <label asp-for="SupplierId" class="form-label fw-medium">Suppliers*</label>
+                                                <label asp-for="SupplierId" class="form-label fw-medium">Supplier*</label>
                                                 <select asp-for="SupplierId" asp-items="ViewBag.Suppliers" class="form-select" required>
-                                                    <option value="" disabled selected>Select Suppliers</option>
+                                                    <option value="" disabled selected>Select supplier</option>
                                                 </select>
-                                                <div class="invalid-feedback">Please select a Suplliers.</div>
+                                                <div class="invalid-feedback">Please select a supplier.</div>
                                             </div>
                                             <div class="col-md-6">
-                                                <label asp-for="WareHouseId" class="form-label fw-medium">Warehouses*</label>
+                                                <label asp-for="WareHouseId" class="form-label fw-medium">Warehouse*</label>
                                                 <select asp-for="WareHouseId" asp-items="ViewBag.Warehouses" class="form-select" required>
-                                                    <option value="" disabled selected>Select WareHouse</option>
+                                                    <option value="" disabled selected>Select warehouse</option>
                                                 </select>
-                                                <div class="invalid-feedback">Please select a WareHouseId.</div>
+                                                <div class="invalid-feedback">Please select a warehouse.</div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
 
                                 <!-- Pricing -->
-                                <div class="card mb-4 border-0 shadow-none">
-                                    <div class="card-header bg-light border-bottom px-4 py-3">
+                                <div class="card mb-4">
+                                    <div class="card-header bg-light-subtle border-bottom px-4 py-3">
                                         <h5 class="mb-0 fw-semibold text-dark">Pricing</h5>
                                     </div>
                                     <div class="card-body p-4">
                                         <div class="row g-3">
                                             <div class="col-md-6">
-                                                <label asp-for="BasePrice" class="form-label fw-medium">Base Price*</label>
+                                                <label asp-for="Profits" class="form-label fw-medium">Profit %*</label>
                                                 <div class="input-group">
-                                                    <span class="input-group-text">$</span>
-                                                    <input asp-for="BasePrice" type="number" step="0.01" class="form-control" placeholder="0.00" required />
+                                                    <input asp-for="Profits" type="number" step="0.01" class="form-control" placeholder="0" />
+                                                    <span class="input-group-text">%</span>
                                                 </div>
-                                                <div class="invalid-feedback">Please enter a valid price.</div>
                                             </div>
                                             <div class="col-md-6">
                                                 <label asp-for="DisccoutPrice" class="form-label fw-medium">Discount Price</label>
                                                 <div class="input-group">
-                                                    <span class="input-group-text">$</span>
-                                                    <input asp-for="DisccoutPrice" type="number" step="0.01" class="form-control" placeholder="0.00" />
+                                                    <input asp-for="DisccoutPrice" type="number" step="0.01" class="form-control" placeholder="0" />
+                                                    <span class="input-group-text">%</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -106,31 +100,27 @@
                             <!-- Right Column -->
                             <div class="col-lg-6">
                                 <!-- Inventory -->
-                                <div class="card mb-4 border-0 shadow-none">
-                                    <div class="card-header bg-light border-bottom px-4 py-3">
+                                <div class="card mb-4">
+                                    <div class="card-header bg-light-subtle border-bottom px-4 py-3">
                                         <h5 class="mb-0 fw-semibold text-dark">Inventory</h5>
                                     </div>
                                     <div class="card-body p-4">
-                                        <div class="row g-3">
-                                            <div class="col-md-12">
-                                                <label asp-for="Weight" class="form-label fw-medium">Weight (kg)*</label>
-                                                <div class="input-group">
-                                                    <input asp-for="Weight" type="number" step="0.01" class="form-control" placeholder="0.00" />
-                                                    <span class="input-group-text">kg</span>
-                                                </div>
-                                                <div class="invalid-feedback">Please enter product weight.</div>
+                                        <div class="mb-3">
+                                            <label asp-for="Weight" class="form-label fw-medium">Weight*</label>
+                                            <div class="input-group">
+                                                <input asp-for="Weight" type="number" step="0.01" class="form-control" placeholder="0.00" />
+                                                <span class="input-group-text">kg</span>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
 
                                 <!-- Status & Image -->
-                                <div class="card mb-4 border-0 shadow-none">
-                                    <div class="card-header bg-light border-bottom px-4 py-3">
+                                <div class="card mb-4">
+                                    <div class="card-header bg-light-subtle border-bottom px-4 py-3">
                                         <h5 class="mb-0 fw-semibold text-dark">Status & Media</h5>
                                     </div>
                                     <div class="card-body p-4">
-                                        <!-- Status Toggles -->
                                         <div class="row mb-4">
                                             <div class="col-6">
                                                 <div class="form-check form-switch">
@@ -146,25 +136,61 @@
                                             </div>
                                         </div>
 
-                                        <!-- Image Upload -->
-                                        <div class="mb-3">
-                                            <label asp-for="ProductImage" class="form-label fw-medium">Product Image</label>
-                                            <div class="file-upload-wrapper">
-                                                <div class="dropzone border rounded-2 p-4 text-center" id="dropzone">
-                                                    <div class="dz-message" data-dz-message>
-                                                        <i class="fas fa-cloud-upload-alt fs-1 text-muted"></i>
-                                                        <p class="my-2">Drag & drop files here or click to browse</p>
-                                                        <p class="small text-muted">Recommended size: 800x800px</p>
+                                        <div class="card mb-4">
+                                            <div class="card-header bg-light-subtle border-bottom px-4 py-3">
+                                                <h5 class="mb-0 fw-semibold text-dark">Status & Media</h5>
+                                            </div>
+                                            <div class="card-body p-4">
+                                                <div class="row mb-4">
+                                                    <div class="col-6">
+                                                        <div class="form-check form-switch">
+                                                            <input class="form-check-input" type="checkbox" id="IsFeatured" name="IsFeatured" value="true" @(Model.IsFeatured == true ? "checked" : "") />
+                                                            <label class="form-check-label fw-medium" for="IsFeatured">Featured Product</label>
+                                                        </div>
                                                     </div>
-                                                    <input asp-for="ProductImage" type="file" class="form-control d-none" id="productImageUpload" />
+                                                    <div class="col-6">
+                                                        <div class="form-check form-switch">
+                                                            <input class="form-check-input" type="checkbox" id="IsActive" name="IsActive" value="true" @(Model.IsActive == true ? "checked" : "") />
+                                                            <label class="form-check-label fw-medium" for="IsActive">Active Product</label>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <div class="preview-container mt-3 d-none" id="imagePreview">
-                                                    <img id="previewImage" src="#" alt="Preview" class="img-fluid rounded-2 border" style="max-height: 200px;" />
-                                                    <div class="d-flex justify-content-between mt-2">
-                                                        <small class="text-muted">Image Preview</small>
-                                                        <button type="button" class="btn btn-sm btn-outline-danger" id="removeImage">
-                                                            <i class="fas fa-trash-alt me-1"></i>Remove
-                                                        </button>
+
+                                                <div class="mb-3">
+                                                    <label class="form-label fw-medium">Product Image</label>
+                                                    <div class="file-upload-wrapper">
+                                                        <div class="dropzone border rounded-2 p-4 text-center" id="dropzone">
+                                                            @if (ViewData["ProductImage"] != null)
+                                                            {
+                                                                <div class="current-image-container">
+                                                                    <img src="@ViewData["ProductImage"]" alt="Current Product Image" class="img-fluid rounded-2 border" style="max-height: 200px;" />
+                                                                    <div class="d-flex justify-content-between mt-2">
+                                                                        <small class="text-muted">Current Image</small>
+                                                                        <button type="button" class="btn btn-sm btn-outline-secondary" id="changeImage">
+                                                                            <i class="fas fa-sync-alt me-1"></i>Change
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            }
+                                                            else
+                                                            {
+                                                                <div class="dz-message" data-dz-message>
+                                                                    <i class="fas fa-cloud-upload-alt fs-1 text-muted"></i>
+                                                                    <p class="my-2">Drag & drop files here or click to browse</p>
+                                                                    <p class="small text-muted">Recommended size: 800x800px</p>
+                                                                </div>
+                                                            }
+                                                            <input asp-for="ProductImage" type="file" class="form-control d-none" id="productImageUpload" accept="image/*" />
+                                                        </div>
+                                                        <div class="preview-container mt-3 d-none" id="imagePreview">
+                                                            <img id="previewImage" src="#" alt="Preview" class="img-fluid rounded-2 border" style="max-height: 200px;" />
+                                                            <div class="d-flex justify-content-between mt-2">
+                                                                <small class="text-muted">New Image Preview</small>
+                                                                <button type="button" class="btn btn-sm btn-outline-danger" id="removeImage">
+                                                                    <i class="fas fa-trash-alt me-1"></i>Remove
+                                                                </button>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -176,11 +202,11 @@
 
                         <!-- Form Actions -->
                         <div class="d-flex justify-content-between border-top pt-4 mt-3">
-                            <button type="reset" class="btn btn-outline-secondary px-4">
+                            <button type="reset" class="btn btn-light px-4">
                                 <i class="fas fa-undo me-2"></i>Reset
                             </button>
                             <button type="submit" class="btn btn-primary px-4">
-                                <i class="fas fa-save me-2"></i>Create Product
+                                <i class="fas fa-save me-2"></i>Update Product
                             </button>
                         </div>
                     </form>
@@ -196,27 +222,53 @@
         :root {
             --primary-color: #4361ee;
             --primary-hover: #3a56d4;
+            --success-color: #28a745;
+            --danger-color: #dc3545;
             --border-radius: 0.5rem;
+            --card-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.08);
+            --transition: all 0.25s ease;
         }
 
         body {
             background-color: #f8fafc;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
         }
 
+        /* Card styling */
         .card {
             border-radius: var(--border-radius);
-            border: 1px solid #e2e8f0;
+            border: none;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+            margin-bottom: 1.5rem;
         }
 
         .card-header {
-            border-radius: var(--border-radius) var(--border-radius) 0 0 !important;
+            background-color: white;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            padding: 1rem 1.5rem;
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        /* Form elements */
+        .form-label {
+            font-weight: 500;
+            color: #4a5568;
+            margin-bottom: 0.5rem;
         }
 
         .form-control, .form-select {
             border-radius: var(--border-radius);
-            border: 1px solid #ced4da;
-            padding: 0.5rem 1rem;
+            border: 1px solid #e2e8f0;
+            padding: 0.625rem 1rem;
             font-size: 0.875rem;
+            transition: var(--transition);
+            height: calc(2.25rem + 2px);
         }
 
             .form-control:focus, .form-select:focus {
@@ -224,146 +276,253 @@
                 box-shadow: 0 0 0 0.25rem rgba(67, 97, 238, 0.15);
             }
 
-        .form-label {
-            font-size: 0.875rem;
-            color: #4a5568;
+        textarea.form-control {
+            min-height: 100px;
+        }
+
+        /* Buttons */
+        .btn {
+            border-radius: var(--border-radius);
+            padding: 0.625rem 1.25rem;
+            font-weight: 500;
+            transition: var(--transition);
         }
 
         .btn-primary {
             background-color: var(--primary-color);
             border-color: var(--primary-color);
-            padding: 0.5rem 1.5rem;
-            border-radius: var(--border-radius);
         }
 
             .btn-primary:hover {
                 background-color: var(--primary-hover);
                 border-color: var(--primary-hover);
+                transform: translateY(-1px);
             }
+
+        .btn-light {
+            background-color: #f8f9fa;
+            border-color: #e2e8f0;
+        }
+
+            .btn-light:hover {
+                background-color: #e9ecef;
+                border-color: #dae0e5;
+            }
+
+        .btn-outline-danger {
+            color: var(--danger-color);
+            border-color: var(--danger-color);
+        }
+
+            .btn-outline-danger:hover {
+                background-color: var(--danger-color);
+            }
+
+        /* Input groups */
+        .input-group-text {
+            background-color: #f8f9fa;
+            border-color: #e2e8f0;
+            color: #6c757d;
+        }
+
+        /* Dropzone */
+        .dropzone {
+            border: 2px dashed #e2e8f0;
+            border-radius: var(--border-radius);
+            background-color: #f8f9fa;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+            .dropzone:hover {
+                border-color: var(--primary-color);
+                background-color: rgba(67, 97, 238, 0.03);
+            }
+
+        .dz-message i {
+            font-size: 2rem;
+            color: #adb5bd;
+            margin-bottom: 0.5rem;
+        }
+
+        .dz-message p {
+            margin-bottom: 0.25rem;
+            color: #6c757d;
+        }
+
+        /* Toggle switches */
+        .form-switch .form-check-input {
+            width: 2.5em;
+            height: 1.5em;
+            margin-left: -0.5em;
+        }
 
         .form-check-input:checked {
             background-color: var(--primary-color);
             border-color: var(--primary-color);
         }
 
-        .form-switch .form-check-input {
-            width: 2.5em;
-            height: 1.4em;
+        /* Image preview */
+        .current-image-container, .preview-container {
+            text-align: center;
         }
 
-        .dropzone {
-            background-color: #f8f9fa;
-            border: 2px dashed #dee2e6;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-            .dropzone:hover {
-                border-color: var(--primary-color);
-                background-color: rgba(67, 97, 238, 0.05);
+            .current-image-container img, #previewImage {
+                max-height: 200px;
+                max-width: 100%;
+                object-fit: contain;
+                border-radius: var(--border-radius);
+                border: 1px solid #e2e8f0;
+                background-color: white;
+                padding: 0.5rem;
             }
+
+        /* Layout improvements */
+        .container-fluid {
+            padding-left: 2rem;
+            padding-right: 2rem;
+        }
+
+        .card-header.bg-white {
+            background-color: white !important;
+        }
+
+        /* Responsive adjustments */
+        @@media (max-width: 992px) {
+            .container-fluid
+
+        {
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+
+        .card-body {
+            padding: 1.25rem;
+        }
+
+        }
+
+        /* Form validation */
+        .is-invalid {
+            border-color: var(--danger-color);
+        }
 
         .invalid-feedback {
             font-size: 0.75rem;
+            color: var(--danger-color);
         }
 
-        .was-validated .form-control:invalid,
-        .was-validated .form-select:invalid {
-            border-color: #dc3545;
+        /* Section headers */
+        h4, h5 {
+            font-weight: 600;
         }
 
-        .was-validated .form-control:valid,
-        .was-validated .form-select:valid {
-            border-color: #198754;
+        h4 {
+            color: #2d3748;
+        }
+
+        h5 {
+            font-size: 1.1rem;
+            color: #4a5568;
+        }
+
+        /* Status switches container */
+        .status-switches {
+            background-color: #f8f9fa;
+            border-radius: var(--border-radius);
+            padding: 1rem;
+            margin-bottom: 1.5rem;
         }
     </style>
 }
 
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
     <script>
-        // Enhanced image upload with dropzone
-        const dropzone = document.getElementById('dropzone');
-        const fileInput = document.getElementById('productImageUpload');
-        const previewContainer = document.getElementById('imagePreview');
-        const previewImage = document.getElementById('previewImage');
-        const removeBtn = document.getElementById('removeImage');
+                // Image upload functionality
+        document.addEventListener('DOMContentLoaded', function () {
+            const dropzone = document.getElementById('dropzone');
+            const fileInput = document.getElementById('productImageUpload');
+            const previewImage = document.getElementById('previewImage');
+            const imagePreview = document.getElementById('imagePreview');
+            const removeBtn = document.getElementById('removeImage');
+            const changeImageBtn = document.getElementById('changeImage');
+            const currentImageContainer = document.querySelector('.current-image-container');
 
-        // Click on dropzone triggers file input
-        dropzone.addEventListener('click', () => fileInput.click());
+            // Handle click on dropzone (only if no current image or clicking on change button)
+            if (changeImageBtn) {
+                changeImageBtn.addEventListener('click', () => fileInput.click());
+            } else {
+                dropzone.addEventListener('click', () => fileInput.click());
+            }
 
-        // Handle file selection
-        fileInput.addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    previewImage.src = event.target.result;
-                    previewContainer.classList.remove('d-none');
-                    dropzone.classList.add('d-none');
+            fileInput.addEventListener('change', function () {
+                const file = this.files[0];
+                if (file && file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        previewImage.src = e.target.result;
+                        imagePreview.classList.remove('d-none');
+
+                        // Hide current image if changing
+                        if (currentImageContainer) {
+                            currentImageContainer.classList.add('d-none');
+                        }
+                    };
+                    reader.readAsDataURL(file);
                 }
-                reader.readAsDataURL(file);
+            });
+
+            removeBtn?.addEventListener('click', () => {
+                fileInput.value = '';
+                previewImage.src = '#';
+                imagePreview.classList.add('d-none');
+
+                // Show current image again if cancelling change
+                if (currentImageContainer) {
+                    currentImageContainer.classList.remove('d-none');
+                }
+            });
+
+            // Drag & Drop Support
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                dropzone.addEventListener(eventName, preventDefaults, false);
+            });
+
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dropzone.addEventListener(eventName, highlight, false);
+            });
+
+            ['dragleave', 'drop'].forEach(eventName => {
+                dropzone.addEventListener(eventName, unhighlight, false);
+            });
+
+            function highlight() {
+                dropzone.classList.add('border-primary');
+                dropzone.style.backgroundColor = 'rgba(67, 97, 238, 0.1)';
+            }
+
+            function unhighlight() {
+                dropzone.classList.remove('border-primary');
+                dropzone.style.backgroundColor = '';
+            }
+
+            dropzone.addEventListener('drop', handleDrop, false);
+
+            function handleDrop(e) {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                if (files.length > 0) {
+                    fileInput.files = files;
+                    fileInput.dispatchEvent(new Event('change'));
+                }
             }
         });
-
-        // Remove image
-        removeBtn.addEventListener('click', function() {
-            fileInput.value = '';
-            previewImage.src = '#';
-            previewContainer.classList.add('d-none');
-            dropzone.classList.remove('d-none');
-        });
-
-        // Drag and drop functionality
-        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-            dropzone.addEventListener(eventName, preventDefaults, false);
-        });
-
-        function preventDefaults(e) {
-            e.preventDefault();
-            e.stopPropagation();
-        }
-
-        ['dragenter', 'dragover'].forEach(eventName => {
-            dropzone.addEventListener(eventName, highlight, false);
-        });
-
-        ['dragleave', 'drop'].forEach(eventName => {
-            dropzone.addEventListener(eventName, unhighlight, false);
-        });
-
-        function highlight() {
-            dropzone.classList.add('border-primary', 'bg-light');
-        }
-
-        function unhighlight() {
-            dropzone.classList.remove('border-primary', 'bg-light');
-        }
-
-        dropzone.addEventListener('drop', handleDrop, false);
-
-        function handleDrop(e) {
-            const dt = e.dataTransfer;
-            const files = dt.files;
-            fileInput.files = files;
-            const event = new Event('change');
-            fileInput.dispatchEvent(event);
-        }
-
-        // Form validation
-        (function() {
-            'use strict';
-            const forms = document.querySelectorAll('.needs-validation');
-
-            Array.from(forms).forEach(form => {
-                form.addEventListener('submit', event => {
-                    if (!form.checkValidity()) {
-                        event.preventDefault();
-                        event.stopPropagation();
-                    }
-                    form.classList.add('was-validated');
-                }, false);
-            });
-        })();
     </script>
 }

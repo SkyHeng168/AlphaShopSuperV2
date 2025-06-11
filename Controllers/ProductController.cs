@@ -105,10 +105,9 @@ namespace AlphaShop.Controllers
                 {
                     ProductName = productDto.ProductName,
                     ProductDescription = productDto.ProductDescription,
-                    BasePrice = productDto.BasePrice,
+                    Profits = productDto.Profits,
                     DisccoutPrice = productDto.DisccoutPrice,
                     Weight = productDto.Weight,
-                    Price = productDto.BasePrice - (productDto.DisccoutPrice ?? 0),
                     IsFeatured = productDto.IsFeatured,
                     IsActive = productDto.IsActive,
                     SKU = await GenerateUniqueSkuAsync(),
@@ -197,15 +196,15 @@ namespace AlphaShop.Controllers
             {
                 return NotFound();
             }
+
             var productDto = new ProductDto
             {
                 Id = product.Id,
                 ProductName = product.ProductName,
                 ProductDescription = product.ProductDescription,
-                BasePrice = product.BasePrice,
+                Profits = product.Profits,
                 DisccoutPrice = product.DisccoutPrice,
                 Weight = product.Weight,
-                Price = product.Price,
                 IsFeatured = product.IsFeatured,
                 IsActive = product.IsActive,
                 CategoryId = product.CategoryId,
@@ -213,121 +212,128 @@ namespace AlphaShop.Controllers
                 SupplierId = product.SupplierId,
                 WareHouseId = product.WareHouseId,
             };
-            ViewBag.Categories = await _context.Category.Select(c => new SelectListItem
-            {
-                Value = c.Id.ToString(),
-                Text = c.Name
-            }).ToListAsync();
-            ViewBag.Brands = await _context.Brand.Select(b => new SelectListItem
-            {
-                Value = b.Id.ToString(),
-                Text = b.Name
-            }).ToListAsync();
-            ViewBag.Suppliers = await _context.Supplier.Select(s => new SelectListItem
-            {
-                Value = s.Id.ToString(),
-                Text = s.SupplierName
-            }).ToListAsync();
-            ViewBag.Warehouses = await _context.WareHouse.Select(w => new SelectListItem
-            {
-                Value = w.Id.ToString(),
-                Text = w.WareHouseName
-            }).ToListAsync();
-            ViewData["Id"] = id;
-            ViewData["ProductImage"] = product.ProductImage;
+
+            await LoadDropdownData();
+            ViewData["Id"] = id;    
+            ViewData["ProductImage"] = product.ProductImage != null
+                                        ? $"/images/products/{product.ProductImage}"
+                                        : null;
+
             return View(productDto);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditProduct(int id,ProductDto productDto)
+        public async Task<IActionResult> EditProduct(int id, ProductDto productDto)
         {
-            if (productDto == null)
+            if (productDto == null || id != productDto.Id)
             {
                 return NotFound();
             }
+
             var product = await _context.Product.FindAsync(id);
             if (product == null)
             {
                 return NotFound();
             }
+
             if (!ModelState.IsValid)
             {
-                ViewBag.Categories = await _context.Category.Select(c => new SelectListItem
-                {
-                    Value = c.Id.ToString(),
-                    Text = c.Name
-                }).ToListAsync();
-                ViewBag.Brands = await _context.Brand.Select(b => new SelectListItem
-                {
-                    Value = b.Id.ToString(),
-                    Text = b.Name
-                }).ToListAsync();
-                ViewBag.Suppliers = await _context.Supplier.Select(s => new SelectListItem
-                {
-                    Value = s.Id.ToString(),
-                    Text = s.SupplierName
-                }).ToListAsync();
-                ViewBag.Warehouses = await _context.WareHouse.Select(w => new SelectListItem
-                {
-                    Value = w.Id.ToString(),
-                    Text = w.WareHouseName
-                }).ToListAsync();
+                await LoadDropdownData();
                 ViewData["Id"] = id;
                 ViewData["ProductImage"] = product.ProductImage;
                 return View(productDto);
             }
+
             try
             {
-                if(productDto.ProductImage != null)
+                await UpdateProductPrices(product, productDto);
+
+                if (productDto.ProductImage != null)
                 {
                     await UpdateProductImageAsync(product, productDto.ProductImage);
                 }
-                product.ProductName = productDto.ProductName;
-                product.ProductDescription = productDto.ProductDescription;
-                product.BasePrice = productDto.BasePrice;
-                product.DisccoutPrice = productDto.DisccoutPrice;
-                product.Weight = productDto.Weight;
-                product.Price = productDto.BasePrice - (productDto.DisccoutPrice ?? 0);
-                product.IsFeatured = productDto.IsFeatured;
-                product.IsActive = productDto.IsActive;
-                product.CategoryId = productDto.CategoryId;
-                product.BrandId = productDto.BrandId;
-                product.SupplierId = productDto.SupplierId;
-                product.WareHouseId = productDto.WareHouseId;
+
+                MapProductDtoToEntity(productDto, product);
                 product.UpdatedAt = DateTime.Now;
 
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index", "Product");
+                return RedirectToAction(nameof(Index), "Product");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                _logger.LogError(ex, "Error editing product Id {productId}", id);
+                _logger.LogError(ex, "Error editing product Id {ProductId}", id);
                 ModelState.AddModelError("", "An error occurred while editing the product. Please try again.");
-                ViewBag.Categories = await _context.Category.Select(c => new SelectListItem
-                {
-                    Value = c.Id.ToString(),
-                    Text = c.Name
-                }).ToListAsync();
-                ViewBag.Brands = await _context.Brand.Select(b => new SelectListItem
-                {
-                    Value = b.Id.ToString(),
-                    Text = b.Name
-                }).ToListAsync();
-                ViewBag.Suppliers = await _context.Supplier.Select(s => new SelectListItem
-                {
-                    Value = s.Id.ToString(),
-                    Text = s.SupplierName
-                }).ToListAsync();
-                ViewBag.Warehouses = await _context.WareHouse.Select(w => new SelectListItem
-                {
-                    Value = w.Id.ToString(),
-                    Text = w.WareHouseName
-                }).ToListAsync();
+
+                await LoadDropdownData();
                 ViewData["Id"] = id;
                 ViewData["ProductImage"] = product.ProductImage;
+
                 return View(productDto);
             }
+        }
+
+        // Helper methods
+        private async Task LoadDropdownData()
+        {
+            ViewBag.Categories = await _context.Category
+                .Select(c => new SelectListItem { Value = c.Id.ToString(), Text = c.Name })
+                .ToListAsync();
+
+            ViewBag.Brands = await _context.Brand
+                .Select(b => new SelectListItem { Value = b.Id.ToString(), Text = b.Name })
+                .ToListAsync();
+
+            ViewBag.Suppliers = await _context.Supplier
+                .Select(s => new SelectListItem { Value = s.Id.ToString(), Text = s.SupplierName })
+                .ToListAsync();
+
+            ViewBag.Warehouses = await _context.WareHouse
+                .Select(w => new SelectListItem { Value = w.Id.ToString(), Text = w.WareHouseName })
+                .ToListAsync();
+        }
+
+        private async Task UpdateProductPrices(Product product, ProductDto productDto)
+        {
+            if (productDto.Profits != product.Profits)
+            {
+                var lastSupplierPrice = await _context.OrderItemSuppliers
+                    .Where(ois => ois.ProductId == product.Id)
+                    .OrderByDescending(ois => ois.PurchaseOrder!.OrderDate)
+                    .Select(ois => ois.UnitPrice)
+                    .FirstOrDefaultAsync();
+
+                if (lastSupplierPrice > 0)
+                {
+                    decimal profitPercent = productDto.Profits ?? 0;
+                    decimal discountPercent = productDto.DisccoutPrice ?? 0;
+
+                    // Selling Price = Cost Price × (1 + Profit % / 100)
+                    decimal sellingPrice = lastSupplierPrice * (1 + (profitPercent / 100));
+
+                    // Final Price = Selling Price × (1 − Discount % / 100)
+                    decimal finalPrice = sellingPrice * (1 - (discountPercent / 100));
+
+                    product.Price = sellingPrice;
+                    product.DisccoutPrice = finalPrice;
+                }
+            }
+        }
+
+
+        private void MapProductDtoToEntity(ProductDto source, Product target)
+        {
+            target.ProductName = source.ProductName;
+            target.ProductDescription = source.ProductDescription;
+            target.Profits = source.Profits;
+            target.DisccoutPrice = source.DisccoutPrice;
+            target.Weight = source.Weight;
+            target.IsFeatured = source.IsFeatured;
+            target.IsActive = source.IsActive;
+            target.CategoryId = source.CategoryId;
+            target.BrandId = source.BrandId;
+            target.SupplierId = source.SupplierId;
+            target.WareHouseId = source.WareHouseId;
         }
 
         [HttpGet]

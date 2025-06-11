@@ -115,7 +115,7 @@ namespace AlphaShop.Data
                 entity.Property(p => p.ProductDescription)
                     .HasMaxLength(2000);
 
-                entity.Property(p => p.BasePrice)
+                entity.Property(p => p.Profits)
                     .HasColumnType("decimal(18,2)");
 
                 entity.Property(p => p.DisccoutPrice)

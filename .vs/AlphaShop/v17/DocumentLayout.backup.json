@@ -1,33 +1,41 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "D:\\Programing\\CSharpPrograming\\Framework\\ASPNET\\Renew\\AlphaShop\\",
-  "Documents": [
-    {
-      "AbsoluteMoniker": "D:0:0:{800FF1BA-C91F-42C7-AE58-41FFCBD67FAB}|AlphaShop.csproj|d:\\programing\\csharpprograming\\framework\\aspnet\\renew\\alphashop\\data\\alphashopcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{800FF1BA-C91F-42C7-AE58-41FFCBD67FAB}|AlphaShop.csproj|solutionrelative:data\\alphashopcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    }
-  ],
+  "WorkspaceRootPath": "D:\\Programing\\C#_Programing\\C#_Freamwork\\ASPNET(MVC)\\Alpha\\AlphaShopSuperV2\\",
+  "Documents": [],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
       "VerticalTabListWidth": 256,
       "DocumentGroups": [
         {
-          "DockedWidth": 1927,
-          "SelectedChildIndex": 0,
+          "DockedWidth": 200,
+          "SelectedChildIndex": -1,
           "Children": [
             {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "AlphaShopContext.cs",
-              "DocumentMoniker": "D:\\Programing\\CSharpPrograming\\Framework\\ASPNET\\Renew\\AlphaShop\\Data\\AlphaShopContext.cs",
-              "RelativeDocumentMoniker": "Data\\AlphaShopContext.cs",
-              "ToolTip": "D:\\Programing\\CSharpPrograming\\Framework\\ASPNET\\Renew\\AlphaShop\\Data\\AlphaShopContext.cs",
-              "RelativeToolTip": "Data\\AlphaShopContext.cs",
-              "ViewState": "AgIAAB0AAAAAAAAAAAAuwAsBAAAiAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-08T07:01:54.017Z",
-              "EditorCaption": ""
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{b1e99781-ab81-11d0-b683-00aa00a3ee26}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{75188d03-9892-4ae2-abf1-207126247ce5}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:129:0:{75188d03-9892-4ae2-abf1-207126247ce5}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            }
+          ]
+        },
+        {
+          "DockedWidth": 1522,
+          "SelectedChildIndex": -1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{eefa5220-e298-11d0-8f78-00a0c9110057}"
             }
           ]
         }

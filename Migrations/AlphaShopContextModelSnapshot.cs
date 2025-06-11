@@ -452,9 +452,6 @@ namespace AlphaShop.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<decimal?>("BasePrice")
-                        .HasColumnType("decimal(18,2)");
-
                     b.Property<int?>("BrandId")
                         .HasColumnType("int");
 
@@ -494,6 +491,9 @@ namespace AlphaShop.Migrations
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
+
+                    b.Property<decimal?>("Profits")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("SKU")
                         .HasMaxLength(50)

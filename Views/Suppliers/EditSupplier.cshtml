@@ -48,7 +48,7 @@
                                         <div class="image-preview mb-3" id="imagePreview">
                                             @if (!string.IsNullOrEmpty(imagePath))
                                             {
-                                                <img src="@imagePath" alt="Image Preview" class="image-preview__image" style="display: block;">
+                                                <img src="~/images/Suppliers/@imagePath" alt="Image Preview" class="image-preview__image" style="display: block;">
                                                 <span class="image-preview__default-text" style="display: none;">No image selected</span>
                                             }
                                             else
@@ -154,9 +154,6 @@
                     <button type="button" id="updateSupplierBtn" class="btn btn-primary px-4">
                         <i class="fas fa-save me-2"></i>Update Supplier
                     </button>
-                    <button type="reset" class="btn btn-outline-secondary px-4" onclick="resetImagePreview()">
-                        <i class="fas fa-undo me-2"></i>Reset
-                    </button>
                 </div>
 
                 <!-- Confirmation Modal -->
@@ -193,6 +190,7 @@
 </div>
 
 <style>
+
     .section-title {
         color: #2c3e50;
         font-size: 1.1rem;

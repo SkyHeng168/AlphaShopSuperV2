@@ -5,5 +5,6 @@
         public int TotalCustomer { get; set; }
         public int TotalSupplier { get; set; }
         public List<Customer>? Customers { get; set; }
+        public List<StockTransaction>? StockTransactions { get; set; }
     }
 }

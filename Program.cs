@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using AlphaShop.Data;
 using AlphaShop.Services;
+using System.Text.Json.Serialization;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AlphaShopContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("AlphaShopContext") ?? throw new InvalidOperationException("Connection string 'AlphaShopContext' not found.")));
@@ -8,7 +9,9 @@ builder.Services.AddDbContext<AlphaShopContext>(options =>
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IEmailService, EmailService>();
-
+builder.Services.AddControllers()
+    .AddJsonOptions(x =>
+        x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

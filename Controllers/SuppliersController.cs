@@ -108,10 +108,11 @@ namespace AlphaShop.Controllers
         public async Task<IActionResult> EditSupplier(int id)
         {
             var supplier = await _context.Supplier.FindAsync(id);
-            if(supplier == null)
+            if (supplier == null)
             {
                 return NotFound();
             }
+
             var supplierDto = new SupplierDto
             {
                 SupplierName = supplier.SupplierName,
@@ -125,46 +126,39 @@ namespace AlphaShop.Controllers
                 ContractDate = supplier.ContractDate,
                 Status = supplier.Status
             };
-            ViewBag.Products = await _context.Product
-            .Select(p => new SelectListItem
-            {
-                Value = p.Id.ToString(),
-                Text = p.ProductName
-            }).ToListAsync();
-            ViewData["Id"] = id;
-            ViewData["ImageSupplier"] = supplier.ImageSupplier;
+
+            await PopulateViewData(id, supplier.ImageSupplier);
             return View(supplierDto);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditSupplier(int id, SupplierDto supplierDto)
         {
-            if(supplierDto == null)
+            if (supplierDto == null)
             {
                 return NotFound();
             }
+
             var supplierEdit = await _context.Supplier.FindAsync(id);
-            if(supplierDto == null)
+            if (supplierEdit == null)
             {
                 return NotFound();
             }
+
             if (!ModelState.IsValid)
             {
-                ViewBag.Products = await _context.Product
-                    .Select(p => new SelectListItem
-                    {
-                        Value = p.Id.ToString(),
-                        Text = p.ProductName
-                    }).ToListAsync();
-                ViewData["Id"] = id;
-                ViewData["ImageSupplier"] = supplierEdit?.ImageSupplier;
+                await PopulateViewData(id, supplierEdit.ImageSupplier);
                 return View(supplierDto);
             }
+
             try
             {
-                if(supplierDto.ImageSupplier != null)
+                if (supplierDto.ImageSupplier != null)
                 {
                     await UpdateImageSuppliers(supplierEdit, supplierDto.ImageSupplier);
                 }
+
                 supplierEdit.SupplierName = supplierDto.SupplierName;
                 supplierEdit.Email = supplierDto.Email;
                 supplierEdit.Phone = supplierDto.Phone;
@@ -179,20 +173,26 @@ namespace AlphaShop.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index", "Suppliers");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                _logger.LogError(ex, "Error editing suppliers {id}", id);
-                ModelState.AddModelError("", "An error occurred while editing the suppliers. Please try again.");
-                ViewBag.Products = await _context.Product
-                    .Select(p => new SelectListItem
-                    {
-                        Value = p.Id.ToString(),
-                        Text = p.ProductName
-                    }).ToListAsync();
-                ViewData["Id"] = id;
-                ViewData["ImageSupplier"] = supplierEdit?.ImageSupplier;
+                _logger.LogError(ex, "Error editing supplier {id}", id);
+                ModelState.AddModelError("", "An error occurred while editing the supplier. Please try again.");
+                await PopulateViewData(id, supplierEdit.ImageSupplier);
                 return View(supplierDto);
             }
+        }
+
+        private async Task PopulateViewData(int id, string imageSupplier)
+        {
+            ViewBag.Products = await _context.Product
+                .Select(p => new SelectListItem
+                {
+                    Value = p.Id.ToString(),
+                    Text = p.ProductName
+                }).ToListAsync();
+
+            ViewData["Id"] = id;
+            ViewData["ImageSupplier"] = imageSupplier;
         }
 
         [HttpPost]
@@ -230,7 +230,7 @@ namespace AlphaShop.Controllers
             }
 
             var totalAmount = suppliers.PurchaseOrders
-                .Where(po => po.OrderStatus == Status.Draft)  // Only completed orders
+                .Where(po => po.OrderStatus == Status.Received)  // Only completed orders
                 .Sum(po => po.TotalAmount);
 
             ViewBag.TotalAmount = totalAmount;
@@ -239,7 +239,8 @@ namespace AlphaShop.Controllers
 
         public async Task UpdateImageSuppliers(Supplier supplier, IFormFile formFileSuppliers)
         {
-            if(!string.IsNullOrEmpty(supplier.ImageSupplier) && supplier.ImageSupplier != "Default.jpg")
+            // Delete old image if it exists and isn't the default
+            if (!string.IsNullOrEmpty(supplier.ImageSupplier) && supplier.ImageSupplier != "Default.jpg")
             {
                 var oldImageSuppliers = Path.Combine(_environment.WebRootPath, "images/Suppliers", supplier.ImageSupplier);
                 if (System.IO.File.Exists(oldImageSuppliers))
@@ -248,19 +249,23 @@ namespace AlphaShop.Controllers
                     {
                         System.IO.File.Delete(oldImageSuppliers);
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         _logger.LogError(ex, "Error deleting old supplier image {imagePath}", oldImageSuppliers);
                     }
-                    var newImage = $"{DateTime.Now:yyyyyMMddHHss}{Path.GetExtension(formFileSuppliers.FileName)}";
-                    var saveImageSupplier = Path.Combine(_environment.WebRootPath, "images/Suppliers", newImage);
-                    using (var fileStream = new FileStream(newImage, FileMode.Create))
-                    {
-                        await formFileSuppliers.CopyToAsync(fileStream);
-                    }
-                    supplier.ImageSupplier = newImage;
                 }
             }
+
+            // Save new image
+            var newImageName = $"{DateTime.Now:yyyyMMddHHmmss}{Path.GetExtension(formFileSuppliers.FileName)}";
+            var saveImagePath = Path.Combine(_environment.WebRootPath, "images/Suppliers", newImageName);
+
+            using (var fileStream = new FileStream(saveImagePath, FileMode.Create))
+            {
+                await formFileSuppliers.CopyToAsync(fileStream);
+            }
+
+            supplier.ImageSupplier = newImageName;
         }
     }
 }

@@ -2,6 +2,7 @@ using System.Diagnostics;
 using AlphaShop.Data;
 using AlphaShop.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace AlphaShop.Controllers
 {
@@ -16,14 +17,21 @@ namespace AlphaShop.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            DateTime saveDaysAgo = DateTime.Now.AddDays(-7);
+            DateTime sevenDaysAgo = DateTime.Now.AddDays(-7);
+
             var model = new HomeViewModel
             {
                 TotalCustomer = _context.Customer.Count(),
                 TotalSupplier = _context.Supplier.Count(),
                 Customers = _context.Customer
-                            .Where(c => c.RegisterDate >= saveDaysAgo)
+                            .Where(c => c.RegisterDate >= sevenDaysAgo)
                             .OrderByDescending(c => c.RegisterDate)
+                            .Take(10)
+                            .ToList(),
+                StockTransactions = _context.StockTransactions
+                            .Include(st => st.InventoryLogs)
+                            .Where(st => st.IsActive)
+                            .OrderBy(st => st.StockTransactionDate)
                             .ToList()
             };
             return View(model);

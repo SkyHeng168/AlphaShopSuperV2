@@ -11,7 +11,7 @@ namespace AlphaShop.Models
         public required string ProductName { get; set; }
         public string? ProductImage { get; set; }
         public string? ProductDescription { get; set; }
-        public decimal? BasePrice { get; set; }
+        public decimal? Profits { get; set; }
         public decimal? DisccoutPrice { get; set; }
 
         public string? SKU { get; set; }
@@ -54,7 +54,7 @@ namespace AlphaShop.Models
         public string? ProductName { get; set; }
         public IFormFile? ProductImage { get; set; }
         public string? ProductDescription { get; set; }
-        public decimal? BasePrice { get; set; }
+        public decimal? Profits { get; set; }
         public decimal? DisccoutPrice { get; set; }
         public string? SKU { get; set; }
         public decimal? Weight { get; set; }

@@ -30,11 +30,9 @@ namespace AlphaShop.Controllers
         {
             try
             {
+                // Simplified product query - just get all active products
                 ViewBag.Products = await _context.Product
-                    .Where(p => _context.PurchaseOrder
-                        .Any(pod => pod.Id == p.Id &&
-                                   _context.PurchaseOrder
-                                       .Any(po => po.Id == pod.Id && po.SupplierId != null)))
+                    .Where(p => p.IsActive == true) // assuming you have an IsActive flag
                     .Select(p => new SelectListItem
                     {
                         Value = p.Id.ToString(),
@@ -49,6 +47,7 @@ namespace AlphaShop.Controllers
                         Text = st.TypeName
                     })
                     .ToListAsync();
+
                 ViewBag.PurchaseOrders = await _context.PurchaseOrder
                     .Where(po => po.OrderStatus == Status.Draft)
                     .Select(po => new SelectListItem
@@ -110,6 +109,20 @@ namespace AlphaShop.Controllers
 
             try
             {
+                var orderItemSupplier = await _context.OrderItemSuppliers
+                    .FirstOrDefaultAsync(o => o.PurchaseOrderId == inventoryLogDto.PurchaseOrderId &&
+                                             o.ProductId == inventoryLogDto.ProductId);
+                var product = await _context.Product
+                    .FirstOrDefaultAsync(p => p.Id == inventoryLogDto.ProductId);
+                if (product != null && orderItemSupplier != null)
+                {
+                    decimal supplierUnitPrice = orderItemSupplier.UnitPrice;
+                    decimal profits = product.Profits ?? 0;
+                    decimal discountedPrice = product.DisccoutPrice ?? 0;
+
+                    decimal sellingPrice = supplierUnitPrice * (1 + (profits/100)) * (1 - (discountedPrice/100));
+                    product.Price = Math.Round(sellingPrice, 2);
+                }
                 var inventory = new InventoryLog
                 {
                     Qunatity = inventoryLogDto.Qunatity,
@@ -121,10 +134,6 @@ namespace AlphaShop.Controllers
                 };
 
                 _context.InventoryLog.Add(inventory);
-
-                var orderItemSupplier = await _context.OrderItemSuppliers
-                    .FirstOrDefaultAsync(o => o.PurchaseOrderId == inventoryLogDto.PurchaseOrderId &&
-                                             o.ProductId == inventoryLogDto.ProductId);
 
                 if (orderItemSupplier != null)
                 {
@@ -138,7 +147,6 @@ namespace AlphaShop.Controllers
                 {
                     purchaseOrder.OrderStatus = Status.Received;
                 }
-
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index", "InventoryLog");
             }

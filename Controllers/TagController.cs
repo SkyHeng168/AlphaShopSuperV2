@@ -51,7 +51,7 @@ namespace AlphaShop.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index", "Tag");
             }
-            catch(Exception ex)
+            catch
             {
                 ModelState.AddModelError("", "An error occurred while creating the category. Please try again.");
                 return View(tagDto);
